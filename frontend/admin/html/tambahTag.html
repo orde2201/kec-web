@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="adminHMD professional admin dashboard template">
+  <title>Charts | adminHMD</title>
+
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+  <div class="admin-shell">
+    <div class="sidebar-backdrop" data-sidebar-close></div>
+
+    <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
+      <div class="sidebar-header">
+        <a class="brand-mark" href="index.html" aria-label="adminHMD dashboard">
+          <span class="brand-icon"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i></span>
+          <span class="brand-copy">
+            <span class="brand-title">adminHMD</span>
+            <span class="brand-subtitle">Admin Template</span>
+          </span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="nav-link" href="index.html">
+          <span class="nav-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
+          <span class="nav-text">Dashboard</span>
+        </a>
+        <a class="nav-link" href="users.html">
+          <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+          <span class="nav-text">Users</span>
+        </a>
+        <a class="nav-link" href="add-user.html">
+          <span class="nav-icon"><i class="bi bi-person-plus" aria-hidden="true"></i></span>
+          <span class="nav-text">Add User</span>
+        </a>
+        <a class="nav-link" href="profile.html">
+          <span class="nav-icon"><i class="bi bi-person-badge" aria-hidden="true"></i></span>
+          <span class="nav-text">Profile</span>
+        </a>
+        <a class="nav-link active" href="charts.html" aria-current="page">
+          <span class="nav-icon"><i class="bi bi-bar-chart-line" aria-hidden="true"></i></span>
+          <span class="nav-text">Charts</span>
+        </a>
+        <a class="nav-link" href="tables.html">
+          <span class="nav-icon"><i class="bi bi-table" aria-hidden="true"></i></span>
+          <span class="nav-text">Tables</span>
+        </a>
+        <a class="nav-link" href="forms.html">
+          <span class="nav-icon"><i class="bi bi-ui-checks-grid" aria-hidden="true"></i></span>
+          <span class="nav-text">Forms</span>
+        </a>
+        <a class="nav-link" href="components.html">
+          <span class="nav-icon"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
+          <span class="nav-text">Components</span>
+        </a>
+        <a class="nav-link" href="alerts.html">
+          <span class="nav-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
+          <span class="nav-text">Alerts</span>
+        </a>
+        <a class="nav-link" href="modals.html">
+          <span class="nav-icon"><i class="bi bi-window-stack" aria-hidden="true"></i></span>
+          <span class="nav-text">Modals</span>
+        </a>
+        <a class="nav-link" href="settings.html">
+          <span class="nav-icon"><i class="bi bi-gear" aria-hidden="true"></i></span>
+          <span class="nav-text">Settings</span>
+        </a>
+        <a class="nav-link" href="blank.html">
+          <span class="nav-icon"><i class="bi bi-file-earmark" aria-hidden="true"></i></span>
+          <span class="nav-text">Blank Page</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-user">
+        <img class="avatar-img avatar-md sidebar-user-avatar" src="../assets/images/avatar/avatar.jpg" alt="Admin Hasan">
+        <strong>Admin Hasan</strong>
+        <small>Active Workspace</small>
+      </div>
+
+      <div class="sidebar-footer">
+        <span class="status-dot"></span>
+        <span class="sidebar-footer-text">System running smoothly</span>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <div class="container py-5">
+        <div class="row g-4">
+          
+          <!-- FORM TAMBAH INSTANSI -->
+          <div class="col-md-6">
+            <div class="card p-4 shadow-sm">
+              <h3 class="h5 mb-3"><i class="bi bi-building me-2"></i>Tambah Instansi Baru</h3>
+              <form id="instansiForm">
+                <div class="mb-3">
+                  <label class="form-label">Nama Instansi</label>
+                  <input type="text" class="form-control" name="namaInstansi" required placeholder="Contoh: Humas / Kominfo">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Simpan Instansi</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- FORM TAMBAH KATEGORI BERITA -->
+          <div class="col-md-6">
+            <div class="card p-4 shadow-sm">
+              <h3 class="h5 mb-3"><i class="bi bi-tags me-2"></i>Tambah Kategori Berita</h3>
+              <form id="kategoriForm">
+                <div class="mb-3">
+                  <label class="form-label">Nama Kategori</label>
+                  <input type="text" class="form-control" name="namaKategori" required placeholder="Contoh: Politik / Olahraga">
+                </div>
+                <button type="submit" class="btn btn-success w-100">Simpan Kategori</button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <script>
+        // Penanganan Submit Form Instansi
+        document.getElementById('instansiForm').addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const formData = Object.fromEntries(new FormData(this).entries());
+          
+          try {
+            const res = await fetch('http://localhost:3000/api/instansi', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+            const result = await res.json();
+            alert(result.message);
+            if(res.ok) this.reset();
+          } catch (err) {
+            alert('Gagal terhubung ke server.');
+          }
+        });
+
+        // Penanganan Submit Form Kategori Berita
+        document.getElementById('kategoriForm').addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const formData = Object.fromEntries(new FormData(this).entries());
+          
+          try {
+            const res = await fetch('http://localhost:3000/api/kategori-berita', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+            const result = await res.json();
+            alert(result.message);
+            if(res.ok) this.reset();
+          } catch (err) {
+            alert('Gagal terhubung ke server.');
+          }
+        });
+      </script>
+
+        
+        </div>
+      </main>
+
+      <footer class="admin-footer">
+        <div class="container-fluid px-3 px-lg-4">
+          <span>Copyright 2026 adminHMD. <br> Developed by <a target="_blank" class="fw-bold text-success" href="https://github.com/HasanMahmudDev">Md. Hasan Mahmud</a> • Distributed by <a target="_blank" class="fw-bold text-success" href="https://themewagon.com">ThemeWagon</a> </span>
+          <span>Professional dashboard template.</span>
+          <span>Analytics chart examples.</span>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
