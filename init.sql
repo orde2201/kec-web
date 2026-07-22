@@ -25,6 +25,26 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Membuat Tabel Berita
+CREATE TABLE berita (
+    id SERIAL PRIMARY KEY,
+    judul VARCHAR(255) NOT NULL,
+    konten TEXT NOT NULL,
+    gambar VARCHAR(255), -- untuk menyimpan nama file gambar
+    kategori_id INT NOT NULL REFERENCES kategori_berita(id) ON DELETE CASCADE,
+    penulis_id INT NOT NULL REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- 5. Data Awal (Opsional - Sebagai Contoh Pertama)
+-- Pastikan instansi_id = 1 sudah ada (Operations)
+-- 1. Insert Instansi (Master) DULU
 INSERT INTO instansi (nama_instansi) VALUES ('Operations'), ('Sales'), ('Content'), ('Finance');
+
+-- 2. Insert Kategori (Master)
 INSERT INTO kategori_berita (nama_kategori) VALUES ('Pengumuman'), ('Kegiatan'), ('Edukasi');
+
+-- 3. BARU Insert User (Karena butuh instansi_id = 1)
+INSERT INTO users ("Nama", email, phone, "hakAkses", instansi_id) 
+VALUES ('Admin HMD', 'admin@hmd.com', '08123456789', 'Admin', 1);

@@ -90,202 +90,77 @@
     <!-- Header End -->
 
 
-    <!-- Categories Start -->
-    <div class="container-xxl py-5 category">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Categories</h6>
-                <h1 class="mb-5">Courses Categories</h1>
-            </div>
-            <div class="row g-3">
-                <div class="col-lg-7 col-md-6">
-                    <div class="row g-3">
-                        <div class="col-lg-12 col-md-12 wow zoomIn" data-wow-delay="0.1s">
-                            <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="img/cat-1.jpg" alt="">
-                                <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
-                                    <h5 class="m-0">Web Design</h5>
-                                    <small class="text-primary">49 Courses</small>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.3s">
-                            <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="img/cat-2.jpg" alt="">
-                                <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
-                                    <h5 class="m-0">Graphic Design</h5>
-                                    <small class="text-primary">49 Courses</small>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.5s">
-                            <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="img/cat-3.jpg" alt="">
-                                <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
-                                    <h5 class="m-0">Video Editing</h5>
-                                    <small class="text-primary">49 Courses</small>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-6 wow zoomIn" data-wow-delay="0.7s" style="min-height: 350px;">
-                    <a class="position-relative d-block h-100 overflow-hidden" href="">
-                        <img class="img-fluid position-absolute w-100 h-100" src="img/cat-4.jpg" alt="" style="object-fit: cover;">
-                        <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin:  1px;">
-                            <h5 class="m-0">Online Marketing</h5>
-                            <small class="text-primary">49 Courses</small>
-                        </div>
-                    </a>
-                </div>
-            </div>
+    <!-- Berita Start -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h6 class="section-title bg-white text-center text-primary px-3">Berita & Update</h6>
+            <h1 class="mb-5">Berita Terbaru</h1>
+        </div>
+        <!-- Wadah Data Berita -->
+        <div class="row g-4 justify-content-center" id="berita-container">
+            <!-- Loading text sebelum fetch selesai -->
+            <div class="text-center">Memuat berita...</div>
         </div>
     </div>
-    <!-- Categories Start -->
+</div>
+<!-- Berita End -->
+
+<!-- Tambahkan script ini di bawah sebelum tag penutup </body> -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Panggil API backend Node.js
+        fetch('http://localhost:3000/api/berita')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('berita-container');
+                container.innerHTML = ''; // Kosongkan wadah
+                
+                data.forEach(berita => {
+                    const gambarUrl = berita.gambar ? `http://localhost:3000/uploads/${berita.gambar}` : 'img/default.jpg';
+                    const tanggal = new Date(berita.created_at).toLocaleDateString('id-ID');
+
+                    const html = `
+                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="course-item bg-light h-100 d-flex flex-column">
+                                <div class="position-relative overflow-hidden">
+                                    <img class="img-fluid" src="${gambarUrl}" alt="${berita.judul}" style="height: 250px; width: 100%; object-fit: cover;">
+                                    <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
+                                        <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 30px;">Baca Selengkapnya</a>
+                                    </div>
+                                </div>
+                                <div class="text-center p-4 pb-0 flex-grow-1">
+                                    <div class="mb-3">
+                                        <span class="badge bg-primary">${berita.nama_kategori}</span>
+                                    </div>
+                                    <h5 class="mb-4">${berita.judul}</h5>
+                                    <p class="text-muted" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                        ${berita.konten}
+                                    </p>
+                                </div>
+                                <div class="d-flex border-top mt-auto">
+                                    <small class="flex-fill text-center border-end py-2">
+                                        <i class="fa fa-user-tie text-primary me-2"></i>${berita.nama_penulis || 'Admin'}
+                                    </small>
+                                    <small class="flex-fill text-center py-2">
+                                        <i class="fa fa-calendar text-primary me-2"></i>${tanggal}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', html);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching berita:', error);
+                document.getElementById('berita-container').innerHTML = '<div class="text-danger">Gagal memuat berita.</div>';
+            });
+    });
+</script>
 
 
-    <!-- Courses Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Courses</h6>
-                <h1 class="mb-5">Popular Courses</h1>
-            </div>
-            <div class="row g-4 justify-content-center">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="course-item bg-light">
-                        <div class="position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/course-1.jpg" alt="">
-                            <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4 pb-0">
-                            <h3 class="mb-0">$149.00</h3>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small>(123)</small>
-                            </div>
-                            <h5 class="mb-4">Web Design & Development Course for Beginners</h5>
-                        </div>
-                        <div class="d-flex border-top">
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>John Doe</small>
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>1.49 Hrs</small>
-                            <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>30 Students</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="course-item bg-light">
-                        <div class="position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/course-2.jpg" alt="">
-                            <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4 pb-0">
-                            <h3 class="mb-0">$149.00</h3>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small>(123)</small>
-                            </div>
-                            <h5 class="mb-4">Web Design & Development Course for Beginners</h5>
-                        </div>
-                        <div class="d-flex border-top">
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>John Doe</small>
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>1.49 Hrs</small>
-                            <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>30 Students</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="course-item bg-light">
-                        <div class="position-relative overflow-hidden">
-                            <img class="img-fluid" src="img/course-3.jpg" alt="">
-                            <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                                <a href="#" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Join Now</a>
-                            </div>
-                        </div>
-                        <div class="text-center p-4 pb-0">
-                            <h3 class="mb-0">$149.00</h3>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small>(123)</small>
-                            </div>
-                            <h5 class="mb-4">Web Design & Development Course for Beginners</h5>
-                        </div>
-                        <div class="d-flex border-top">
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>John Doe</small>
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>1.49 Hrs</small>
-                            <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>30 Students</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Courses End -->
-
-
-    <!-- Testimonial Start -->
-    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container">
-            <div class="text-center">
-                <h6 class="section-title bg-white text-center text-primary px-3">Testimonial</h6>
-                <h1 class="mb-5">Our Students Say!</h1>
-            </div>
-            <div class="owl-carousel testimonial-carousel position-relative">
-                <div class="testimonial-item text-center">
-                    <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-1.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Client Name</h5>
-                    <p>Profession</p>
-                    <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    </div>
-                </div>
-                <div class="testimonial-item text-center">
-                    <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-2.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Client Name</h5>
-                    <p>Profession</p>
-                    <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    </div>
-                </div>
-                <div class="testimonial-item text-center">
-                    <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-3.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Client Name</h5>
-                    <p>Profession</p>
-                    <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    </div>
-                </div>
-                <div class="testimonial-item text-center">
-                    <img class="border rounded-circle p-2 mx-auto mb-3" src="img/testimonial-4.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Client Name</h5>
-                    <p>Profession</p>
-                    <div class="testimonial-text bg-light text-center p-4">
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Testimonial End -->
+ 
         
 
     <!-- Footer Start -->
@@ -385,5 +260,65 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Panggil API backend Node.js
+        fetch('http://localhost:3000/api/berita')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('berita-container');
+                container.innerHTML = ''; // Kosongkan wadah
+                
+                data.forEach(berita => {
+                    const gambarUrl = berita.gambar ? `http://localhost:3000/uploads/${berita.gambar}` : 'img/default.jpg';
+                    const tanggal = new Date(berita.created_at).toLocaleDateString('id-ID');
+                    
+                    // PERBAIKAN: Buat link dinamis yang mengarah ke file detail-berita.html
+                    const linkDetail = `detail-berita.html?id=${berita.id}`;
 
+                    const html = `
+                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="course-item bg-light h-100 d-flex flex-column">
+                                <div class="position-relative overflow-hidden">
+                                    <!-- Menambahkan link pada gambar -->
+                                    <a href="${linkDetail}">
+                                        <img class="img-fluid" src="${gambarUrl}" alt="${berita.judul}" style="height: 250px; width: 100%; object-fit: cover;">
+                                    </a>
+                                    <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
+                                        <!-- Menambahkan link pada tombol Baca Selengkapnya -->
+                                        <a href="${linkDetail}" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 30px;">Baca Selengkapnya</a>
+                                    </div>
+                                </div>
+                                <div class="text-center p-4 pb-0 flex-grow-1">
+                                    <div class="mb-3">
+                                        <span class="badge bg-primary">${berita.nama_kategori || 'Berita'}</span>
+                                    </div>
+                                    <!-- Menambahkan link pada Judul -->
+                                    <a href="${linkDetail}" class="text-dark">
+                                        <h5 class="mb-4 text-hover-primary">${berita.judul}</h5>
+                                    </a>
+                                    <p class="text-muted" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                        ${berita.konten}
+                                    </p>
+                                </div>
+                                <div class="d-flex border-top mt-auto">
+                                    <small class="flex-fill text-center border-end py-2">
+                                        <i class="fa fa-user-tie text-primary me-2"></i>${berita.nama_penulis || 'Admin'}
+                                    </small>
+                                    <small class="flex-fill text-center py-2">
+                                        <i class="fa fa-calendar text-primary me-2"></i>${tanggal}
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', html);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching berita:', error);
+                document.getElementById('berita-container').innerHTML = '<div class="text-danger text-center py-4 w-100">Gagal memuat berita dari server.</div>';
+            });
+    });
+</script>
 </html>

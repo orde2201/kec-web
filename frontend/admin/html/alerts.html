@@ -144,29 +144,169 @@
         </div>
       </nav>
 
-      <main class="dashboard-content">
-        <div class="container-fluid px-3 px-lg-4 py-4">
-          <div class="page-heading">
-            <div class="page-heading-copy">
-              <span class="page-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
-              <div>
-                <p class="eyebrow mb-1">Feedback</p>
-                <h1 class="h3 mb-1">Alerts</h1>
-                <p class="text-muted mb-0">System feedback states for success, warning, info, and error messages.</p>
-              </div>
-            </div>
-            
-          </div>
+      
+     <!-- Struktur Admin HTML mirip seperti sebelumnya, tapi kita tambah ID untuk JS -->
 
-          <section class="panel">
-            <div class="panel-header"><div><h2 class="h5 mb-1 section-title"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i><span>Alert Styles</span></h2><p class="text-muted mb-0">Common notification patterns for admin workflows.</p></div></div>
-            <div class="alert alert-primary" role="alert"><strong>Info:</strong> New dashboard reports are ready to review.</div>
-            <div class="alert alert-success" role="alert"><strong>Success:</strong> User permissions were updated successfully.</div>
-            <div class="alert alert-warning" role="alert"><strong>Warning:</strong> Billing information needs attention.</div>
-            <div class="alert alert-danger mb-0" role="alert"><strong>Error:</strong> Some integrations could not sync.</div>
-          </section>
+<main class="container py-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="h3 mb-0">Manajemen Berita</h2>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalBerita">
+              <i class="bi bi-plus-lg"></i> Tambah Berita
+            </button>
+        </div>
+
+        <!-- Tabel untuk menampilkan data dari database -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>No</th>
+                                <th>Judul</th>
+                                <th>Kategori</th>
+                                <th>Penulis</th>
+                                <th>Tanggal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelBeritaBody">
+                            <!-- Data akan dimuat otomatis oleh JavaScript di bawah -->
+                            <tr>
+                                <td colspan="6" class="text-center py-4">Memuat data dari database...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
       </main>
+
+<!-- Modal Tambah Berita -->
+<div class="modal fade" id="modalBerita" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Pakai id="formBerita" -->
+            <form id="formBerita">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Berita Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label>Judul Berita</label>
+                        <input type="text" id="judul" name="judul" class="form-control" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Kategori</label>
+                            <select id="kategori_id" name="kategori_id" class="form-select" required>
+                                <option value="1">Pengumuman</option>
+                                <option value="2">Kegiatan</option>
+                                <option value="3">Edukasi</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>Gambar</label>
+                            <input type="file" id="gambar" name="gambar" class="form-control" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label>Konten</label>
+                        <textarea id="konten" name="konten" class="form-control" rows="5" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Berita</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/js/bootstrap.bundle.min.js"></script>
+<!-- Cukup panggil script bootstrap satu kali saja -->
+<script src="../assets/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const API_URL = 'http://localhost:3000/api/berita';
+
+    // 1. Fungsi Tampil Data
+    async function fetchBerita() {
+        try {
+            const response = await fetch(API_URL);
+            const data = await response.json();
+            
+            // PERBAIKAN 1: Sesuaikan ID menjadi 'tabelBeritaBody'
+            const tbody = document.getElementById('tabelBeritaBody');
+            tbody.innerHTML = '';
+            
+            data.forEach((item, index) => {
+                const gambar = item.gambar ? `<img src="http://localhost:3000/uploads/${item.gambar}" width="60" class="rounded">` : '-';
+                
+                // PERBAIKAN 2: Sesuaikan jumlah <td> dengan jumlah <th> di HTML (6 kolom)
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>
+                            <strong>${item.judul}</strong> <br>
+                            ${gambar}
+                        </td>
+                        <td><span class="badge bg-secondary">${item.nama_kategori}</span></td>
+                        <td>Penulis Default</td> <!-- Ganti dengan data item.penulis jika ada -->
+                        <td>-</td> <!-- Ganti dengan data item.tanggal jika ada -->
+                        <td>
+                            <button class="btn btn-sm btn-danger" onclick="hapusBerita(${item.id})">Hapus</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            document.getElementById('tabelBeritaBody').innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center text-danger py-4">Gagal memuat data dari server. Pastikan server berjalan.</td>
+                </tr>
+            `;
+        }
+    }
+
+    // 2. Fungsi Tambah Data
+    document.getElementById('formBerita').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        formData.append('penulis_id', 1);
+
+        try {
+            const res = await fetch(API_URL, {
+                method: 'POST',
+                body: formData
+            });
+            
+            const responseData = await res.json();
+
+            if(res.ok) {
+                alert('Berita berhasil disimpan!');
+                this.reset();
+                const modalElement = document.getElementById('modalBerita');
+                const modal = bootstrap.Modal.getInstance(modalElement);
+                modal.hide();
+                fetchBerita();
+            } else {
+                alert('Gagal: ' + responseData.error);
+                console.error('Detail Error:', responseData);
+            }
+        } catch (error) {
+            console.error('Network/Fetch Error:', error);
+            alert('Terjadi kesalahan jaringan atau server mati.');
+        }
+    });
+
+    // PERBAIKAN 3: Panggil fungsi ini agar data langsung dimuat saat halaman direfresh/dibuka
+    document.addEventListener("DOMContentLoaded", fetchBerita);
+</script>
 
       <footer class="admin-footer">
         <div class="container-fluid px-3 px-lg-4">
