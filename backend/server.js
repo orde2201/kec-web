@@ -120,6 +120,160 @@ app.get('/api/berita/:id', async (req, res) => {
   }
 });
 
+app.get('/api/users', async (req, res) => {
+  try {
+    const query = `
+      SELECT 
+        u.id, 
+        u."Nama", 
+        u.email, 
+        u.phone, 
+        u."hakAkses", 
+        u.notes, 
+        u.instansi_id, 
+        i.nama_instansi 
+      FROM users u 
+      LEFT JOIN instansi i ON u.instansi_id = i.id 
+      ORDER BY u.id ASC
+    `;
+    const { rows } = await pool.query(query);
+    res.json({ success: true, data: rows });
+  } catch (err) {
+    console.error('Error GET /api/users:', err);
+    res.status(500).json({ success: false, message: err.message, data: [] });
+  }
+});
+
+
+// ==========================================
+// ENDPOINT MASTER INSTANSI & ADD USER
+// ==========================================
+
+// 1. Ambil Semua Instansi (Digunakan oleh Dropdown di add-user.html)
+app.get('/api/instansi', async (req, res) => {
+  try {
+    const query = 'SELECT id, nama_instansi FROM instansi ORDER BY id ASC';
+    const { rows } = await pool.query(query);
+    
+    // Kirim response { success: true, data: [...] } sesuai kebutuhan add-user.html
+    res.json({ success: true, data: rows });
+  } catch (err) {
+    console.error('Error GET /api/instansi:', err);
+    res.status(500).json({ success: false, message: err.message, data: [] });
+  }
+});
+
+// 2. Tambah User Baru (Dikirim oleh Form Submit di add-user.html)
+app.post('/api/add-users', async (req, res) => {
+  const { Nama, email, phone, hakAkses, instansi_id, notes } = req.body;
+
+  try {
+    // Memakai kutip ganda "Nama" dan "hakAkses" menyesuaikan skema tabel Postgres Anda
+    const query = `
+      INSERT INTO users ("Nama", email, phone, "hakAkses", instansi_id, notes) 
+      VALUES ($1, $2, $3, $4, $5, $6) 
+      RETURNING *
+    `;
+    const values = [Nama, email, phone, hakAkses, instansi_id, notes || null];
+    const { rows } = await pool.query(query, values);
+
+    res.status(201).json({ 
+      success: true, 
+      message: 'User baru berhasil ditambahkan!', 
+      data: rows[0] 
+    });
+  } catch (err) {
+    console.error('Error POST /api/add-users:', err);
+    res.status(500).json({ 
+      success: false, 
+      message: err.message 
+    });
+  }
+});
+
+
+// ==========================================
+// 7. ENDPOINTS PENGATURAN BERANDA
+// ==========================================
+
+// A. Ambil Data Pengaturan Beranda (GET)
+app.get('/api/pengaturan', async (req, res) => {
+  try {
+    const query = 'SELECT * FROM pengaturan_halaman ORDER BY id ASC LIMIT 1';
+    const { rows } = await pool.query(query);
+    
+    if (rows.length > 0) {
+      res.json(rows[0]);
+    } else {
+      res.status(404).json({ error: 'Data pengaturan belum ada di database' });
+    }
+  } catch (err) {
+    console.error('Error GET /api/pengaturan:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// B. Handler Update Pengaturan Beranda
+const handlePengaturanUpdate = async (req, res) => {
+  try {
+    const { about_title, about_desc } = req.body;
+
+    // Ambil data lama agar file gambar tidak terhapus jika admin hanya ubah teks
+    const currentRes = await pool.query('SELECT * FROM pengaturan_halaman ORDER BY id ASC LIMIT 1');
+    const currentData = currentRes.rows[0];
+
+    let hero_image = currentData ? currentData.hero_image : null;
+    let about_image = currentData ? currentData.about_image : null;
+
+    if (req.files && req.files['hero_image']) {
+      hero_image = req.files['hero_image'][0].filename;
+    }
+    if (req.files && req.files['about_image']) {
+      about_image = req.files['about_image'][0].filename;
+    }
+
+    if (currentData) {
+      // UPDATE data yang ada
+      const updateQuery = `
+        UPDATE pengaturan_halaman 
+        SET hero_image = $1, 
+            about_image = $2, 
+            about_title = $3, 
+            about_desc = $4, 
+            updated_at = CURRENT_TIMESTAMP 
+        WHERE id = $5 
+        RETURNING *
+      `;
+      const values = [hero_image, about_image, about_title, about_desc, currentData.id];
+      const { rows } = await pool.query(updateQuery, values);
+
+      res.json({ success: true, message: 'Pengaturan beranda berhasil diupdate!', data: rows[0] });
+    } else {
+      // INSERT baru jika database masih kosong
+      const insertQuery = `
+        INSERT INTO pengaturan_halaman (hero_image, about_image, about_title, about_desc) 
+        VALUES ($1, $2, $3, $4) 
+        RETURNING *
+      `;
+      const values = [hero_image, about_image, about_title, about_desc];
+      const { rows } = await pool.query(insertQuery, values);
+
+      res.json({ success: true, message: 'Pengaturan beranda berhasil dibuat!', data: rows[0] });
+    }
+  } catch (err) {
+    console.error('Error Update Pengaturan:', err);
+    res.status(500).json({ success: false, message: 'Gagal update beranda: ' + err.message });
+  }
+};
+
+const pengaturanUpload = upload.fields([
+  { name: 'hero_image', maxCount: 1 },
+  { name: 'about_image', maxCount: 1 }
+]);
+
+// Menerima POST pada kedua jalur URL untuk fleksibilitas panggilan frontend
+app.post('/api/pengaturan', pengaturanUpload, handlePengaturanUpdate);
+app.post('/api/pengaturan/update', pengaturanUpload, handlePengaturanUpdate);
 // ==========================================
 // 5. REGISTRASI ROUTE LAINNYA
 // ==========================================

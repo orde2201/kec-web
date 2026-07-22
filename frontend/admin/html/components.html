@@ -145,26 +145,99 @@
       </nav>
 
       <main class="dashboard-content">
-        <div class="container-fluid px-3 px-lg-4 py-4">
-          <div class="page-heading">
-            <div class="page-heading-copy">
-              <span class="page-icon"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
-              <div>
-                <p class="eyebrow mb-1">UI Kit</p>
-                <h1 class="h3 mb-1">Components</h1>
-                <p class="text-muted mb-0">Buttons, badges, progress, accordions, and reusable interface blocks.</p>
-              </div>
-            </div>
-            
-          </div>
-
-          <section class="row g-3">
-            <div class="col-12 col-xl-6"><div class="panel h-100"><h2 class="h5 mb-3 section-title"><i class="bi bi-cursor" aria-hidden="true"></i><span>Buttons</span></h2><div class="d-flex flex-wrap gap-2"><button class="btn btn-primary" type="button">Primary</button><button class="btn btn-outline-secondary" type="button">Secondary</button><button class="btn btn-success" type="button">Success</button><button class="btn btn-danger" type="button">Danger</button><button class="btn btn-warning" type="button">Warning</button></div><h2 class="h5 mt-4 mb-3">Badges</h2><div class="d-flex flex-wrap gap-2"><span class="badge text-bg-primary">Primary</span><span class="badge text-bg-success">Success</span><span class="badge text-bg-warning">Warning</span><span class="badge text-bg-danger">Danger</span></div></div></div>
-            <div class="col-12 col-xl-6"><div class="panel h-100"><h2 class="h5 mb-3 section-title"><i class="bi bi-reception-4" aria-hidden="true"></i><span>Progress</span></h2><div class="progress mb-3"><div class="progress-bar progress-72" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100">72%</div></div><div class="progress mb-3"><div class="progress-bar bg-success progress-58" role="progressbar" aria-valuenow="58" aria-valuemin="0" aria-valuemax="100">58%</div></div><div class="progress"><div class="progress-bar bg-warning progress-42" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100">42%</div></div></div></div>
-            <div class="col-12"><div class="panel"><h2 class="h5 mb-3 section-title"><i class="bi bi-menu-button-wide" aria-hidden="true"></i><span>Accordion</span></h2><div class="accordion" id="componentAccordion"><div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Reusable layout</button></h3><div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#componentAccordion"><div class="accordion-body">Use the admin shell, panel, metric-card, and table styles for consistent pages.</div></div></div><div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Responsive behavior</button></h3><div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#componentAccordion"><div class="accordion-body">The sidebar becomes a mobile overlay and a compact mini sidebar on desktop.</div></div></div></div></div></div>
-          </section>
+  <div class="container-fluid px-3 px-lg-4 py-4">
+    <div class="page-heading">
+      <div class="page-heading-copy">
+        <span class="page-icon"><i class="bi bi-gear" aria-hidden="true"></i></span>
+        <div>
+          <h1 class="h3 mb-1">Pengaturan Beranda</h1>
+          <p class="text-muted mb-0">Ubah foto banner dan teks tentang kecamatan rumbia di sini.</p>
         </div>
-      </main>
+      </div>
+    </div>
+
+    <section class="row g-3">
+      <div class="col-12">
+        <div class="panel">
+          <!-- Form Edit Beranda -->
+          <form id="formPengaturan" enctype="multipart/form-data">
+            
+            <h2 class="h5 mb-3 section-title"><i class="bi bi-image" aria-hidden="true"></i><span>Foto Paling Atas (Hero Banner)</span></h2>
+            <div class="mb-4">
+              <label class="form-label">Upload Foto Banner Baru</label>
+              <input type="file" class="form-control" id="hero_image" name="hero_image" accept="image/*">
+              <small class="text-muted">Kosongkan jika tidak ingin mengubah foto saat ini.</small>
+            </div>
+
+            <hr class="my-4">
+
+            <h2 class="h5 mb-3 section-title"><i class="bi bi-info-square" aria-hidden="true"></i><span>Tentang Kecamatan Rumbia</span></h2>
+            <div class="mb-3">
+              <label class="form-label">Upload Foto Tentang</label>
+              <input type="file" class="form-control" id="about_image" name="about_image" accept="image/*">
+              <small class="text-muted">Kosongkan jika tidak ingin mengubah foto saat ini.</small>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Judul (Contoh: Selamat Datang di...)</label>
+              <input type="text" class="form-control" id="about_title" name="about_title" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Deskripsi Lengkap</label>
+              <textarea class="form-control" id="about_desc" name="about_desc" rows="5" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3"><i class="bi bi-save"></i> Simpan Perubahan</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- Tambahkan script ini sebelum </body> di halaman Admin -->
+<script>
+  // Fungsi untuk mengambil data saat ini dan mengisinya ke dalam form input
+  document.addEventListener("DOMContentLoaded", function() {
+      fetch('http://localhost:3000/api/pengaturan')
+          .then(res => res.json())
+          .then(data => {
+              if(data) {
+                  document.getElementById('about_title').value = data.about_title || '';
+                  document.getElementById('about_desc').value = data.about_desc || '';
+              }
+          });
+  });
+
+  // Fungsi untuk mensubmit form ke backend
+  document.getElementById('formPengaturan').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      let formData = new FormData();
+      formData.append('about_title', document.getElementById('about_title').value);
+      formData.append('about_desc', document.getElementById('about_desc').value);
+      
+      const heroImage = document.getElementById('hero_image').files[0];
+      const aboutImage = document.getElementById('about_image').files[0];
+      
+      if(heroImage) formData.append('hero_image', heroImage);
+      if(aboutImage) formData.append('about_image', aboutImage);
+
+      // Pastikan API endpoint PUT / POST ini tersedia di Node.js Anda
+      fetch('http://localhost:3000/api/pengaturan/update', {
+          method: 'POST', // atau PUT tergantung backend Anda
+          body: formData
+      })
+      .then(response => response.json())
+      .then(result => {
+          alert('Berhasil mengupdate halaman beranda!');
+          window.location.reload();
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert('Gagal mengupdate.');
+      });
+  });
+</script>
 
       <footer class="admin-footer">
         <div class="container-fluid px-3 px-lg-4">

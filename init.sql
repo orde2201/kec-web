@@ -37,6 +37,20 @@ CREATE TABLE berita (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Membuat Tabel Pengaturan Halaman
+CREATE TABLE pengaturan_halaman (
+    id SERIAL PRIMARY KEY,
+    hero_image VARCHAR(255),
+    about_image VARCHAR(255),
+    about_title VARCHAR(255),
+    about_desc TEXT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insert Data Awal (Default)
+INSERT INTO pengaturan_halaman (hero_image, about_image, about_title, about_desc) 
+VALUES ('image.png', 'about.jpg', 'Selamat Datang di Website Kecamatan Rumbia', 'Kecamatan Rumbia merupakan...');
+
 -- 5. Data Awal (Opsional - Sebagai Contoh Pertama)
 -- Pastikan instansi_id = 1 sudah ada (Operations)
 -- 1. Insert Instansi (Master) DULU

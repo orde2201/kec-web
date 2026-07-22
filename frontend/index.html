@@ -71,7 +71,7 @@
     <div class="container-fluid p-0 mb-5">
         <div class="owl-carousel header-carousel position-relative">
             <div class="owl-carousel-item position-relative" style="width: 100%; height: 50vw;">
-                <img class="img-fluid" src="img/image.png" style="width: 100%; height: auto;">
+                <img id="hero-img" class="img-fluid" src="img/image.png" style="width: 100%; height: auto;">
                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
                     <div class="container">
                         <div class="row justify-content-start">
@@ -79,8 +79,8 @@
                                 <h5 class="text-white text-uppercase mb-3 animated slideInDown">Website Kecamatan Rumbia</h5>
                                 <h1 class="display-5 text-white animated slideInDown">Memberikan Pelayanan terbaik untuk masyarakat rumbia</h1>
                                 <p class="fs-5 text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea sanctus eirmod elitr.</p>
-                                <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                                <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
+                                <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Tentang</a>
+                                <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Berita Acara</a>
                             </div>
                         </div>
                     </div>
@@ -137,22 +137,21 @@
     <!-- Service End -->
 
 
-    <!-- About Start -->
+   <!-- About Start -->
     <div class="container-xxl py-5">
         <div class="container">
             <div class="row g-5">
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 400px;">
                     <div class="position-relative h-100">
-                        <img class="img-fluid position-absolute w-100 h-100" src="img/about.jpg" alt="" style="object-fit: cover;">
+                        <img id="about-img" class="img-fluid position-absolute w-100 h-100" src="img/about.jpg" alt="" style="object-fit: cover;">
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
                     <h6 class="section-title bg-white text-start text-primary pe-3">Tentang Kecamatan Rumbia</h6>
-                    <h1 class="mb-4">Selamat Datang di Website Kecamatan Rumbia</h1>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
-                    </div>
-                    
+                    <h1 id="about-title" class="mb-4">Selamat Datang di Website Kecamatan Rumbia</h1>
+                    <div id="about-desc-container" class="text-break" style="word-break: break-word; overflow-wrap: break-word;">
+    <p class="mb-4">Memuat deskripsi...</p>
+</div>
                 </div>
             </div>
         </div>
@@ -202,37 +201,8 @@
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">Gallery</h4>
-                    <div class="row g-2 pt-2">
-                        <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="img/course-1.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="img/course-2.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="img/course-3.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="img/course-2.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="img/course-3.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="img/course-1.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">Newsletter</h4>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
-                </div>
+                
+                
             </div>
         </div>
         <div class="container">
@@ -333,6 +303,39 @@
                 console.error('Error fetching berita:', error);
                 document.getElementById('berita-container').innerHTML = '<div class="text-danger text-center w-100 py-4">Gagal memuat berita dari server.</div>';
             });
+    });
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Fetch data pengaturan beranda
+        fetch('http://localhost:3000/api/pengaturan')
+            .then(response => response.json())
+            .then(data => {
+                if(data && !data.error) {
+                    
+                    // 1. UPDATE FOTO HERO (SOLUSI OWL CAROUSEL)
+                    if(data.hero_image) {
+                        // Ambil SEMUA elemen yang memiliki id="hero-img" (termasuk hasil kloningan carousel)
+                        const heroImages = document.querySelectorAll('[id="hero-img"]');
+                        heroImages.forEach(img => {
+                            img.src = `http://localhost:3000/uploads/${data.hero_image}`;
+                        });
+                    }
+                    
+                    // 2. UPDATE TENTANG RUMBIA
+                    if(data.about_image) {
+                        document.getElementById('about-img').src = `http://localhost:3000/uploads/${data.about_image}`;
+                    }
+                    if(data.about_title) {
+                        document.getElementById('about-title').innerText = data.about_title;
+                    }
+                    if(data.about_desc) {
+                        document.getElementById('about-desc-container').innerHTML = `<p class="mb-4">${data.about_desc.replace(/\n/g, '<br>')}</p>`;
+                    }
+                }
+            })
+            .catch(error => console.error('Error fetching pengaturan:', error));
     });
 </script>
 </html>
