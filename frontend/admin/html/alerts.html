@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="adminHMD professional admin dashboard template">
-  <title>Alerts | adminHMD</title>
+  <title>Manajemen Berita & Pengumuman | adminHMD</title>
 
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
@@ -17,8 +16,8 @@
 
     <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
       <div class="sidebar-header">
-        <a class="brand-mark" href="index.html" aria-label="adminHMD dashboard">
-          <span class="brand-icon"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i></span>
+        <a class="brand-mark" href="index.html">
+          <span class="brand-icon"><i class="bi bi-grid-1x2-fill"></i></span>
           <span class="brand-copy">
             <span class="brand-title">adminHMD</span>
             <span class="brand-subtitle">Admin Template</span>
@@ -27,298 +26,494 @@
       </div>
 
       <nav class="sidebar-nav">
-        <a class="nav-link" href="index.html">
-          <span class="nav-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
-          <span class="nav-text">Dashboard</span>
-        </a>
-        <a class="nav-link" href="users.html">
-          <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
-          <span class="nav-text">Users</span>
-        </a>
-        <a class="nav-link" href="add-user.html">
-          <span class="nav-icon"><i class="bi bi-person-plus" aria-hidden="true"></i></span>
-          <span class="nav-text">Add User</span>
-        </a>
-        <a class="nav-link" href="profile.html">
-          <span class="nav-icon"><i class="bi bi-person-badge" aria-hidden="true"></i></span>
-          <span class="nav-text">Profile</span>
-        </a>
-        <a class="nav-link" href="charts.html">
-          <span class="nav-icon"><i class="bi bi-bar-chart-line" aria-hidden="true"></i></span>
-          <span class="nav-text">Charts</span>
-        </a>
-        <a class="nav-link" href="tables.html">
-          <span class="nav-icon"><i class="bi bi-table" aria-hidden="true"></i></span>
-          <span class="nav-text">Tables</span>
-        </a>
-        <a class="nav-link" href="forms.html">
-          <span class="nav-icon"><i class="bi bi-ui-checks-grid" aria-hidden="true"></i></span>
-          <span class="nav-text">Forms</span>
-        </a>
-        <a class="nav-link" href="components.html">
-          <span class="nav-icon"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
-          <span class="nav-text">Components</span>
-        </a>
-        <a class="nav-link active" href="alerts.html" aria-current="page">
-          <span class="nav-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
-          <span class="nav-text">Alerts</span>
-        </a>
-        <a class="nav-link" href="modals.html">
-          <span class="nav-icon"><i class="bi bi-window-stack" aria-hidden="true"></i></span>
-          <span class="nav-text">Modals</span>
-        </a>
-        <a class="nav-link" href="settings.html">
-          <span class="nav-icon"><i class="bi bi-gear" aria-hidden="true"></i></span>
-          <span class="nav-text">Settings</span>
-        </a>
-        <a class="nav-link" href="blank.html">
-          <span class="nav-icon"><i class="bi bi-file-earmark" aria-hidden="true"></i></span>
-          <span class="nav-text">Blank Page</span>
-        </a>
+        <a class="nav-link" href="index.html"><span class="nav-icon"><i class="bi bi-speedometer2"></i></span><span class="nav-text">Dashboard</span></a>
+        <a class="nav-link" href="users.html"><span class="nav-icon"><i class="bi bi-people"></i></span><span class="nav-text">Users</span></a>
+        <a class="nav-link" href="add-user.html"><span class="nav-icon"><i class="bi bi-person-plus"></i></span><span class="nav-text">Add User</span></a>
+        <a class="nav-link active" href="alerts.html"><span class="nav-icon"><i class="bi bi-newspaper"></i></span><span class="nav-text">Berita & Pengumuman</span></a>
+        <a class="nav-link" href="settings.html"><span class="nav-icon"><i class="bi bi-gear"></i></span><span class="nav-text">Settings</span></a>
       </nav>
-
-      <div class="sidebar-user">
-        <img class="avatar-img avatar-md sidebar-user-avatar" src="../assets/images/avatar/avatar.jpg" alt="Admin Hasan">
-        <strong>Admin Hasan</strong>
-        <small>Active Workspace</small>
-      </div>
-
-      <div class="sidebar-footer">
-        <span class="status-dot"></span>
-        <span class="sidebar-footer-text">System running smoothly</span>
-      </div>
     </aside>
 
     <div class="admin-main">
       <nav class="navbar admin-navbar navbar-expand bg-white">
         <div class="container-fluid px-3 px-lg-4">
-          <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar" aria-expanded="true" aria-label="Toggle sidebar">
-            <span></span>
-            <span></span>
-            <span></span>
+          <button class="sidebar-toggle" type="button" data-sidebar-toggle>
+            <span></span><span></span><span></span>
           </button>
-
-          <form class="d-none d-md-flex ms-3 flex-grow-1" role="search">
-            <input class="form-control search-input" type="search" placeholder="Search users, orders, reports" aria-label="Search">
-          </form>
-
-          <div class="navbar-actions ms-auto">
-            <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" title="Switch color theme">
-              <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
-            </button>
-            <div class="dropdown">
-              <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifications">
-                <span class="notification-dot"></span>
-                <i class="bi bi-bell" aria-hidden="true"></i>
-              </button>
-              <div class="dropdown-menu dropdown-menu-end notification-menu">
-                <div class="dropdown-header fw-bold text-body">Notifications</div>
-                <a class="dropdown-item" href="users.html">
-                  <span class="notification-title">New user registered</span>
-                  <span class="notification-time">4 minutes ago</span>
-                </a>
-                <a class="dropdown-item" href="charts.html">
-                  <span class="notification-title">Revenue target reached</span>
-                  <span class="notification-time">32 minutes ago</span>
-                </a>
-                <a class="dropdown-item" href="settings.html">
-                  <span class="notification-title">Security review completed</span>
-                  <span class="notification-time">1 hour ago</span>
-                </a>
-              </div>
-            </div>
-
-            <div class="dropdown">
-              <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img class="avatar-img avatar-sm" src="../assets/images/avatar/avatar.jpg" alt="Admin Hasan">
-                <span class="profile-name d-none d-sm-inline">Admin Hasan</span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-                <li><a class="dropdown-item" href="settings.html">Account settings</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="login.html">Sign out</a></li>
-              </ul>
-            </div>
+          <div class="ms-auto">
+            <a href="login.html" class="btn btn-outline-danger btn-sm"><i class="bi bi-box-arrow-right"></i> Sign Out</a>
           </div>
         </div>
       </nav>
 
-      
-     <!-- Struktur Admin HTML mirip seperti sebelumnya, tapi kita tambah ID untuk JS -->
-
-<main class="container py-5">
+      <main class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="h3 mb-0">Manajemen Berita</h2>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalBerita">
-              <i class="bi bi-plus-lg"></i> Tambah Berita
-            </button>
+          <h2 class="h3 mb-0">Manajemen Berita & Pengumuman</h2>
         </div>
 
-        <!-- Tabel untuk menampilkan data dari database -->
-        <div class="card border-0 shadow-sm">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th>No</th>
-                                <th>Judul</th>
-                                <th>Kategori</th>
-                                <th>Penulis</th>
-                                <th>Tanggal</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabelBeritaBody">
-                            <!-- Data akan dimuat otomatis oleh JavaScript di bawah -->
-                            <tr>
-                                <td colspan="6" class="text-center py-4">Memuat data dari database...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Navigasi Tab -->
+        <ul class="nav nav-tabs mb-4" id="contentTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active fw-bold" id="pengumuman-tab" data-bs-toggle="tab" data-bs-target="#pengumuman-pane" type="button" role="tab">
+              <i class="bi bi-megaphone me-2"></i>Daftar Pengumuman Instansi
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link fw-bold" id="berita-tab" data-bs-toggle="tab" data-bs-target="#berita-pane" type="button" role="tab">
+              <i class="bi bi-newspaper me-2"></i>Daftar Berita
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="contentTabContent">
+          
+          <!-- TAB 1: PENGUMUMAN INSTANSI -->
+          <div class="tab-pane fade show active" id="pengumuman-pane" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold mb-0 text-primary">Data Pengumuman Active</h5>
+              <button class="btn btn-primary btn-sm" onclick="bukaModalPengumuman()">
+                <i class="bi bi-plus-lg me-1"></i> Tambah Pengumuman Instansi
+              </button>
             </div>
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th>No</th>
+                        <th>Judul Pengumuman</th>
+                        <th>Target Instansi</th>
+                        <th>Isi Ringkas</th>
+                        <th>Tanggal</th>
+                        <th class="text-center">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tabelPengumumanBody">
+                      <tr><td colspan="6" class="text-center py-4">Memuat data pengumuman...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: BERITA -->
+          <div class="tab-pane fade" id="berita-pane" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold mb-0 text-primary">Data Berita Active</h5>
+              <button class="btn btn-success btn-sm" onclick="bukaModalBerita()">
+                <i class="bi bi-plus-lg me-1"></i> Tambah Berita
+              </button>
+            </div>
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th>No</th>
+                        <th>Judul & Gambar</th>
+                        <th>Kategori</th>
+                        <th>Penulis</th>
+                        <th>Tanggal</th>
+                        <th class="text-center">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tabelBeritaBody">
+                      <tr><td colspan="6" class="text-center py-4">Memuat data berita...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </main>
 
-<!-- Modal Tambah Berita -->
-<div class="modal fade" id="modalBerita" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <!-- Pakai id="formBerita" -->
-            <form id="formBerita">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Berita Baru</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label>Judul Berita</label>
-                        <input type="text" id="judul" name="judul" class="form-control" required>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label>Kategori</label>
-                            <select id="kategori_id" name="kategori_id" class="form-select" required>
-                                <option value="1">Pengumuman</option>
-                                <option value="2">Kegiatan</option>
-                                <option value="3">Edukasi</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label>Gambar</label>
-                            <input type="file" id="gambar" name="gambar" class="form-control" accept="image/*">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label>Konten</label>
-                        <textarea id="konten" name="konten" class="form-control" rows="5" required></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan Berita</button>
-                </div>
-            </form>
+      <!-- MODAL 1: FORM TAMBAH PENGUMUMAN INSTANSI -->
+      <!-- MODAL: FORM TAMBAH PENGUMUMAN INSTANSI -->
+<div class="modal fade" id="modalPengumuman" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form id="formPengumuman" enctype="multipart/form-data">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title"><i class="bi bi-megaphone me-2"></i>Tambah Pengumuman Instansi</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Judul Pengumuman</label>
+            <input type="text" name="judul" id="pengumuman_judul" class="form-control" placeholder="Contoh: Pengisian Formulir Pendataan Pegawai" required>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-semibold">Target Instansi</label>
+              <select name="instansi_id" id="pengumuman_instansi_id" class="form-select" required>
+                <option value="">-- Pilih Target Instansi --</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-semibold">Gambar Surat / Lampiran (Opsional)</label>
+              <input type="file" name="gambar" id="pengumuman_gambar" class="form-control" accept="image/*">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Link Google Form / Tautan Luar (Opsional)</label>
+            <input type="url" name="link_gform" id="pengumuman_gform" class="form-control" placeholder="https://forms.gle/xyz... atau link Google Sheets Hasil">
+            <small class="text-muted">* Tautan ini bisa di-klik langsung dari daftar arsip admin untuk melihat hasil respon.</small>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Isi Pengumuman / Catatan</label>
+            <textarea name="isi" id="pengumuman_isi" class="form-control" rows="4" placeholder="Tulis rincian pengumuman..." required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Simpan Pengumuman</button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 
-<script src="../assets/js/bootstrap.bundle.min.js"></script>
-<!-- Cukup panggil script bootstrap satu kali saja -->
-<script src="../assets/js/bootstrap.bundle.min.js"></script>
-
-<script>
-    const API_URL = 'http://localhost:3000/api/berita';
-
-    // 1. Fungsi Tampil Data
-    async function fetchBerita() {
-        try {
-            const response = await fetch(API_URL);
-            const data = await response.json();
-            
-            // PERBAIKAN 1: Sesuaikan ID menjadi 'tabelBeritaBody'
-            const tbody = document.getElementById('tabelBeritaBody');
-            tbody.innerHTML = '';
-            
-            data.forEach((item, index) => {
-                const gambar = item.gambar ? `<img src="http://localhost:3000/uploads/${item.gambar}" width="60" class="rounded">` : '-';
-                
-                // PERBAIKAN 2: Sesuaikan jumlah <td> dengan jumlah <th> di HTML (6 kolom)
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>
-                            <strong>${item.judul}</strong> <br>
-                            ${gambar}
-                        </td>
-                        <td><span class="badge bg-secondary">${item.nama_kategori}</span></td>
-                        <td>Penulis Default</td> <!-- Ganti dengan data item.penulis jika ada -->
-                        <td>-</td> <!-- Ganti dengan data item.tanggal jika ada -->
-                        <td>
-                            <button class="btn btn-sm btn-danger" onclick="hapusBerita(${item.id})">Hapus</button>
-                        </td>
-                    </tr>
-                `;
-            });
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            document.getElementById('tabelBeritaBody').innerHTML = `
-                <tr>
-                    <td colspan="6" class="text-center text-danger py-4">Gagal memuat data dari server. Pastikan server berjalan.</td>
-                </tr>
-            `;
-        }
-    }
-
-    // 2. Fungsi Tambah Data
-    document.getElementById('formBerita').addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(this);
-        formData.append('penulis_id', 1);
-
-        try {
-            const res = await fetch(API_URL, {
-                method: 'POST',
-                body: formData
-            });
-            
-            const responseData = await res.json();
-
-            if(res.ok) {
-                alert('Berita berhasil disimpan!');
-                this.reset();
-                const modalElement = document.getElementById('modalBerita');
-                const modal = bootstrap.Modal.getInstance(modalElement);
-                modal.hide();
-                fetchBerita();
-            } else {
-                alert('Gagal: ' + responseData.error);
-                console.error('Detail Error:', responseData);
-            }
-        } catch (error) {
-            console.error('Network/Fetch Error:', error);
-            alert('Terjadi kesalahan jaringan atau server mati.');
-        }
-    });
-
-    // PERBAIKAN 3: Panggil fungsi ini agar data langsung dimuat saat halaman direfresh/dibuka
-    document.addEventListener("DOMContentLoaded", fetchBerita);
-</script>
-
-      <footer class="admin-footer">
-        <div class="container-fluid px-3 px-lg-4">
-          <span>Copyright 2026 adminHMD. <br> Developed by <a target="_blank" class="fw-bold text-success" href="https://github.com/HasanMahmudDev">Md. Hasan Mahmud</a> • Distributed by <a target="_blank" class="fw-bold text-success" href="https://themewagon.com">ThemeWagon</a> </span>
-          <span>Professional dashboard template.</span>
-          <span>Alert component examples.</span>
+      <!-- MODAL 2: FORM TAMBAH BERITA -->
+      <div class="modal fade" id="modalBerita" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <form id="formBerita">
+              <input type="hidden" id="edit_id" name="edit_id">
+              <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="modalTitle"><i class="bi bi-journal-plus me-2"></i>Tambah Berita Baru</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" onclick="resetModalForm()"></button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Judul Berita</label>
+                  <input type="text" id="judul" name="judul" class="form-control" placeholder="Masukkan judul..." required>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">Kategori Berita</label>
+                    <select id="kategori_id" name="kategori_id" class="form-select" required>
+                      <option value="">-- Pilih Kategori --</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">Gambar Utama</label>
+                    <input type="file" id="gambar" name="gambar" class="form-control" accept="image/*">
+                    <small class="text-muted" id="infoGambar"></small>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Konten Berita</label>
+                  <textarea id="konten" name="konten" class="form-control" rows="5" placeholder="Tulis isi berita..." required></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetModalForm()">Batal</button>
+                <button type="submit" id="btnSimpan" class="btn btn-success">Simpan Berita</button>
+              </div>
+            </form>
+          </div>
         </div>
-      </footer>
+      </div>
+
     </div>
   </div>
 
   <script src="../assets/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/main.js"></script>
+
+  <script>
+    const API_BERITA = 'http://localhost:3000/api/berita';
+    const API_PENGUMUMAN = 'http://localhost:3000/api/pengumuman';
+    const API_INSTANSI = 'http://localhost:3000/api/instansi';
+
+    let listBerita = [];
+
+    // 1. Load Dropdown Instansi & Kategori
+    async function loadOptions() {
+      try {
+        const res = await fetch(API_INSTANSI);
+        const result = await res.json();
+        const list = result.data || [];
+
+        const selectPengumuman = document.getElementById('pengumuman_instansi_id');
+        const selectKategori = document.getElementById('kategori_id');
+
+        selectPengumuman.innerHTML = '<option value="">-- Pilih Target Instansi --</option>';
+        selectKategori.innerHTML = '<option value="">-- Pilih Kategori Berita --</option>';
+
+        list.forEach(item => {
+          selectPengumuman.innerHTML += `<option value="${item.id}">${item.nama_instansi}</option>`;
+          selectKategori.innerHTML += `<option value="${item.id}">${item.nama_instansi}</option>`;
+        });
+      } catch (err) {
+        console.error('Error load options:', err);
+      }
+    }
+
+    // 2. Load Data Pengumuman
+    // 1. Fetch Pengumuman & Tampilkan Gambar + Link Google Form di Arsip Admin
+async function fetchPengumuman() {
+  const tbody = document.getElementById('tabelPengumumanBody');
+  try {
+    const res = await fetch(`${API_PENGUMUMAN}?instansi_id=all`);
+    const result = await res.json();
+    const data = result.data || [];
+
+    if (data.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Belum ada pengumuman tersimpan.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = '';
+    data.forEach((item, index) => {
+      const isEveryone = item.instansi_id == null || item.instansi_id == 1;
+      const badgeClass = isEveryone ? 'bg-success' : 'bg-primary';
+      const targetText = isEveryone ? 'Everyone (Publik)' : (item.nama_instansi || 'Internal');
+      const tgl = item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID') : '-';
+
+      // Elemen Gambar Surat (Jika Ada)
+      const imgPreview = item.gambar 
+        ? `<a href="http://localhost:3000/uploads/${item.gambar}" target="_blank" class="me-2">
+            <img src="http://localhost:3000/uploads/${item.gambar}" width="40" height="40" class="rounded border object-fit-cover" title="Klik untuk lihat gambar surat">
+           </a>`
+        : '';
+
+      // Elemen Link Google Form (Jika Ada)
+      const gformBtn = item.link_gform 
+        ? `<a href="${item.link_gform}" target="_blank" class="btn btn-xs btn-outline-success me-1" title="Buka Google Form / Responses">
+            <i class="bi bi-file-earmark-spreadsheet-fill"></i> Buka Form
+           </a>`
+        : '<span class="text-muted small">-</span>';
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>
+            <div class="d-flex align-items-center">
+              ${imgPreview}
+              <div>
+                <strong>${item.judul}</strong>
+              </div>
+            </div>
+          </td>
+          <td><span class="badge ${badgeClass}">${targetText}</span></td>
+          <td>${gformBtn}</td>
+          <td><small class="text-muted">${tgl}</small></td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-danger" onclick="hapusPengumuman(${item.id})">
+              <i class="bi bi-trash"></i> Hapus
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+  } catch (err) {
+    console.error('Error fetch pengumuman:', err);
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Gagal memuat data pengumuman.</td></tr>`;
+  }
+}
+
+// 2. Submit Form Pengumuman dengan FormData (Support File Upload)
+document.getElementById('formPengumuman').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  // Menggunakan FormData karena mengirimkan File Gambar
+  const formData = new FormData(this);
+
+  try {
+    const res = await fetch(API_PENGUMUMAN, {
+      method: 'POST',
+      body: formData // Kirim multipart/form-data
+    });
+
+    const result = await res.json();
+    if (res.ok && result.success) {
+      alert('Pengumuman & Surat berhasil diterbitkan!');
+      bootstrap.Modal.getInstance(document.getElementById('modalPengumuman')).hide();
+      this.reset();
+      fetchPengumuman();
+    } else {
+      alert('Gagal: ' + result.message);
+    }
+  } catch (err) {
+    console.error('Error submit pengumuman:', err);
+    alert('Terjadi kesalahan jaringan/server.');
+  }
+});
+
+    // 3. Load Data Berita
+    async function fetchBerita() {
+      const tbody = document.getElementById('tabelBeritaBody');
+      try {
+        const response = await fetch(API_BERITA);
+        listBerita = await response.json();
+
+        if (!Array.isArray(listBerita) || listBerita.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Belum ada berita tersimpan.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = '';
+        listBerita.forEach((item, index) => {
+          const gambar = item.gambar 
+            ? `<img src="http://localhost:3000/uploads/${item.gambar}" width="45" height="45" class="rounded object-fit-cover me-2">` 
+            : '';
+          const tgl = item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID') : '-';
+          const penulis = item.nama_penulis || 'Admin System';
+          const kategori = item.nama_kategori || 'Umum / Everyone';
+
+          tbody.innerHTML += `
+            <tr>
+              <td>${index + 1}</td>
+              <td><div class="d-flex align-items-center">${gambar}<strong>${item.judul}</strong></div></td>
+              <td><span class="badge bg-info text-dark">${kategori}</span></td>
+              <td><i class="bi bi-person me-1"></i>${penulis}</td>
+              <td><small class="text-muted">${tgl}</small></td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-outline-warning me-1" onclick="editBerita(${item.id})"><i class="bi bi-pencil"></i> Edit</button>
+                <button class="btn btn-sm btn-outline-danger" onclick="hapusBerita(${item.id})"><i class="bi bi-trash"></i> Hapus</button>
+              </td>
+            </tr>
+          `;
+        });
+      } catch (error) {
+        console.error('Error fetching berita:', error);
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Gagal memuat data berita.</td></tr>`;
+      }
+    }
+
+    // 4. Modal Triggers
+    function bukaModalPengumuman() {
+      document.getElementById('formPengumuman').reset();
+      const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPengumuman'));
+      modal.show();
+    }
+
+    function bukaModalBerita() {
+      resetModalForm();
+      const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalBerita'));
+      modal.show();
+    }
+
+    // 5. Submit Form Pengumuman
+    document.getElementById('formPengumuman').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const payload = {
+        judul: document.getElementById('pengumuman_judul').value,
+        instansi_id: document.getElementById('pengumuman_instansi_id').value,
+        isi: document.getElementById('pengumuman_isi').value
+      };
+
+      try {
+        const res = await fetch(API_PENGUMUMAN, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+        if (res.ok && result.success) {
+          alert('Pengumuman berhasil diterbitkan!');
+          bootstrap.Modal.getInstance(document.getElementById('modalPengumuman')).hide();
+          fetchPengumuman();
+        } else {
+          alert('Gagal: ' + result.message);
+        }
+      } catch (err) {
+        console.error('Error submit pengumuman:', err);
+        alert('Terjadi kesalahan koneksi.');
+      }
+    });
+
+    // 6. Submit Form Berita
+    document.getElementById('formBerita').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const editId = document.getElementById('edit_id').value;
+      const currentUser = JSON.parse(localStorage.getItem('user')) || {};
+      const formData = new FormData(this);
+      
+      if (!editId) {
+        formData.append('penulis_id', currentUser.id || 1);
+      }
+
+      const url = editId ? `${API_BERITA}/${editId}` : API_BERITA;
+      const method = editId ? 'PUT' : 'POST';
+
+      try {
+        const res = await fetch(url, { method: method, body: formData });
+        if (res.ok) {
+          alert(editId ? 'Berita berhasil diubah!' : 'Berita berhasil disimpan!');
+          resetModalForm();
+          bootstrap.Modal.getInstance(document.getElementById('modalBerita')).hide();
+          fetchBerita();
+        } else {
+          const err = await res.json();
+          alert('Gagal: ' + (err.error || err.message));
+        }
+      } catch (error) {
+        console.error('Error submit berita:', error);
+      }
+    });
+
+    // 7. Actions Delete
+    async function hapusPengumuman(id) {
+      if (!confirm('Apakah Anda yakin ingin menghapus pengumuman ini?')) return;
+      try {
+        const res = await fetch(`${API_PENGUMUMAN}/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          alert('Pengumuman dihapus.');
+          fetchPengumuman();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function hapusBerita(id) {
+      if (!confirm('Apakah Anda yakin ingin menghapus berita ini?')) return;
+      try {
+        const res = await fetch(`${API_BERITA}/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          alert('Berita dihapus.');
+          fetchBerita();
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function editBerita(id) {
+      const item = listBerita.find(b => b.id === id);
+      if (!item) return;
+
+      document.getElementById('edit_id').value = item.id;
+      document.getElementById('judul').value = item.judul || '';
+      document.getElementById('kategori_id').value = item.kategori_id || '';
+      document.getElementById('konten').value = item.konten || '';
+      document.getElementById('modalTitle').innerHTML = '<i class="bi bi-pencil-square me-2"></i>Edit Berita';
+      
+      const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalBerita'));
+      modal.show();
+    }
+
+    function resetModalForm() {
+      document.getElementById('formBerita').reset();
+      document.getElementById('edit_id').value = '';
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadOptions();
+      fetchPengumuman();
+      fetchBerita();
+    });
+  </script>
 </body>
 </html>

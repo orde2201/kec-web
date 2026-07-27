@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Pengumuman | adminHMD</title>
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="bg-light">
+
+  <!-- Header Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">
+        <i class="bi bi-megaphone me-2"></i>Portal Pengumuman
+      </a>
+      <div class="ms-auto d-flex align-items-center gap-3">
+        <div id="userStatus" class="text-white small"></div>
+        <div id="authButton"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content Section -->
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        
+        <!-- Banner Info Hak Akses User / Publik -->
+        <div id="instansiBanner" class="alert alert-info shadow-sm mb-4">
+          <h5 class="alert-heading mb-1" id="bannerTitle"><i class="bi bi-info-circle me-2"></i>Info Portal</h5>
+          <p class="mb-0 small" id="bannerDesc">Memuat informasi akses...</p>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="fw-bold mb-0 text-primary"><i class="bi bi-newspaper me-2"></i>Daftar Pengumuman</h3>
+          <button class="btn btn-outline-primary btn-sm" onclick="loadPengumuman()">
+            <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+          </button>
+        </div>
+
+        <!-- Container Card Pengumuman -->
+        <div id="pengumumanContainer" class="row g-4">
+          <div class="col-12 text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted">Memuat pengumuman...</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const PENGUMUMAN_API_URL = 'http://localhost:3000/api/pengumuman';
+
+    // Ambil data user dari localStorage
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    function renderAuthHeader() {
+      const statusDiv = document.getElementById('userStatus');
+      const authBtnDiv = document.getElementById('authButton');
+      const bannerTitle = document.getElementById('bannerTitle');
+      const bannerDesc = document.getElementById('bannerDesc');
+
+      if (user) {
+        // A. User Sudah Login
+        statusDiv.innerHTML = `Selamat datang, <strong>${user.Nama}</strong> (${user.hakAkses})`;
+        
+        if (String(user.hakAkses).toLowerCase() === 'admin') {
+          authBtnDiv.innerHTML = `
+            <a href="index.html" class="btn btn-warning btn-sm fw-bold me-2"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <button class="btn btn-light btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
+          `;
+        } else {
+          authBtnDiv.innerHTML = `<button class="btn btn-light btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>`;
+        }
+
+        const namaInstansi = user.nama_instansi || 'Internal';
+        bannerTitle.innerHTML = `<i class="bi bi-building me-2"></i>Pengumuman Khusus: ${namaInstansi}`;
+        bannerDesc.innerHTML = `Anda hanya melihat pengumuman ditujukan untuk <strong>${namaInstansi}</strong> dan pengumuman <strong>Publik (Everyone)</strong>.`;
+
+      } else {
+        // B. Publik (Tanpa Login)
+        statusDiv.innerHTML = `Status: <em>Pengunjung Publik</em>`;
+        authBtnDiv.innerHTML = `<a href="login.html" class="btn btn-light btn-sm"><i class="bi bi-box-arrow-in-right"></i> Login</a>`;
+
+        bannerTitle.innerHTML = `<i class="bi bi-globe me-2"></i>Pengumuman Publik (Everyone)`;
+        bannerDesc.innerHTML = `Anda hanya melihat pengumuman umum/publik. Silakan <a href="login.html" class="alert-link">Login</a> untuk melihat pengumuman internal instansi Anda.`;
+      }
+    }
+
+    async function loadPengumuman() {
+      const container = document.getElementById('pengumumanContainer');
+      
+      // Kirim instansi_id user jika login, jika tidak kirim string kosong
+      const instansiId = user && user.instansi_id ? user.instansi_id : '';
+
+      try {
+        const response = await fetch(`${PENGUMUMAN_API_URL}?instansi_id=${instansiId}`);
+        const result = await response.json();
+
+        if (response.ok && result.success && result.data.length > 0) {
+          container.innerHTML = '';
+          result.data.forEach(item => {
+            const isEveryone = item.instansi_id == null || item.instansi_id == 1;
+            const badgeClass = isEveryone ? 'bg-success' : 'bg-primary';
+            const badgeText = isEveryone 
+              ? '<i class="bi bi-globe me-1"></i> Everyone (Publik)' 
+              : `<i class="bi bi-building me-1"></i> ${item.nama_instansi || 'Internal'}`;
+
+            const tgl = item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID') : '-';
+
+            const card = `
+              <div class="col-md-12">
+                <div class="card shadow-sm border-0 h-100">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <span class="badge ${badgeClass} p-2">${badgeText}</span>
+                      <small class="text-muted"><i class="bi bi-clock me-1"></i>${tgl}</small>
+                    </div>
+                    <h4 class="card-title h5 text-primary fw-bold mt-2">${item.judul}</h4>
+                    <p class="card-text text-secondary mb-0">${item.isi}</p>
+                  </div>
+                </div>
+              </div>
+            `;
+            container.innerHTML += card;
+          });
+        } else {
+          container.innerHTML = `
+            <div class="col-12">
+              <div class="alert alert-warning text-center">Belum ada pengumuman yang ditujukan untuk Anda saat ini.</div>
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error('Error load pengumuman:', error);
+        container.innerHTML = `
+          <div class="col-12">
+            <div class="alert alert-danger text-center">Gagal memuat pengumuman dari server.</div>
+          </div>
+        `;
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('user');
+      window.location.href = 'login.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderAuthHeader();
+      loadPengumuman();
+    });
+  </script>
+</body>
+</html>

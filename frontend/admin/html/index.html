@@ -1,165 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="adminHMD professional admin dashboard template">
-  <title>Dashboard | adminHMD</title>
+  <title>Dashboard & Management Storage | adminHMD</title>
 
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/css/style.css">
+      
+  <script>
+    (function checkAuth() {
+      try {
+        const userRaw = localStorage.getItem('user');
+        const currentUser = userRaw ? JSON.parse(userRaw) : null;
+
+        if (!currentUser || typeof currentUser !== 'object') {
+          window.location.href = './login.html';
+          return;
+        }
+
+        if (currentUser.hakAkses !== 'Admin') {
+          alert('Akses ditolak! Halaman ini hanya untuk Admin.');
+          window.location.href = 'pengumuman.html';
+        }
+      } catch (error) {
+        console.error('Data session rusak:', error);
+        localStorage.removeItem('user');
+        window.location.href = 'login.html';
+      }
+    })();
+  </script>
 </head>
 
 <body>
   <div class="admin-shell">
     <div class="sidebar-backdrop" data-sidebar-close></div>
 
+    <!-- SIDEBAR -->
     <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
       <div class="sidebar-header">
-        <a class="brand-mark" href="index.html" aria-label="adminHMD dashboard">
-          <span class="brand-icon"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i></span>
+        <a class="brand-mark" href="index.html">
+          <span class="brand-icon"><i class="bi bi-grid-1x2-fill"></i></span>
           <span class="brand-copy">
             <span class="brand-title">adminHMD</span>
-            <span class="brand-subtitle">Admin Template</span>
+            <span class="brand-subtitle">Admin Portal</span>
           </span>
         </a>
       </div>
 
       <nav class="sidebar-nav">
-        <a class="nav-link active" href="index.html" aria-current="page">
-          <span class="nav-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
+        <a class="nav-link active" href="index.html">
+          <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
           <span class="nav-text">Dashboard</span>
         </a>
         <a class="nav-link" href="users.html">
-          <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+          <span class="nav-icon"><i class="bi bi-people"></i></span>
           <span class="nav-text">Users</span>
         </a>
         <a class="nav-link" href="add-user.html">
-          <span class="nav-icon"><i class="bi bi-person-plus" aria-hidden="true"></i></span>
+          <span class="nav-icon"><i class="bi bi-person-plus"></i></span>
           <span class="nav-text">Add User</span>
         </a>
-        <a class="nav-link" href="tambahTag.html">
-          <span class="nav-icon"><i class="bi bi-bar-chart-line" aria-hidden="true"></i></span>
-          <span class="nav-text">Tambah tag</span>
-        </a>
-        <a class="nav-link" href="tables.html">
-          <span class="nav-icon"><i class="bi bi-table" aria-hidden="true"></i></span>
-          <span class="nav-text">Tables</span>
-        </a>
-        <a class="nav-link" href="forms.html">
-          <span class="nav-icon"><i class="bi bi-ui-checks-grid" aria-hidden="true"></i></span>
-          <span class="nav-text">Forms</span>
-        </a>
-        <a class="nav-link" href="components.html">
-          <span class="nav-icon"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
-          <span class="nav-text">Components</span>
-        </a>
         <a class="nav-link" href="alerts.html">
-          <span class="nav-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
-          <span class="nav-text">Alerts</span>
-        </a>
-        <a class="nav-link" href="modals.html">
-          <span class="nav-icon"><i class="bi bi-window-stack" aria-hidden="true"></i></span>
-          <span class="nav-text">Modals</span>
+          <span class="nav-icon"><i class="bi bi-newspaper"></i></span>
+          <span class="nav-text">Berita & Pengumuman</span>
         </a>
         <a class="nav-link" href="settings.html">
-          <span class="nav-icon"><i class="bi bi-gear" aria-hidden="true"></i></span>
+          <span class="nav-icon"><i class="bi bi-gear"></i></span>
           <span class="nav-text">Settings</span>
-        </a>
-        <a class="nav-link" href="blank.html">
-          <span class="nav-icon"><i class="bi bi-file-earmark" aria-hidden="true"></i></span>
-          <span class="nav-text">Blank Page</span>
         </a>
       </nav>
 
       <div class="sidebar-user">
-        <img class="avatar-img avatar-md sidebar-user-avatar" src="../assets/images/avatar/avatar.jpg" alt="Admin Hasan">
-        <strong>Admin Hasan</strong>
-        <small>Active Workspace</small>
+        <img class="avatar-img avatar-md sidebar-user-avatar" src="../assets/images/avatar/avatar.jpg" alt="Admin">
+        <strong id="sidebarUserName">Admin System</strong>
+        <small id="sidebarUserRole">Administrator</small>
       </div>
 
       <div class="sidebar-footer">
         <span class="status-dot"></span>
-        <span class="sidebar-footer-text">System running smoothly</span>
+        <span class="sidebar-footer-text">Database connected</span>
       </div>
     </aside>
 
+    <!-- MAIN CONTENT -->
     <div class="admin-main">
       <nav class="navbar admin-navbar navbar-expand bg-white">
         <div class="container-fluid px-3 px-lg-4">
-          <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar" aria-expanded="true" aria-label="Toggle sidebar">
-            <span></span>
-            <span></span>
-            <span></span>
+          <button class="sidebar-toggle" type="button" data-sidebar-toggle>
+            <span></span><span></span><span></span>
           </button>
 
-          <form class="d-none d-md-flex ms-3 flex-grow-1" role="search">
-            <input class="form-control search-input" type="search" placeholder="Search users, orders, reports" aria-label="Search">
-          </form>
-
           <div class="navbar-actions ms-auto">
-            <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" title="Switch color theme">
-              <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
-            </button>
-            <div class="dropdown">
-              <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifications">
-                <span class="notification-dot"></span>
-                <i class="bi bi-bell" aria-hidden="true"></i>
-              </button>
-              <div class="dropdown-menu dropdown-menu-end notification-menu">
-                <div class="dropdown-header fw-bold text-body">Notifications</div>
-                <a class="dropdown-item" href="users.html">
-                  <span class="notification-title">New user registered</span>
-                  <span class="notification-time">4 minutes ago</span>
-                </a>
-                <a class="dropdown-item" href="charts.html">
-                  <span class="notification-title">Revenue target reached</span>
-                  <span class="notification-time">32 minutes ago</span>
-                </a>
-                <a class="dropdown-item" href="settings.html">
-                  <span class="notification-title">Security review completed</span>
-                  <span class="notification-time">1 hour ago</span>
-                </a>
-              </div>
-            </div>
-
-            <div class="dropdown">
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="settings.html">Account settings</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="login.html">Sign out</a></li>
-              </ul>
-            </div>
+            <a href="login.html" class="btn btn-outline-danger btn-sm">
+              <i class="bi bi-box-arrow-right"></i> Sign Out
+            </a>
           </div>
         </div>
       </nav>
 
       <main class="dashboard-content">
         <div class="container-fluid px-3 px-lg-4 py-4">
-          <div class="page-heading">
+          
+          <div class="page-heading mb-4">
             <div class="page-heading-copy">
-              <span class="page-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
+              <span class="page-icon"><i class="bi bi-speedometer2"></i></span>
               <div>
-                <p class="eyebrow mb-1">Overview</p>
-                <h1 class="h3 mb-1">Dashboard</h1>
-                <p class="text-muted mb-0">Monitor performance, sales, users, and support from one clean workspace.</p>
+                <p class="eyebrow mb-1">Overview & System Health</p>
+                <h1 class="h3 mb-1">Dashboard Konten & Penyimpanan</h1>
+                <p class="text-muted mb-0">Pantau statistik pengguna, konten aktif, dan manajemen kapasitas penyimpanan server.</p>
               </div>
             </div>
-            <div class="heading-actions"><button class="btn btn-outline-secondary btn-sm" type="button"><i class="bi bi-download" aria-hidden="true"></i> Export</button><button class="btn btn-primary btn-sm" type="button"><i class="bi bi-file-earmark-plus" aria-hidden="true"></i> Create Report</button></div>
+            <div class="heading-actions">
+              <button class="btn btn-outline-primary btn-sm" onclick="loadDashboardData()">
+                <i class="bi bi-arrow-clockwise"></i> Refresh Data
+              </button>
+            </div>
           </div>
 
-          <section class="row g-3 mt-1" aria-label="Dashboard metrics">
+          <!-- 1. METRICS CARDS (Disesuaikan dengan DB) -->
+          <section class="row g-3" aria-label="Dashboard metrics">
             <div class="col-12 col-sm-6 col-xl-3">
               <article class="metric-card metric-primary">
                 <div class="metric-top">
-                  <span class="metric-label">Revenue</span>
-                  <span class="metric-icon"><i class="bi bi-currency-dollar" aria-hidden="true"></i></span>
+                  <span class="metric-label">Total Users</span>
+                  <span class="metric-icon"><i class="bi bi-people"></i></span>
                 </div>
-                <div class="metric-value">$48,240</div>
+                <div class="metric-value" id="statUsers">0</div>
                 <div class="metric-meta">
-                  <span class="text-success">+12.5%</span>
-                  <span>from last month</span>
+                  <span class="text-muted">Pengguna Terdaftar</span>
                 </div>
               </article>
             </div>
@@ -167,13 +138,12 @@
             <div class="col-12 col-sm-6 col-xl-3">
               <article class="metric-card metric-success">
                 <div class="metric-top">
-                  <span class="metric-label">Orders</span>
-                  <span class="metric-icon"><i class="bi bi-bag-check" aria-hidden="true"></i></span>
+                  <span class="metric-label">Total Berita</span>
+                  <span class="metric-icon"><i class="bi bi-journal-text"></i></span>
                 </div>
-                <div class="metric-value">1,284</div>
+                <div class="metric-value" id="statBerita">0</div>
                 <div class="metric-meta">
-                  <span class="text-success">+8.2%</span>
-                  <span>new orders</span>
+                  <span class="text-muted">Artikel / Publikasi</span>
                 </div>
               </article>
             </div>
@@ -181,13 +151,12 @@
             <div class="col-12 col-sm-6 col-xl-3">
               <article class="metric-card metric-warning">
                 <div class="metric-top">
-                  <span class="metric-label">Customers</span>
-                  <span class="metric-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+                  <span class="metric-label">Pengumuman</span>
+                  <span class="metric-icon"><i class="bi bi-megaphone"></i></span>
                 </div>
-                <div class="metric-value">8,742</div>
+                <div class="metric-value" id="statPengumuman">0</div>
                 <div class="metric-meta">
-                  <span class="text-success">+5.1%</span>
-                  <span>active users</span>
+                  <span class="text-muted">Target Instansi & Publik</span>
                 </div>
               </article>
             </div>
@@ -195,161 +164,129 @@
             <div class="col-12 col-sm-6 col-xl-3">
               <article class="metric-card metric-danger">
                 <div class="metric-top">
-                  <span class="metric-label">Tickets</span>
-                  <span class="metric-icon"><i class="bi bi-life-preserver" aria-hidden="true"></i></span>
+                  <span class="metric-label">Berkas Upload</span>
+                  <span class="metric-icon"><i class="bi bi-hdd-network"></i></span>
                 </div>
-                <div class="metric-value">36</div>
+                <div class="metric-value" id="statFiles">0</div>
                 <div class="metric-meta">
-                  <span class="text-danger">3 urgent</span>
-                  <span>need review</span>
+                  <span class="text-danger" id="statStorageSize">0 MB</span>
+                  <span>terpakai</span>
                 </div>
               </article>
             </div>
           </section>
 
-          <section class="row g-3 mt-1">
-            <div class="col-12 col-xl-8">
-              <div class="panel">
-                <div class="panel-header">
-                  <div>
-                    <h2 class="h5 mb-1 section-title"><i class="bi bi-graph-up-arrow" aria-hidden="true"></i><span>Sales Performance</span></h2>
-                    <p class="text-muted mb-0">Monthly revenue compared with operational targets.</p>
-                  </div>
-                  <a class="btn btn-light btn-sm" href="charts.html">View Details</a>
-                </div>
-
-                <div class="chart-bars" aria-label="Sales performance chart">
-                  <div class="chart-column bar-42"><span></span><small>Jan</small></div>
-                  <div class="chart-column bar-58"><span></span><small>Feb</small></div>
-                  <div class="chart-column bar-51"><span></span><small>Mar</small></div>
-                  <div class="chart-column bar-72"><span></span><small>Apr</small></div>
-                  <div class="chart-column bar-66"><span></span><small>May</small></div>
-                  <div class="chart-column bar-83"><span></span><small>Jun</small></div>
-                </div>
-              </div>
-            </div>
-
+          <!-- 2. DASHBOARD PENYIMPANAN & PEMBERSIHAN KONTEN LAWAS -->
+          <section class="row g-3 mt-2">
+            
+            <!-- PANEL STATUS STORAGE -->
             <div class="col-12 col-xl-4">
-              <div class="panel h-100">
+              <div class="panel h-100 border-0 shadow-sm">
                 <div class="panel-header">
                   <div>
-                    <h2 class="h5 mb-1 section-title"><i class="bi bi-activity" aria-hidden="true"></i><span>Team Activity</span></h2>
-                    <p class="text-muted mb-0">Recent operational updates.</p>
+                    <h2 class="h5 mb-1 section-title"><i class="bi bi-pie-chart-fill text-primary me-2"></i>Status Storage Server</h2>
+                    <p class="text-muted mb-0">Estimasi penggunaan folder `/uploads`</p>
                   </div>
                 </div>
 
-                <div class="activity-list">
-                  <div class="activity-item"><span class="activity-dot bg-primary"></span><div><p class="mb-1 fw-semibold">New campaign launched</p><p class="text-muted small mb-0">Marketing team published the May offer.</p></div></div>
-                  <div class="activity-item"><span class="activity-dot bg-success"></span><div><p class="mb-1 fw-semibold">Payment batch cleared</p><p class="text-muted small mb-0">246 invoices were processed successfully.</p></div></div>
-                  <div class="activity-item"><span class="activity-dot bg-warning"></span><div><p class="mb-1 fw-semibold">Support queue rising</p><p class="text-muted small mb-0">Average first response time is 18 minutes.</p></div></div>
+                <div class="p-3">
+                  <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                      <span class="fw-semibold small">Kapasitas Media Upload</span>
+                      <span class="small fw-bold text-primary" id="storagePercentText">0%</span>
+                    </div>
+                    <div class="progress" style="height: 12px;">
+                      <div id="storageProgressBar" class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <small class="text-muted d-block mt-2">
+                      <i class="bi bi-info-circle me-1"></i> File gambar dari berita & lampiran pengumuman dihitung otomatis dari database.
+                    </small>
+                  </div>
+
+                  <hr>
+
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-secondary"><i class="bi bi-image me-2"></i>Gambar Berita</span>
+                    <strong id="cntGambarBerita">0 file</strong>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="text-secondary"><i class="bi bi-file-earmark-image me-2"></i>Gambar Surat / Lampiran</span>
+                    <strong id="cntGambarPengumuman">0 file</strong>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span class="text-secondary"><i class="bi bi-clock-history me-2"></i>Konten Lawas (>30 Hari)</span>
+                    <span class="badge bg-warning text-dark" id="cntKontenLawas">0 Item</span>
+                  </div>
                 </div>
               </div>
             </div>
+
+            <!-- TABEL PEMBERSIHAN KONTEN LAWAS -->
+            <div class="col-12 col-xl-8">
+              <div class="panel h-100 border-0 shadow-sm">
+                <div class="panel-header d-flex justify-content-between align-items-center">
+                  <div>
+                    <h2 class="h5 mb-1 section-title"><i class="bi bi-trash3-fill text-danger me-2"></i>Rekomendasi Pembersihan Storage</h2>
+                    <p class="text-muted mb-0">Hapus berita atau pengumuman lawas yang memiliki lampiran gambar untuk menghemat disk space.</p>
+                  </div>
+                  <span class="badge bg-danger" id="badgeTotalAudit">0 Perlu Ditinjau</span>
+                </div>
+
+                <div class="table-responsive p-2">
+                  <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Tipe</th>
+                        <th>Judul Konten</th>
+                        <th>File Gambar</th>
+                        <th>Tanggal Publish</th>
+                        <th class="text-end">Aksi Hapus Space</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tabelPembersihanBody">
+                      <tr><td colspan="5" class="text-center py-4 text-muted">Memeriksa kesehatan penyimpanan...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
           </section>
 
-          <section class="panel mt-3">
+          <!-- 3. TABEL USER TERBARU -->
+          <section class="panel mt-4 border-0 shadow-sm">
             <div class="panel-header">
               <div>
-                <h2 class="h5 mb-1 section-title"><i class="bi bi-people" aria-hidden="true"></i><span>Recent Users</span></h2>
-                <p class="text-muted mb-0">Latest account activity across the workspace.</p>
+                <h2 class="h5 mb-1 section-title"><i class="bi bi-people-fill text-primary me-2"></i>Pengguna Terdaftar Dalam Sistem</h2>
+                <p class="text-muted mb-0">Daftar pengguna aktif yang tersimpan di PostgreSQL.</p>
               </div>
-              <a class="btn btn-outline-secondary btn-sm" href="users.html">Manage Users</a>
+              <a class="btn btn-outline-secondary btn-sm" href="users.html">Kelola Users</a>
             </div>
             <div class="table-responsive">
-              <table class="table align-middle mb-0">
-                <thead><tr><th scope="col">User</th><th scope="col">Role</th><th scope="col">Team</th><th scope="col">Status</th><th scope="col">Joined</th><th scope="col" class="text-end">Action</th></tr></thead>
-                <tbody>
+              <table class="table align-middle mb-0 table-hover">
+                <thead class="table-light">
                   <tr>
-                    <td>
-                      <div class="d-flex align-items-center gap-2">
-                        <img class="avatar-img avatar-sm" src="../assets/images/avatar/avatar-1.jpg" alt="Sarah Ahmed">
-                        <div>
-                          <p class="fw-semibold mb-0">Sarah Ahmed</p>
-                          <p class="text-muted small mb-0">sarah@example.com</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Admin</td>
-                    <td>Operations</td>
-                    <td><span class="badge text-bg-success">Active</span></td>
-                    <td>Jan 12, 2026</td>
-                    <td class="text-end"><a class="btn btn-light btn-sm" href="user-details.html">View</a></td>
+                    <th>Pengguna</th>
+                    <th>Hak Akses</th>
+                    <th>Instansi</th>
+                    <th>No. Telepon</th>
+                    <th>Tanggal Terdaftar</th>
                   </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center gap-2">
-                        <img class="avatar-img avatar-sm" src="../assets/images/avatar/avatar-2.jpg" alt="Rafi Khan">
-                        <div>
-                          <p class="fw-semibold mb-0">Rafi Khan</p>
-                          <p class="text-muted small mb-0">rafi@example.com</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Manager</td>
-                    <td>Sales</td>
-                    <td><span class="badge text-bg-success">Active</span></td>
-                    <td>Feb 03, 2026</td>
-                    <td class="text-end"><a class="btn btn-light btn-sm" href="user-details.html">View</a></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center gap-2">
-                        <img class="avatar-img avatar-sm" src="../assets/images/avatar/avatar-3.jpg" alt="Nadia Islam">
-                        <div>
-                          <p class="fw-semibold mb-0">Nadia Islam</p>
-                          <p class="text-muted small mb-0">nadia@example.com</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Editor</td>
-                    <td>Content</td>
-                    <td><span class="badge text-bg-warning">Pending</span></td>
-                    <td>Mar 18, 2026</td>
-                    <td class="text-end"><a class="btn btn-light btn-sm" href="user-details.html">View</a></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center gap-2">
-                        <img class="avatar-img avatar-sm" src="../assets/images/avatar/avatar-4.jpg" alt="Mina Torres">
-                        <div>
-                          <p class="fw-semibold mb-0">Mina Torres</p>
-                          <p class="text-muted small mb-0">mina@example.com</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Viewer</td>
-                    <td>Finance</td>
-                    <td><span class="badge text-bg-secondary">Suspended</span></td>
-                    <td>Apr 07, 2026</td>
-                    <td class="text-end"><a class="btn btn-light btn-sm" href="user-details.html">View</a></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center gap-2">
-                        <img class="avatar-img avatar-sm" src="../assets/images/avatar/avatar-5.jpg" alt="Jon Oliver">
-                        <div>
-                          <p class="fw-semibold mb-0">Jon Oliver</p>
-                          <p class="text-muted small mb-0">jon@example.com</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td>Analyst</td>
-                    <td>Data</td>
-                    <td><span class="badge text-bg-success">Active</span></td>
-                    <td>Apr 22, 2026</td>
-                    <td class="text-end"><a class="btn btn-light btn-sm" href="user-details.html">View</a></td>
-                  </tr>
+                </thead>
+                <tbody id="tabelUserBody">
+                  <tr><td colspan="5" class="text-center py-4 text-muted">Memuat data pengguna...</td></tr>
                 </tbody>
               </table>
             </div>
           </section>
+
         </div>
       </main>
 
+      <!-- FOOTER -->
       <footer class="admin-footer">
         <div class="container-fluid px-3 px-lg-4">
-          <span>Copyright 2026 adminHMD. <br> Developed by <a target="_blank" class="fw-bold text-success" href="https://github.com/HasanMahmudDev">Md. Hasan Mahmud</a> • Distributed by <a target="_blank" class="fw-bold text-success" href="https://themewagon.com">ThemeWagon</a> </span>
-          <span>Professional dashboard template.</span>
+          <span>Copyright 2026 adminHMD. Integrated with PostgreSQL Backend.</span>
         </div>
       </footer>
     </div>
@@ -357,5 +294,223 @@
 
   <script src="../assets/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/main.js"></script>
+
+  <!-- JAVASCRIPT FETCH DASHBOARD DATA -->
+  <script>
+    const API_BASE = 'http://localhost:3000/api';
+
+    async function loadDashboardData() {
+      // 1. Ambil data User Login dari Session
+      const currentUser = JSON.parse(localStorage.getItem('user')) || {};
+      if (currentUser.Nama) {
+        document.getElementById('sidebarUserName').textContent = currentUser.Nama;
+        document.getElementById('sidebarUserRole').textContent = currentUser.hakAkses || 'Admin';
+      }
+
+      try {
+        // 2. Fetch Data Paralel dari Backend API
+        const [resUsers, resBerita, resPengumuman] = await Promise.all([
+          fetch(`${API_BASE}/users`).then(r => r.json()).catch(() => ({ success: false, data: [] })),
+          fetch(`${API_BASE}/berita`).then(r => r.json()).catch(() => ([])),
+          fetch(`${API_BASE}/pengumuman?instansi_id=all`).then(r => r.json()).catch(() => ({ success: false, data: [] }))
+        ]);
+
+        const listUsers = resUsers.data || [];
+        const listBerita = Array.isArray(resBerita) ? resBerita : [];
+        const listPengumuman = resPengumuman.data || [];
+
+        // 3. Hitung Statistik Utama
+        document.getElementById('statUsers').textContent = listUsers.length;
+        document.getElementById('statBerita').textContent = listBerita.length;
+        document.getElementById('statPengumuman').textContent = listPengumuman.length;
+
+        // 4. Hitung Statistik Storage & File Uploads
+        let countImgBerita = 0;
+        let countImgPengumuman = 0;
+
+        const auditList = []; // Daftar konten rekomendasi hapus
+
+        const now = new Date();
+        const DAYS_30 = 30 * 24 * 60 * 60 * 1000; // 30 Hari dalam millisecond
+
+        // Pindai Gambar dari Berita
+        listBerita.forEach(b => {
+          if (b.gambar) countImgBerita++;
+          const tgl = new Date(b.created_at);
+          const isOld = (now - tgl) > DAYS_30;
+
+          // Rekomendasi Pembersihan: Berita ber-gambar yang berusia > 30 hari atau yang sengaja ditinjau
+          if (b.gambar || isOld) {
+            auditList.push({
+              id: b.id,
+              tipe: 'Berita',
+              judul: b.judul,
+              gambar: b.gambar,
+              created_at: b.created_at,
+              isOld: isOld,
+              deleteApi: `${API_BASE}/berita/${b.id}`
+            });
+          }
+        });
+
+        // Pindai Gambar dari Pengumuman
+        listPengumuman.forEach(p => {
+          if (p.gambar) countImgPengumuman++;
+          const tgl = new Date(p.created_at);
+          const isOld = (now - tgl) > DAYS_30;
+
+          if (p.gambar || isOld) {
+            auditList.push({
+              id: p.id,
+              tipe: 'Pengumuman',
+              judul: p.judul,
+              gambar: p.gambar,
+              created_at: p.created_at,
+              isOld: isOld,
+              deleteApi: `${API_BASE}/pengumuman/${p.id}`
+            });
+          }
+        });
+
+        const totalFiles = countImgBerita + countImgPengumuman;
+        // Asumsi rata-rata per gambar = 500 KB (0.5 MB)
+        const estimatedMB = (totalFiles * 0.5).toFixed(1);
+
+        document.getElementById('statFiles').textContent = totalFiles;
+        document.getElementById('statStorageSize').textContent = `${estimatedMB} MB`;
+
+        // Update Panel Storage
+        document.getElementById('cntGambarBerita').textContent = `${countImgBerita} file`;
+        document.getElementById('cntGambarPengumuman').textContent = `${countImgPengumuman} file`;
+
+        // Hitung persentase batas aman storage (Misal kapasitas diset 50 MB)
+        const maxCapacityMB = 50;
+        const percent = Math.min(100, Math.round((estimatedMB / maxCapacityMB) * 100));
+        document.getElementById('storagePercentText').textContent = `${percent}%`;
+        
+        const progressBar = document.getElementById('storageProgressBar');
+        progressBar.style.width = `${percent}%`;
+        if (percent > 80) {
+          progressBar.className = 'progress-bar bg-danger';
+        } else if (percent > 50) {
+          progressBar.className = 'progress-bar bg-warning';
+        } else {
+          progressBar.className = 'progress-bar bg-primary';
+        }
+
+        const kontenLawasCount = auditList.filter(item => item.isOld).length;
+        document.getElementById('cntKontenLawas').textContent = `${kontenLawasCount} Item`;
+        document.getElementById('badgeTotalAudit').textContent = `${auditList.length} Konten Ditinjau`;
+
+        // 5. Render Tabel Pembersihan Storage
+        renderTabelPembersihan(auditList);
+
+        // 6. Render Tabel Recent Users
+        renderTabelUsers(listUsers);
+
+      } catch (err) {
+        console.error('Error loading dashboard data:', err);
+      }
+    }
+
+    // Function Render Tabel Pembersihan
+    function renderTabelPembersihan(items) {
+      const tbody = document.getElementById('tabelPembersihanBody');
+      if (items.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="text-center text-success py-4">
+              <i class="bi bi-check-circle-fill me-1"></i> Storage bersih! Tidak ada konten lawas atau berkas besar yang menumpuk.
+            </td>
+          </tr>`;
+        return;
+      }
+
+      tbody.innerHTML = '';
+      items.forEach(item => {
+        const tgl = item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID') : '-';
+        const badgeTipe = item.tipe === 'Berita' ? 'bg-info text-dark' : 'bg-primary';
+        const imgTag = item.gambar 
+          ? `<span class="badge bg-light text-dark border"><i class="bi bi-file-image me-1"></i>Ada Gambar</span>` 
+          : `<span class="text-muted small">Tanpa Gambar</span>`;
+
+        const badgeUsia = item.isOld 
+          ? `<span class="badge bg-warning text-dark ms-1">Lawas (>30hr)</span>` 
+          : '';
+
+        tbody.innerHTML += `
+          <tr>
+            <td><span class="badge ${badgeTipe}">${item.tipe}</span></td>
+            <td>
+              <strong>${item.judul}</strong>
+              ${badgeUsia}
+            </td>
+            <td>${imgTag}</td>
+            <td><small class="text-muted">${tgl}</small></td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-danger" onclick="hapusKonten('${item.deleteApi}', '${item.tipe}')">
+                <i class="bi bi-trash"></i> Hapus Space
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    // Function Hapus Konten Langsung dari Dashboard
+    async function hapusKonten(apiUrl, tipe) {
+      if (!confirm(`Apakah Anda yakin ingin menghapus ${tipe} ini untuk mengosongkan ruang penyimpanan?`)) return;
+
+      try {
+        const res = await fetch(apiUrl, { method: 'DELETE' });
+        if (res.ok) {
+          alert(`${tipe} berhasil dihapus dari server!`);
+          loadDashboardData(); // Refresh ulang data
+        } else {
+          alert('Gagal menghapus konten.');
+        }
+      } catch (err) {
+        console.error('Error delete content:', err);
+      }
+    }
+
+    // Function Render Tabel Users
+    function renderTabelUsers(users) {
+      const tbody = document.getElementById('tabelUserBody');
+      if (users.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">Belum ada user tersimpan.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = '';
+      users.forEach(u => {
+        const tgl = u.created_at ? new Date(u.created_at).toLocaleDateString('id-ID') : '-';
+        const badgeRole = u.hakAkses === 'Admin' ? 'bg-danger' : 'bg-secondary';
+
+        tbody.innerHTML += `
+          <tr>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="avatar-sm bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:32px; height:32px;">
+                  ${u.Nama ? u.Nama.charAt(0).toUpperCase() : 'U'}
+                </div>
+                <div>
+                  <p class="fw-semibold mb-0">${u.Nama}</p>
+                  <p class="text-muted small mb-0">${u.email}</p>
+                </div>
+              </div>
+            </td>
+            <td><span class="badge ${badgeRole}">${u.hakAkses || 'User'}</span></td>
+            <td><span class="badge text-bg-light border">${u.nama_instansi || 'Umum'}</span></td>
+            <td><small>${u.phone || '-'}</small></td>
+            <td><small class="text-muted">${tgl}</small></td>
+          </tr>
+        `;
+      });
+    }
+
+    // Jalankan Saat DOM Siap
+    document.addEventListener('DOMContentLoaded', loadDashboardData);
+  </script>
 </body>
 </html>

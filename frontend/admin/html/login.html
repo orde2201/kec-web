@@ -1,41 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="adminHMD authentication page">
   <title>Login | adminHMD</title>
-
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+<body class="bg-light d-flex align-items-center vh-100">
 
-<body class="auth-body">
-  <button class="icon-button theme-toggle auth-theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" title="Switch color theme">
-    <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
-  </button>
-  <main class="auth-page">
-    <section class="auth-card">
-      <a class="auth-brand" href="index.html"><span class="brand-icon"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i></span><span><strong>adminHMD</strong><small>Sign in to your admin workspace.</small></span></a>
-      <div class="auth-visual"><img src="../assets/images/png/dasher-ui-bootstrap-5.jpg" alt="adminHMD dashboard interface"></div>
-      <form class="needs-validation" novalidate>
-        <div class="mb-4">
-          <p class="eyebrow mb-1">Secure Access</p>
-          <h1 class="h3 mb-1">Login</h1>
-          <p class="text-muted mb-0">Sign in to your admin workspace.</p>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-5 col-lg-4">
+        <div class="card shadow-lg border-0 rounded-3">
+          <div class="card-body p-4">
+            
+            <div class="text-center mb-4">
+              <i class="bi bi-shield-lock-fill text-primary display-4"></i>
+              <h3 class="fw-bold mt-2">Selamat Datang</h3>
+              <p class="text-muted small">Silakan login untuk mengakses akun Anda</p>
+            </div>
+
+            <!-- Alert Pesan Error -->
+            <div id="alertMessage" class="alert alert-danger d-none" role="alert"></div>
+
+            <form id="loginForm">
+              <div class="mb-3">
+                <label for="email" class="form-label fw-semibold">Email</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                  <input type="email" class="form-control" id="email" placeholder="nama@email.com" required>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="password" class="form-label fw-semibold">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-key"></i></span>
+                  <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                </div>
+              </div>
+
+              <button type="submit" id="btnLogin" class="btn btn-primary w-100 py-2 fw-bold mt-3">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Masuk
+              </button>
+            </form>
+
+            <div class="text-center mt-4">
+              <a href="pengumuman.html" class="text-decoration-none small text-secondary">
+                <i class="bi bi-arrow-left me-1"></i> Kembali ke Portal Pengumuman
+              </a>
+            </div>
+
+          </div>
         </div>
-        <div class="mb-3"><label class="form-label" for="loginEmail">Email address</label><input class="form-control" id="loginEmail" type="email" required><div class="invalid-feedback">Enter a valid email.</div></div>
-        <div class="mb-3"><div class="d-flex justify-content-between"><label class="form-label" for="loginPassword">Password</label><a class="small fw-semibold" href="forgot-password.html">Forgot?</a></div><input class="form-control" id="loginPassword" type="password" minlength="6" required><div class="invalid-feedback">Password must be at least 6 characters.</div></div>
-        <div class="form-check mb-4"><input class="form-check-input" type="checkbox" id="rememberMe"><label class="form-check-label" for="rememberMe">Remember me</label></div>
-        <button class="btn btn-primary w-100" type="submit"><i class="bi bi-box-arrow-in-right" aria-hidden="true"></i> Sign In</button>
-      </form>
-      
-      <div class="auth-footer">New here? <a href="register.html">Create an account</a></div>
-    </section>
-  </main>
+      </div>
+    </div>
+  </div>
 
   <script src="../assets/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets/js/main.js"></script>
+  <script>
+    const LOGIN_API_URL = 'http://localhost:3000/api/login';
+
+    // Pengecekan otomatis: Jika sudah login, lempar ke halaman yang sesuai
+    (function checkExistingSession() {
+      const userRaw = localStorage.getItem('user');
+      if (userRaw) {
+        try {
+          const currentUser = JSON.parse(userRaw);
+          const role = String(currentUser.hakAkses || '').toLowerCase();
+          if (role === 'admin') {
+            window.location.href = 'index.html';
+          } else {
+            window.location.href = 'pengumuman.html';
+          }
+        } catch (e) {
+          localStorage.removeItem('user');
+        }
+      }
+    })();
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const alertMsg = document.getElementById('alertMessage');
+      const btnLogin = document.getElementById('btnLogin');
+
+      alertMsg.classList.add('d-none');
+      btnLogin.disabled = true;
+      btnLogin.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Memproses...`;
+
+      try {
+        const response = await fetch(LOGIN_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          // Simpan data user ke localStorage
+          localStorage.setItem('user', JSON.stringify(result.user));
+
+          // Arahkan ke halaman sesuai hakAkses
+          const role = String(result.user.hakAkses || '').toLowerCase();
+          if (role === 'admin') {
+            window.location.href = 'index.html';
+          } else {
+            window.location.href = 'pengumuman.html';
+          }
+        } else {
+          alertMsg.textContent = result.message || 'Login gagal! Periksa email dan password.';
+          alertMsg.classList.remove('d-none');
+        }
+      } catch (error) {
+        console.error('Error Login:', error);
+        alertMsg.textContent = 'Gagal terhubung ke server backend.';
+        alertMsg.classList.remove('d-none');
+      } finally {
+        btnLogin.disabled = false;
+        btnLogin.innerHTML = `<i class="bi bi-box-arrow-in-right me-1"></i> Masuk`;
+      }
+    });
+  </script>
 </body>
 </html>
