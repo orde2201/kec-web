@@ -21,7 +21,8 @@
           return;
         }
 
-        if (currentUser.hakAkses !== 'Admin') {
+        const role = currentUser.hakAkses || currentUser.hak_akses;
+        if (role !== 'Admin') {
           alert('Akses ditolak! Halaman ini hanya untuk Admin.');
           window.location.href = 'pengumuman.html';
         }
@@ -66,6 +67,10 @@
         <a class="nav-link" href="alerts.html">
           <span class="nav-icon"><i class="bi bi-newspaper"></i></span>
           <span class="nav-text">Berita & Pengumuman</span>
+        </a>
+        <a class="nav-link" href="components.html">
+          <span class="nav-icon"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
+          <span class="nav-text">Components</span>
         </a>
         <a class="nav-link" href="settings.html">
           <span class="nav-icon"><i class="bi bi-gear"></i></span>
@@ -120,7 +125,7 @@
             </div>
           </div>
 
-          <!-- 1. METRICS CARDS (Disesuaikan dengan DB) -->
+          <!-- 1. METRICS CARDS -->
           <section class="row g-3" aria-label="Dashboard metrics">
             <div class="col-12 col-sm-6 col-xl-3">
               <article class="metric-card metric-primary">
@@ -129,9 +134,7 @@
                   <span class="metric-icon"><i class="bi bi-people"></i></span>
                 </div>
                 <div class="metric-value" id="statUsers">0</div>
-                <div class="metric-meta">
-                  <span class="text-muted">Pengguna Terdaftar</span>
-                </div>
+                <div class="metric-meta"><span class="text-muted">Pengguna Terdaftar</span></div>
               </article>
             </div>
 
@@ -142,9 +145,7 @@
                   <span class="metric-icon"><i class="bi bi-journal-text"></i></span>
                 </div>
                 <div class="metric-value" id="statBerita">0</div>
-                <div class="metric-meta">
-                  <span class="text-muted">Artikel / Publikasi</span>
-                </div>
+                <div class="metric-meta"><span class="text-muted">Artikel / Publikasi</span></div>
               </article>
             </div>
 
@@ -155,9 +156,7 @@
                   <span class="metric-icon"><i class="bi bi-megaphone"></i></span>
                 </div>
                 <div class="metric-value" id="statPengumuman">0</div>
-                <div class="metric-meta">
-                  <span class="text-muted">Target Instansi & Publik</span>
-                </div>
+                <div class="metric-meta"><span class="text-muted">Target Instansi & Publik</span></div>
               </article>
             </div>
 
@@ -169,88 +168,60 @@
                 </div>
                 <div class="metric-value" id="statFiles">0</div>
                 <div class="metric-meta">
-                  <span class="text-danger" id="statStorageSize">0 MB</span>
+                  <span class="text-danger fw-bold" id="statStorageSize">0 MB</span>
                   <span>terpakai</span>
                 </div>
               </article>
             </div>
           </section>
 
-          <!-- 2. DASHBOARD PENYIMPANAN & PEMBERSIHAN KONTEN LAWAS -->
+          <!-- 2. STATUS STORAGE SERVER -->
           <section class="row g-3 mt-2">
-            
-            <!-- PANEL STATUS STORAGE -->
-            <div class="col-12 col-xl-4">
-              <div class="panel h-100 border-0 shadow-sm">
+            <div class="col-12">
+              <div class="panel border-0 shadow-sm">
                 <div class="panel-header">
                   <div>
                     <h2 class="h5 mb-1 section-title"><i class="bi bi-pie-chart-fill text-primary me-2"></i>Status Storage Server</h2>
-                    <p class="text-muted mb-0">Estimasi penggunaan folder `/uploads`</p>
                   </div>
                 </div>
 
                 <div class="p-3">
-                  <div class="mb-3">
-                    <div class="d-flex justify-content-between mb-1">
-                      <span class="fw-semibold small">Kapasitas Media Upload</span>
-                      <span class="small fw-bold text-primary" id="storagePercentText">0%</span>
+                  <div class="row align-items-center">
+                    <div class="col-12 col-md-6 mb-3 mb-md-0 border-end-md">
+                      <div class="d-flex justify-content-between mb-1">
+                        <span class="fw-semibold small">Penggunaan Disk App</span>
+                        <span class="small fw-bold text-primary" id="storagePercentText">0%</span>
+                      </div>
+                      <div class="progress" style="height: 12px;">
+                        <div id="storageProgressBar" class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+                      </div>
+                      <small class="text-muted d-block mt-2" id="storageDetailNote">
+                        <i class="bi bi-info-circle me-1"></i> Memuat detail kapasitas device...
+                      </small>
                     </div>
-                    <div class="progress" style="height: 12px;">
-                      <div id="storageProgressBar" class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+
+                    <div class="col-12 col-md-6">
+                      <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="text-secondary"><i class="bi bi-image me-2"></i>Gambar Berita</span>
+                        <strong id="cntGambarBerita">0 file</strong>
+                      </div>
+                      <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="text-secondary"><i class="bi bi-file-earmark-image me-2"></i>Gambar Surat / Lampiran</span>
+                        <strong id="cntGambarPengumuman">0 file</strong>
+                      </div>
+                      <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="text-secondary"><i class="bi bi-hdd-fill me-2"></i>Kapasitas Fisik Device</span>
+                        <strong id="cntDeviceDisk">-</strong>
+                      </div>
+                      <div class="d-flex align-items-center justify-content-between">
+                        <span class="text-secondary"><i class="bi bi-clock-history me-2"></i>Konten Lawas (>30 Hari)</span>
+                        <span class="badge bg-warning text-dark" id="cntKontenLawas">0 Item</span>
+                      </div>
                     </div>
-                    <small class="text-muted d-block mt-2">
-                      <i class="bi bi-info-circle me-1"></i> File gambar dari berita & lampiran pengumuman dihitung otomatis dari database.
-                    </small>
-                  </div>
-
-                  <hr>
-
-                  <div class="d-flex align-items-center justify-content-between mb-2">
-                    <span class="text-secondary"><i class="bi bi-image me-2"></i>Gambar Berita</span>
-                    <strong id="cntGambarBerita">0 file</strong>
-                  </div>
-                  <div class="d-flex align-items-center justify-content-between mb-2">
-                    <span class="text-secondary"><i class="bi bi-file-earmark-image me-2"></i>Gambar Surat / Lampiran</span>
-                    <strong id="cntGambarPengumuman">0 file</strong>
-                  </div>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <span class="text-secondary"><i class="bi bi-clock-history me-2"></i>Konten Lawas (>30 Hari)</span>
-                    <span class="badge bg-warning text-dark" id="cntKontenLawas">0 Item</span>
                   </div>
                 </div>
               </div>
             </div>
-
-            <!-- TABEL PEMBERSIHAN KONTEN LAWAS -->
-            <div class="col-12 col-xl-8">
-              <div class="panel h-100 border-0 shadow-sm">
-                <div class="panel-header d-flex justify-content-between align-items-center">
-                  <div>
-                    <h2 class="h5 mb-1 section-title"><i class="bi bi-trash3-fill text-danger me-2"></i>Rekomendasi Pembersihan Storage</h2>
-                    <p class="text-muted mb-0">Hapus berita atau pengumuman lawas yang memiliki lampiran gambar untuk menghemat disk space.</p>
-                  </div>
-                  <span class="badge bg-danger" id="badgeTotalAudit">0 Perlu Ditinjau</span>
-                </div>
-
-                <div class="table-responsive p-2">
-                  <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                      <tr>
-                        <th>Tipe</th>
-                        <th>Judul Konten</th>
-                        <th>File Gambar</th>
-                        <th>Tanggal Publish</th>
-                        <th class="text-end">Aksi Hapus Space</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tabelPembersihanBody">
-                      <tr><td colspan="5" class="text-center py-4 text-muted">Memeriksa kesehatan penyimpanan...</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
           </section>
 
           <!-- 3. TABEL USER TERBARU -->
@@ -295,117 +266,108 @@
   <script src="../assets/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/main.js"></script>
 
-  <!-- JAVASCRIPT FETCH DASHBOARD DATA -->
+  <!-- SCRIPT UTAMA DASHBOARD -->
   <script>
     const API_BASE = 'http://localhost:3000/api';
 
+    // Helper functions untuk eksekusi aman
+    const safeSetText = (id, text) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    };
+
+    const safeSetHTML = (id, html) => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = html;
+    };
+
+    const normalizeArray = (res) => {
+      if (Array.isArray(res)) return res;
+      if (res && Array.isArray(res.data)) return res.data;
+      return [];
+    };
+
     async function loadDashboardData() {
-      // 1. Ambil data User Login dari Session
+      // 1. Session check
       const currentUser = JSON.parse(localStorage.getItem('user')) || {};
-      if (currentUser.Nama) {
-        document.getElementById('sidebarUserName').textContent = currentUser.Nama;
-        document.getElementById('sidebarUserRole').textContent = currentUser.hakAkses || 'Admin';
-      }
+      const userName = currentUser.Nama || currentUser.nama || 'Admin System';
+      const userRole = currentUser.hakAkses || currentUser.hak_akses || 'Administrator';
+      
+      safeSetText('sidebarUserName', userName);
+      safeSetText('sidebarUserRole', userRole);
 
       try {
-        // 2. Fetch Data Paralel dari Backend API
-        const [resUsers, resBerita, resPengumuman] = await Promise.all([
-          fetch(`${API_BASE}/users`).then(r => r.json()).catch(() => ({ success: false, data: [] })),
-          fetch(`${API_BASE}/berita`).then(r => r.json()).catch(() => ([])),
-          fetch(`${API_BASE}/pengumuman?instansi_id=all`).then(r => r.json()).catch(() => ({ success: false, data: [] }))
+        // 2. Fetch data parallel
+        const [resUsers, resBerita, resPengumuman, resStorage] = await Promise.all([
+          fetch(`${API_BASE}/users`).then(r => r.json()).catch(() => []),
+          fetch(`${API_BASE}/berita`).then(r => r.json()).catch(() => []),
+          fetch(`${API_BASE}/pengumuman?instansi_id=all`).then(r => r.json()).catch(() => []),
+          fetch(`${API_BASE}/storage-stats`).then(r => r.json()).catch(() => ({ success: false, data: null }))
         ]);
 
-        const listUsers = resUsers.data || [];
-        const listBerita = Array.isArray(resBerita) ? resBerita : [];
-        const listPengumuman = resPengumuman.data || [];
+        const listUsers = normalizeArray(resUsers);
+        const listBerita = normalizeArray(resBerita);
+        const listPengumuman = normalizeArray(resPengumuman);
+        const storageData = resStorage.data || null;
 
-        // 3. Hitung Statistik Utama
-        document.getElementById('statUsers').textContent = listUsers.length;
-        document.getElementById('statBerita').textContent = listBerita.length;
-        document.getElementById('statPengumuman').textContent = listPengumuman.length;
+        // 3. Render Metrics
+        safeSetText('statUsers', listUsers.length);
+        safeSetText('statBerita', listBerita.length);
+        safeSetText('statPengumuman', listPengumuman.length);
 
-        // 4. Hitung Statistik Storage & File Uploads
+        // 4. Hitung statistik berkas & konten lawas
         let countImgBerita = 0;
         let countImgPengumuman = 0;
-
-        const auditList = []; // Daftar konten rekomendasi hapus
-
+        let kontenLawasCount = 0;
         const now = new Date();
-        const DAYS_30 = 30 * 24 * 60 * 60 * 1000; // 30 Hari dalam millisecond
+        const DAYS_30 = 30 * 24 * 60 * 60 * 1000;
 
-        // Pindai Gambar dari Berita
         listBerita.forEach(b => {
           if (b.gambar) countImgBerita++;
-          const tgl = new Date(b.created_at);
-          const isOld = (now - tgl) > DAYS_30;
-
-          // Rekomendasi Pembersihan: Berita ber-gambar yang berusia > 30 hari atau yang sengaja ditinjau
-          if (b.gambar || isOld) {
-            auditList.push({
-              id: b.id,
-              tipe: 'Berita',
-              judul: b.judul,
-              gambar: b.gambar,
-              created_at: b.created_at,
-              isOld: isOld,
-              deleteApi: `${API_BASE}/berita/${b.id}`
-            });
-          }
+          const tgl = new Date(b.created_at || b.createdAt);
+          if ((now - tgl) > DAYS_30) kontenLawasCount++;
         });
 
-        // Pindai Gambar dari Pengumuman
         listPengumuman.forEach(p => {
           if (p.gambar) countImgPengumuman++;
-          const tgl = new Date(p.created_at);
-          const isOld = (now - tgl) > DAYS_30;
-
-          if (p.gambar || isOld) {
-            auditList.push({
-              id: p.id,
-              tipe: 'Pengumuman',
-              judul: p.judul,
-              gambar: p.gambar,
-              created_at: p.created_at,
-              isOld: isOld,
-              deleteApi: `${API_BASE}/pengumuman/${p.id}`
-            });
-          }
+          const tgl = new Date(p.created_at || p.createdAt);
+          if ((now - tgl) > DAYS_30) kontenLawasCount++;
         });
 
-        const totalFiles = countImgBerita + countImgPengumuman;
-        // Asumsi rata-rata per gambar = 500 KB (0.5 MB)
-        const estimatedMB = (totalFiles * 0.5).toFixed(1);
+        safeSetText('statFiles', countImgBerita + countImgPengumuman);
+        safeSetText('cntGambarBerita', `${countImgBerita} file`);
+        safeSetText('cntGambarPengumuman', `${countImgPengumuman} file`);
+        safeSetText('cntKontenLawas', `${kontenLawasCount} Item`);
 
-        document.getElementById('statFiles').textContent = totalFiles;
-        document.getElementById('statStorageSize').textContent = `${estimatedMB} MB`;
+        // 5. Update Storage Status Panel
+        if (storageData) {
+          const usedMB = storageData.uploadsSizeMB || 0;
+          const maxQuotaMB = storageData.maxQuotaMB || 1024;
+          const percent = Math.min(100, Math.round((usedMB / maxQuotaMB) * 100));
 
-        // Update Panel Storage
-        document.getElementById('cntGambarBerita').textContent = `${countImgBerita} file`;
-        document.getElementById('cntGambarPengumuman').textContent = `${countImgPengumuman} file`;
+          safeSetText('statStorageSize', usedMB >= 1024 ? `${(usedMB / 1024).toFixed(2)} GB` : `${usedMB} MB`);
+          safeSetText('storagePercentText', `${percent}%`);
 
-        // Hitung persentase batas aman storage (Misal kapasitas diset 50 MB)
-        const maxCapacityMB = 50;
-        const percent = Math.min(100, Math.round((estimatedMB / maxCapacityMB) * 100));
-        document.getElementById('storagePercentText').textContent = `${percent}%`;
-        
-        const progressBar = document.getElementById('storageProgressBar');
-        progressBar.style.width = `${percent}%`;
-        if (percent > 80) {
-          progressBar.className = 'progress-bar bg-danger';
-        } else if (percent > 50) {
-          progressBar.className = 'progress-bar bg-warning';
+          const progressBar = document.getElementById('storageProgressBar');
+          if (progressBar) {
+            progressBar.style.width = `${percent}%`;
+            progressBar.className = `progress-bar ${percent > 85 ? 'bg-danger' : percent > 60 ? 'bg-warning' : 'bg-primary'}`;
+          }
+
+          const quotaStr = maxQuotaMB >= 1024 ? `${(maxQuotaMB / 1024).toFixed(1)} GB` : `${maxQuotaMB} MB`;
+          safeSetHTML('storageDetailNote', `<i class="bi bi-hdd-rack me-1"></i> Terpakai <strong>${usedMB} MB</strong> dari alokasi <strong>${quotaStr}</strong>.`);
+
+          if (storageData.totalDiskGB) {
+            safeSetText('cntDeviceDisk', `${storageData.freeDiskGB} GB bebas / ${storageData.totalDiskGB} GB Total`);
+          } else {
+            safeSetText('cntDeviceDisk', 'N/A');
+          }
         } else {
-          progressBar.className = 'progress-bar bg-primary';
+          safeSetText('statStorageSize', '0 MB');
+          safeSetText('storageDetailNote', 'Gagal membaca statistik storage.');
         }
 
-        const kontenLawasCount = auditList.filter(item => item.isOld).length;
-        document.getElementById('cntKontenLawas').textContent = `${kontenLawasCount} Item`;
-        document.getElementById('badgeTotalAudit').textContent = `${auditList.length} Konten Ditinjau`;
-
-        // 5. Render Tabel Pembersihan Storage
-        renderTabelPembersihan(auditList);
-
-        // 6. Render Tabel Recent Users
+        // 6. Render Tabel Users
         renderTabelUsers(listUsers);
 
       } catch (err) {
@@ -413,103 +375,49 @@
       }
     }
 
-    // Function Render Tabel Pembersihan
-    function renderTabelPembersihan(items) {
-      const tbody = document.getElementById('tabelPembersihanBody');
-      if (items.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="5" class="text-center text-success py-4">
-              <i class="bi bi-check-circle-fill me-1"></i> Storage bersih! Tidak ada konten lawas atau berkas besar yang menumpuk.
-            </td>
-          </tr>`;
-        return;
-      }
-
-      tbody.innerHTML = '';
-      items.forEach(item => {
-        const tgl = item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID') : '-';
-        const badgeTipe = item.tipe === 'Berita' ? 'bg-info text-dark' : 'bg-primary';
-        const imgTag = item.gambar 
-          ? `<span class="badge bg-light text-dark border"><i class="bi bi-file-image me-1"></i>Ada Gambar</span>` 
-          : `<span class="text-muted small">Tanpa Gambar</span>`;
-
-        const badgeUsia = item.isOld 
-          ? `<span class="badge bg-warning text-dark ms-1">Lawas (>30hr)</span>` 
-          : '';
-
-        tbody.innerHTML += `
-          <tr>
-            <td><span class="badge ${badgeTipe}">${item.tipe}</span></td>
-            <td>
-              <strong>${item.judul}</strong>
-              ${badgeUsia}
-            </td>
-            <td>${imgTag}</td>
-            <td><small class="text-muted">${tgl}</small></td>
-            <td class="text-end">
-              <button class="btn btn-sm btn-outline-danger" onclick="hapusKonten('${item.deleteApi}', '${item.tipe}')">
-                <i class="bi bi-trash"></i> Hapus Space
-              </button>
-            </td>
-          </tr>
-        `;
-      });
-    }
-
-    // Function Hapus Konten Langsung dari Dashboard
-    async function hapusKonten(apiUrl, tipe) {
-      if (!confirm(`Apakah Anda yakin ingin menghapus ${tipe} ini untuk mengosongkan ruang penyimpanan?`)) return;
-
-      try {
-        const res = await fetch(apiUrl, { method: 'DELETE' });
-        if (res.ok) {
-          alert(`${tipe} berhasil dihapus dari server!`);
-          loadDashboardData(); // Refresh ulang data
-        } else {
-          alert('Gagal menghapus konten.');
-        }
-      } catch (err) {
-        console.error('Error delete content:', err);
-      }
-    }
-
-    // Function Render Tabel Users
+    // Render Tabel Users
     function renderTabelUsers(users) {
       const tbody = document.getElementById('tabelUserBody');
-      if (users.length === 0) {
+      if (!tbody) return;
+
+      if (!users || users.length === 0) {
         tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">Belum ada user tersimpan.</td></tr>`;
         return;
       }
 
-      tbody.innerHTML = '';
-      users.forEach(u => {
-        const tgl = u.created_at ? new Date(u.created_at).toLocaleDateString('id-ID') : '-';
-        const badgeRole = u.hakAkses === 'Admin' ? 'bg-danger' : 'bg-secondary';
+      tbody.innerHTML = users.map(u => {
+        const nama = u.Nama || u.nama || u.name || 'Pengguna';
+        const email = u.email || '-';
+        const role = u.hakAkses || u.hak_akses || 'User';
+        const instansi = u.nama_instansi || u.instansi || 'Umum';
+        const phone = u.phone || u.no_hp || u.telepon || '-';
+        const rawDate = u.created_at || u.createdAt;
+        const tgl = rawDate ? new Date(rawDate).toLocaleDateString('id-ID') : '-';
 
-        tbody.innerHTML += `
+        const badgeRole = role === 'Admin' ? 'bg-danger' : 'bg-secondary';
+        const initial = nama.charAt(0).toUpperCase();
+
+        return `
           <tr>
             <td>
               <div class="d-flex align-items-center gap-2">
                 <div class="avatar-sm bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:32px; height:32px;">
-                  ${u.Nama ? u.Nama.charAt(0).toUpperCase() : 'U'}
+                  ${initial}
                 </div>
                 <div>
-                  <p class="fw-semibold mb-0">${u.Nama}</p>
-                  <p class="text-muted small mb-0">${u.email}</p>
+                  <p class="fw-semibold mb-0">${nama}</p>
+                  <p class="text-muted small mb-0">${email}</p>
                 </div>
               </div>
             </td>
-            <td><span class="badge ${badgeRole}">${u.hakAkses || 'User'}</span></td>
-            <td><span class="badge text-bg-light border">${u.nama_instansi || 'Umum'}</span></td>
-            <td><small>${u.phone || '-'}</small></td>
+            <td><span class="badge ${badgeRole}">${role}</span></td>
+            <td><span class="badge text-bg-light border">${instansi}</span></td>
+            <td><small>${phone}</small></td>
             <td><small class="text-muted">${tgl}</small></td>
-          </tr>
-        `;
-      });
+          </tr>`;
+      }).join('');
     }
 
-    // Jalankan Saat DOM Siap
     document.addEventListener('DOMContentLoaded', loadDashboardData);
   </script>
 </body>

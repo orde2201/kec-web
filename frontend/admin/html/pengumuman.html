@@ -3,10 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal Pengumuman | adminHMD</title>
+  <title>Pengumuman Instansi | adminHMD</title>
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    /* Hover effect gambar & judul seperti di halaman berita */
+    .card-img-hover {
+      transition: transform 0.3s ease;
+    }
+    .card:hover .card-img-hover {
+      transform: scale(1.03);
+    }
+    .text-hover-primary:hover {
+      color: #0d6efd !important;
+      text-decoration: underline !important;
+    }
+  </style>
 </head>
 <body class="bg-light">
 
@@ -26,22 +40,20 @@
   <!-- Content Section -->
   <div class="container my-5">
     <div class="row justify-content-center">
-      <div class="col-lg-10">
+      <div class="col-lg-12">
         
-        <!-- Banner Info Hak Akses User / Publik -->
-        <div id="instansiBanner" class="alert alert-info shadow-sm mb-4">
-          <h5 class="alert-heading mb-1" id="bannerTitle"><i class="bi bi-info-circle me-2"></i>Info Portal</h5>
-          <p class="mb-0 small" id="bannerDesc">Memuat informasi akses...</p>
+        <!-- Banner Info Instansi User -->
+        <div id="instansiBanner" class="alert alert-info shadow-sm mb-4 d-none">
+          <h5 class="alert-heading mb-1" id="bannerTitle"><i class="bi bi-building me-2"></i>Instansi: -</h5>
+          <p class="mb-0 small text-muted" id="bannerDesc">Menampilkan pengumuman resmi internal dan publik.</p>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="fw-bold mb-0 text-primary"><i class="bi bi-newspaper me-2"></i>Daftar Pengumuman</h3>
-          <button class="btn btn-outline-primary btn-sm" onclick="loadPengumuman()">
-            <i class="bi bi-arrow-clockwise me-1"></i> Refresh
-          </button>
+          <h3 class="fw-bold mb-0"><i class="bi bi-newspaper me-2"></i>Daftar Pengumuman Terbaru</h3>
+          <button class="btn btn-outline-primary btn-sm" onclick="loadPengumuman()"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
         </div>
 
-        <!-- Container Card Pengumuman -->
+        <!-- Container Card Pengumuman Grid -->
         <div id="pengumumanContainer" class="row g-4">
           <div class="col-12 text-center py-5">
             <div class="spinner-border text-primary" role="status"></div>
@@ -58,20 +70,19 @@
   <script>
     const PENGUMUMAN_API_URL = 'http://localhost:3000/api/pengumuman';
 
-    // Ambil data user dari localStorage
+    // Ambil data user dari localStorage jika sudah login
     const user = JSON.parse(localStorage.getItem('user'));
 
     function renderAuthHeader() {
       const statusDiv = document.getElementById('userStatus');
       const authBtnDiv = document.getElementById('authButton');
-      const bannerTitle = document.getElementById('bannerTitle');
-      const bannerDesc = document.getElementById('bannerDesc');
+      const banner = document.getElementById('instansiBanner');
 
       if (user) {
-        // A. User Sudah Login
+        // User Terautentikasi
         statusDiv.innerHTML = `Selamat datang, <strong>${user.Nama}</strong> (${user.hakAkses})`;
         
-        if (String(user.hakAkses).toLowerCase() === 'admin') {
+        if (user.hakAkses === 'Admin') {
           authBtnDiv.innerHTML = `
             <a href="index.html" class="btn btn-warning btn-sm fw-bold me-2"><i class="bi bi-speedometer2"></i> Dashboard</a>
             <button class="btn btn-light btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
@@ -80,25 +91,20 @@
           authBtnDiv.innerHTML = `<button class="btn btn-light btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>`;
         }
 
-        const namaInstansi = user.nama_instansi || 'Internal';
-        bannerTitle.innerHTML = `<i class="bi bi-building me-2"></i>Pengumuman Khusus: ${namaInstansi}`;
-        bannerDesc.innerHTML = `Anda hanya melihat pengumuman ditujukan untuk <strong>${namaInstansi}</strong> dan pengumuman <strong>Publik (Everyone)</strong>.`;
-
+        if (user.nama_instansi) {
+          banner.classList.remove('d-none');
+          document.getElementById('bannerTitle').innerHTML = `<i class="bi bi-building me-2"></i>Instansi: ${user.nama_instansi}`;
+        }
       } else {
-        // B. Publik (Tanpa Login)
+        // Publik (Tanpa Login)
         statusDiv.innerHTML = `Status: <em>Pengunjung Publik</em>`;
         authBtnDiv.innerHTML = `<a href="login.html" class="btn btn-light btn-sm"><i class="bi bi-box-arrow-in-right"></i> Login</a>`;
-
-        bannerTitle.innerHTML = `<i class="bi bi-globe me-2"></i>Pengumuman Publik (Everyone)`;
-        bannerDesc.innerHTML = `Anda hanya melihat pengumuman umum/publik. Silakan <a href="login.html" class="alert-link">Login</a> untuk melihat pengumuman internal instansi Anda.`;
       }
     }
 
     async function loadPengumuman() {
       const container = document.getElementById('pengumumanContainer');
-      
-      // Kirim instansi_id user jika login, jika tidak kirim string kosong
-      const instansiId = user && user.instansi_id ? user.instansi_id : '';
+      const instansiId = user ? user.instansi_id : '';
 
       try {
         const response = await fetch(`${PENGUMUMAN_API_URL}?instansi_id=${instansiId}`);
@@ -107,24 +113,76 @@
         if (response.ok && result.success && result.data.length > 0) {
           container.innerHTML = '';
           result.data.forEach(item => {
-            const isEveryone = item.instansi_id == null || item.instansi_id == 1;
-            const badgeClass = isEveryone ? 'bg-success' : 'bg-primary';
-            const badgeText = isEveryone 
-              ? '<i class="bi bi-globe me-1"></i> Everyone (Publik)' 
-              : `<i class="bi bi-building me-1"></i> ${item.nama_instansi || 'Internal'}`;
+            const isKhusus = item.instansi_id != null;
+            const badgeClass = isKhusus ? 'bg-primary' : 'bg-secondary';
+            const badgeText = isKhusus ? (item.nama_instansi || 'Internal Instansi') : 'Publik';
+            
+            // Link ke halaman detail pengumuman
+            const linkDetail = `detail-pengumuman.html?id=${item.id}`;
 
-            const tgl = item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID') : '-';
+            // Gambar Thumbnail (Klik gambar ke detail)
+            let gambarHTML = '';
+            if (item.gambar && item.gambar.trim() !== '') {
+              const firstImage = item.gambar.split(',')[0].trim();
+              if (firstImage) {
+                gambarHTML = `
+                  <div class="overflow-hidden rounded mb-3">
+                    <a href="${linkDetail}">
+                      <img src="http://localhost:3000/uploads/${firstImage}" 
+                           alt="${item.judul}" 
+                           class="img-fluid card-img-hover rounded w-100" 
+                           style="height: 200px; object-fit: cover;">
+                    </a>
+                  </div>
+                `;
+              }
+            }
 
+            // Button Link Google Form/External jika ada
+            let linkHTML = '';
+            if (item.link_gform && item.link_gform.trim() !== '') {
+              linkHTML = `
+                <a href="${item.link_gform}" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="btn btn-sm btn-outline-success"
+                   title="Buka Form External">
+                  <i class="bi bi-file-earmark-text"></i> Form
+                </a>
+              `;
+            }
+
+            // HTML Card Pengumuman (Grid 3 Kolom)
             const card = `
-              <div class="col-md-12">
-                <div class="card shadow-sm border-0 h-100">
-                  <div class="card-body">
+              <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm border-0 h-100 d-flex flex-column">
+                  <div class="card-body d-flex flex-column">
+                    
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                      <span class="badge ${badgeClass} p-2">${badgeText}</span>
-                      <small class="text-muted"><i class="bi bi-clock me-1"></i>${tgl}</small>
+                      <span class="badge ${badgeClass}">${badgeText}</span>
+                      <small class="text-muted"><i class="bi bi-clock me-1"></i>${new Date(item.created_at).toLocaleDateString('id-ID')}</small>
                     </div>
-                    <h4 class="card-title h5 text-primary fw-bold mt-2">${item.judul}</h4>
-                    <p class="card-text text-secondary mb-0">${item.isi}</p>
+
+                    ${gambarHTML}
+
+                    <!-- Judul Klik ke Detail -->
+                    <a href="${linkDetail}" class="text-decoration-none">
+                      <h5 class="card-title text-dark fw-bold mb-2 text-hover-primary">${item.judul}</h5>
+                    </a>
+
+                    <!-- Ringkasan Teks Maksimal 3 Baris -->
+                    <p class="card-text text-secondary mb-3 flex-grow-1" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                      ${item.isi}
+                    </p>
+
+                    <!-- Tombol Aksi di Bagian Bawah Card -->
+                    <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top gap-2">
+                      <a href="${linkDetail}" class="btn btn-sm btn-primary rounded-pill px-3">
+                        Baca Selengkapnya <i class="bi bi-arrow-right ms-1"></i>
+                      </a>
+                      ${linkHTML}
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -134,7 +192,7 @@
         } else {
           container.innerHTML = `
             <div class="col-12">
-              <div class="alert alert-warning text-center">Belum ada pengumuman yang ditujukan untuk Anda saat ini.</div>
+              <div class="alert alert-warning text-center">Belum ada pengumuman yang tersedia.</div>
             </div>
           `;
         }

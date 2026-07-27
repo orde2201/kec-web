@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Pengumuman | Portal Pengumuman</title>
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="bg-light">
+
+  <!-- Header Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="pengumuman.html">
+        <i class="bi bi-megaphone me-2"></i>Portal Pengumuman
+      </a>
+      <div class="ms-auto">
+        <a href="pengumuman.html" class="btn btn-light btn-sm fw-bold">
+          <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-9" id="detailContainer">
+        <div class="text-center py-5">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-2 text-muted">Memuat detail pengumuman...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const container = document.getElementById('detailContainer');
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get('id');
+
+      // 1. Cek Parameter ID
+      if (!id) {
+        container.innerHTML = `
+          <div class="alert alert-warning text-center p-4">
+            <h5><i class="bi bi-exclamation-triangle me-2"></i>ID Pengumuman Tidak Ditemukan</h5>
+            <p class="mb-3 text-muted">Halaman ini memerlukan ID pengumuman pada URL.</p>
+            <a href="pengumuman.html" class="btn btn-primary btn-sm">Kembali ke Daftar Pengumuman</a>
+          </div>
+        `;
+        return;
+      }
+
+      try {
+        // 2. Fetch Data Pengumuman dari Backend API
+        const response = await fetch(`http://localhost:3000/api/pengumuman/${id}`);
+        const result = await response.json();
+
+        let item = result.data ? result.data : result;
+        if (Array.isArray(item)) item = item[0];
+
+        if (!response.ok || !item) {
+          throw new Error('Data pengumuman tidak ditemukan di database.');
+        }
+
+        const isKhusus = item.instansi_id != null;
+        const badgeClass = isKhusus ? 'bg-primary' : 'bg-secondary';
+        const badgeText = isKhusus ? (item.nama_instansi || 'Internal Instansi') : 'Publik';
+        const tanggal = item.created_at 
+          ? new Date(item.created_at).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+          : '-';
+
+        // 3. Logika Render Gambar (Single & Carousel Multiple)
+        let gambarHTML = '';
+        if (item.gambar && item.gambar.trim() !== '') {
+          const gambarArray = item.gambar.split(',').map(g => g.trim()).filter(g => g !== '');
+          
+          if (gambarArray.length === 1) {
+            gambarHTML = `
+              <div class="mb-4 text-center">
+                <img src="http://localhost:3000/uploads/${gambarArray[0]}" 
+                     alt="${item.judul}" 
+                     class="img-fluid rounded shadow-sm w-100" 
+                     style="max-height: 480px; object-fit: cover;">
+              </div>
+            `;
+          } else if (gambarArray.length > 1) {
+            let indicators = '';
+            let carouselItems = '';
+            gambarArray.forEach((img, idx) => {
+              const active = idx === 0 ? 'active' : '';
+              indicators += `<button type="button" data-bs-target="#carouselDetail" data-bs-slide-to="${idx}" class="${active}"></button>`;
+              carouselItems += `
+                <div class="carousel-item ${active}">
+                  <img src="http://localhost:3000/uploads/${img}" class="d-block w-100 rounded" style="max-height: 480px; object-fit: cover;" alt="Foto ${idx + 1}">
+                </div>
+              `;
+            });
+
+            gambarHTML = `
+              <div id="carouselDetail" class="carousel slide mb-4 shadow-sm rounded" data-bs-ride="carousel">
+                <div class="carousel-indicators">${indicators}</div>
+                <div class="carousel-inner rounded">${carouselItems}</div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselDetail" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselDetail" data-bs-slide="next">
+                  <span class="carousel-control-next-icon"></span>
+                </button>
+              </div>
+            `;
+          }
+        }
+
+        // 4. Logika Link / Google Form
+        let linkHTML = '';
+        if (item.link_gform && item.link_gform.trim() !== '') {
+          linkHTML = `
+            <div class="alert alert-primary d-flex align-items-center justify-content-between flex-wrap gap-2 my-4 p-3 shadow-sm">
+              <div>
+                <i class="bi bi-file-earmark-text fs-4 me-2"></i>
+                <strong>Tautan Resmi / Form Pendaftaran:</strong>
+              </div>
+              <a href="${item.link_gform}" target="_blank" rel="noopener noreferrer" class="btn btn-primary fw-bold">
+                <i class="bi bi-box-arrow-up-right me-1"></i> Buka Tautan / Form
+              </a>
+            </div>
+          `;
+        }
+
+        // 5. Render HTML Keseluruhan
+        container.innerHTML = `
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-4 p-md-5">
+              
+              <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="badge ${badgeClass}">${badgeText}</span>
+                <small class="text-muted"><i class="bi bi-calendar3 me-1"></i>${tanggal}</small>
+              </div>
+
+              <h1 class="fw-bold mb-4 text-primary">${item.judul}</h1>
+
+              ${gambarHTML}
+
+              <div class="fs-5 text-dark mb-4" style="line-height: 1.8; white-space: pre-line;">
+                ${item.isi}
+              </div>
+
+              ${linkHTML}
+
+              <hr class="my-4">
+              
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="pengumuman.html" class="btn btn-secondary">
+                  <i class="bi bi-arrow-left me-1"></i> Kembali ke Daftar Pengumuman
+                </a>
+              </div>
+
+            </div>
+          </div>
+        `;
+
+        // Inisialisasi Slider jika multi-foto
+        const carouselEl = document.getElementById('carouselDetail');
+        if (carouselEl && typeof bootstrap !== 'undefined') {
+          new bootstrap.Carousel(carouselEl, { interval: 3500 });
+        }
+
+      } catch (error) {
+        console.error(error);
+        container.innerHTML = `
+          <div class="alert alert-danger text-center p-4">
+            <h5><i class="bi bi-exclamation-octagon me-2"></i>Gagal Memuat Detail Pengumuman</h5>
+            <p class="mb-3 text-muted">${error.message}</p>
+            <a href="pengumuman.html" class="btn btn-outline-danger btn-sm">Kembali ke Daftar Pengumuman</a>
+          </div>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>

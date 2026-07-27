@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Manajemen Berita & Pengumuman | adminHMD</title>
-
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/css/style.css">
@@ -14,66 +13,47 @@
   <div class="admin-shell">
     <div class="sidebar-backdrop" data-sidebar-close></div>
 
-    <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
+    <aside class="admin-sidebar" id="adminSidebar">
       <div class="sidebar-header">
         <a class="brand-mark" href="index.html">
           <span class="brand-icon"><i class="bi bi-grid-1x2-fill"></i></span>
           <span class="brand-copy">
             <span class="brand-title">adminHMD</span>
-            <span class="brand-subtitle">Admin Template</span>
           </span>
         </a>
       </div>
-
       <nav class="sidebar-nav">
         <a class="nav-link" href="index.html"><span class="nav-icon"><i class="bi bi-speedometer2"></i></span><span class="nav-text">Dashboard</span></a>
-        <a class="nav-link" href="users.html"><span class="nav-icon"><i class="bi bi-people"></i></span><span class="nav-text">Users</span></a>
-        <a class="nav-link" href="add-user.html"><span class="nav-icon"><i class="bi bi-person-plus"></i></span><span class="nav-text">Add User</span></a>
         <a class="nav-link active" href="alerts.html"><span class="nav-icon"><i class="bi bi-newspaper"></i></span><span class="nav-text">Berita & Pengumuman</span></a>
-        <a class="nav-link" href="settings.html"><span class="nav-icon"><i class="bi bi-gear"></i></span><span class="nav-text">Settings</span></a>
       </nav>
     </aside>
 
     <div class="admin-main">
       <nav class="navbar admin-navbar navbar-expand bg-white">
         <div class="container-fluid px-3 px-lg-4">
-          <button class="sidebar-toggle" type="button" data-sidebar-toggle>
-            <span></span><span></span><span></span>
-          </button>
-          <div class="ms-auto">
-            <a href="login.html" class="btn btn-outline-danger btn-sm"><i class="bi bi-box-arrow-right"></i> Sign Out</a>
-          </div>
+          <button class="sidebar-toggle" type="button" data-sidebar-toggle><span></span><span></span><span></span></button>
+          <div class="ms-auto"><a href="login.html" class="btn btn-outline-danger btn-sm"><i class="bi bi-box-arrow-right"></i> Sign Out</a></div>
         </div>
       </nav>
 
       <main class="container py-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2 class="h3 mb-0">Manajemen Berita & Pengumuman</h2>
-        </div>
+        <h2 class="h3 mb-4">Manajemen Berita & Pengumuman</h2>
 
-        <!-- Navigasi Tab -->
         <ul class="nav nav-tabs mb-4" id="contentTab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active fw-bold" id="pengumuman-tab" data-bs-toggle="tab" data-bs-target="#pengumuman-pane" type="button" role="tab">
-              <i class="bi bi-megaphone me-2"></i>Daftar Pengumuman Instansi
-            </button>
+          <li class="nav-item">
+            <button class="nav-link active fw-bold" id="pengumuman-tab" data-bs-toggle="tab" data-bs-target="#pengumuman-pane" type="button"><i class="bi bi-megaphone me-2"></i>Daftar Pengumuman Instansi</button>
           </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link fw-bold" id="berita-tab" data-bs-toggle="tab" data-bs-target="#berita-pane" type="button" role="tab">
-              <i class="bi bi-newspaper me-2"></i>Daftar Berita
-            </button>
+          <li class="nav-item">
+            <button class="nav-link fw-bold" id="berita-tab" data-bs-toggle="tab" data-bs-target="#berita-pane" type="button"><i class="bi bi-newspaper me-2"></i>Daftar Berita</button>
           </li>
         </ul>
 
         <div class="tab-content" id="contentTabContent">
-          
-          <!-- TAB 1: PENGUMUMAN INSTANSI -->
-          <div class="tab-pane fade show active" id="pengumuman-pane" role="tabpanel">
+          <!-- TAB PENGUMUMAN -->
+          <div class="tab-pane fade show active" id="pengumuman-pane">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5 class="fw-bold mb-0 text-primary">Data Pengumuman Active</h5>
-              <button class="btn btn-primary btn-sm" onclick="bukaModalPengumuman()">
-                <i class="bi bi-plus-lg me-1"></i> Tambah Pengumuman Instansi
-              </button>
+              <button class="btn btn-primary btn-sm" onclick="bukaModalPengumuman()"><i class="bi bi-plus-lg me-1"></i> Tambah Pengumuman</button>
             </div>
             <div class="card border-0 shadow-sm">
               <div class="card-body">
@@ -84,7 +64,7 @@
                         <th>No</th>
                         <th>Judul Pengumuman</th>
                         <th>Target Instansi</th>
-                        <th>Isi Ringkas</th>
+                        <th>Form External</th>
                         <th>Tanggal</th>
                         <th class="text-center">Aksi</th>
                       </tr>
@@ -98,13 +78,14 @@
             </div>
           </div>
 
-          <!-- TAB 2: BERITA -->
-          <div class="tab-pane fade" id="berita-pane" role="tabpanel">
+          <!-- TAB BERITA -->
+          <div class="tab-pane fade" id="berita-pane">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5 class="fw-bold mb-0 text-primary">Data Berita Active</h5>
-              <button class="btn btn-success btn-sm" onclick="bukaModalBerita()">
-                <i class="bi bi-plus-lg me-1"></i> Tambah Berita
-              </button>
+              <div>
+                <button class="btn btn-outline-info btn-sm me-2" onclick="bukaModalKategori()"><i class="bi bi-tag me-1"></i> Tambah Kategori</button>
+                <button class="btn btn-success btn-sm" onclick="bukaModalBerita()"><i class="bi bi-plus-lg me-1"></i> Tambah Berita</button>
+              </div>
             </div>
             <div class="card border-0 shadow-sm">
               <div class="card-body">
@@ -128,64 +109,80 @@
               </div>
             </div>
           </div>
-
         </div>
       </main>
 
-      <!-- MODAL 1: FORM TAMBAH PENGUMUMAN INSTANSI -->
-      <!-- MODAL: FORM TAMBAH PENGUMUMAN INSTANSI -->
-<div class="modal fade" id="modalPengumuman" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <form id="formPengumuman" enctype="multipart/form-data">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title"><i class="bi bi-megaphone me-2"></i>Tambah Pengumuman Instansi</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      <!-- MODAL PENGUMUMAN -->
+      <div class="modal fade" id="modalPengumuman" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <form id="formPengumuman" enctype="multipart/form-data">
+              <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title"><i class="bi bi-megaphone me-2"></i>Tambah Pengumuman Instansi</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Judul Pengumuman</label>
+                  <input type="text" name="judul" class="form-control" placeholder="Contoh: Pengisian Formulir Pegawai" required>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">Target Instansi</label>
+                    <select name="instansi_id" id="pengumuman_instansi_id" class="form-select" required></select>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">Gambar Surat / Lampiran</label>
+                    <input type="file" name="gambar" class="form-control" accept="image/*">
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Link Google Form / Tautan Luar</label>
+                  <input type="url" name="link_gform" class="form-control" placeholder="https://forms.gle/xyz...">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Isi Pengumuman</label>
+                  <textarea name="isi" class="form-control" rows="4" required></textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan Pengumuman</button>
+              </div>
+            </form>
+          </div>
         </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Judul Pengumuman</label>
-            <input type="text" name="judul" id="pengumuman_judul" class="form-control" placeholder="Contoh: Pengisian Formulir Pendataan Pegawai" required>
-          </div>
-          
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label class="form-label fw-semibold">Target Instansi</label>
-              <select name="instansi_id" id="pengumuman_instansi_id" class="form-select" required>
-                <option value="">-- Pilih Target Instansi --</option>
-              </select>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label fw-semibold">Gambar Surat / Lampiran (Opsional)</label>
-              <input type="file" name="gambar" id="pengumuman_gambar" class="form-control" accept="image/*">
-            </div>
-          </div>
+      </div>
 
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Link Google Form / Tautan Luar (Opsional)</label>
-            <input type="url" name="link_gform" id="pengumuman_gform" class="form-control" placeholder="https://forms.gle/xyz... atau link Google Sheets Hasil">
-            <small class="text-muted">* Tautan ini bisa di-klik langsung dari daftar arsip admin untuk melihat hasil respon.</small>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label fw-semibold">Isi Pengumuman / Catatan</label>
-            <textarea name="isi" id="pengumuman_isi" class="form-control" rows="4" placeholder="Tulis rincian pengumuman..." required></textarea>
+      <!-- MODAL KATEGORI BERITA -->
+      <div class="modal fade" id="modalKategori" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <form id="formKategori">
+              <div class="modal-header bg-info text-dark">
+                <h5 class="modal-title"><i class="bi bi-tags me-2"></i>Tambah Kategori Baru</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Nama Kategori</label>
+                  <input type="text" id="nama_kategori" name="nama_kategori" class="form-control" placeholder="Olahraga, Wisata, dll." required>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-info">Simpan Kategori</button>
+              </div>
+            </form>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-primary">Simpan Pengumuman</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+      </div>
 
-      <!-- MODAL 2: FORM TAMBAH BERITA -->
+      <!-- MODAL FORM BERITA -->
       <div class="modal fade" id="modalBerita" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
-            <form id="formBerita">
+            <form id="formBerita" enctype="multipart/form-data">
               <input type="hidden" id="edit_id" name="edit_id">
               <div class="modal-header bg-success text-white">
                 <h5 class="modal-title" id="modalTitle"><i class="bi bi-journal-plus me-2"></i>Tambah Berita Baru</h5>
@@ -194,24 +191,23 @@
               <div class="modal-body">
                 <div class="mb-3">
                   <label class="form-label fw-semibold">Judul Berita</label>
-                  <input type="text" id="judul" name="judul" class="form-control" placeholder="Masukkan judul..." required>
+                  <input type="text" id="judul" name="judul" class="form-control" required>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label class="form-label fw-semibold">Kategori Berita</label>
-                    <select id="kategori_id" name="kategori_id" class="form-select" required>
-                      <option value="">-- Pilih Kategori --</option>
-                    </select>
+                    <select id="kategori_id" name="kategori_id" class="form-select" required></select>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label class="form-label fw-semibold">Gambar Utama</label>
-                    <input type="file" id="gambar" name="gambar" class="form-control" accept="image/*">
-                    <small class="text-muted" id="infoGambar"></small>
+                    <label class="form-label fw-semibold">Gambar Berita (Bisa Pilih Banyak Foto)</label>
+                    <!-- Ditambahkan atribut MULTIPLE agar bisa upload >1 foto -->
+                    <input type="file" id="gambar" name="gambar" class="form-control" accept="image/*" multiple>
+                    <small class="text-muted">* Tahan CTRL / SHIFT untuk memilih lebih dari 1 foto</small>
                   </div>
                 </div>
                 <div class="mb-3">
                   <label class="form-label fw-semibold">Konten Berita</label>
-                  <textarea id="konten" name="konten" class="form-control" rows="5" placeholder="Tulis isi berita..." required></textarea>
+                  <textarea id="konten" name="konten" class="form-control" rows="5" required></textarea>
                 </div>
               </div>
               <div class="modal-footer">
@@ -233,15 +229,20 @@
     const API_BERITA = 'http://localhost:3000/api/berita';
     const API_PENGUMUMAN = 'http://localhost:3000/api/pengumuman';
     const API_INSTANSI = 'http://localhost:3000/api/instansi';
+    const API_KATEGORI = 'http://localhost:3000/api/kategori';
 
     let listBerita = [];
 
-    // 1. Load Dropdown Instansi & Kategori
+    // 1. Load Dropdown Options
     async function loadOptions() {
       try {
-        const res = await fetch(API_INSTANSI);
-        const result = await res.json();
-        const list = result.data || [];
+        const [resInstansi, resKategori] = await Promise.all([
+          fetch(API_INSTANSI).then(r => r.json()),
+          fetch(API_KATEGORI).then(r => r.json())
+        ]);
+
+        const listInstansi = resInstansi.data || resInstansi || [];
+        const listKategori = resKategori.data || resKategori || [];
 
         const selectPengumuman = document.getElementById('pengumuman_instansi_id');
         const selectKategori = document.getElementById('kategori_id');
@@ -249,107 +250,65 @@
         selectPengumuman.innerHTML = '<option value="">-- Pilih Target Instansi --</option>';
         selectKategori.innerHTML = '<option value="">-- Pilih Kategori Berita --</option>';
 
-        list.forEach(item => {
+        listInstansi.forEach(item => {
           selectPengumuman.innerHTML += `<option value="${item.id}">${item.nama_instansi}</option>`;
-          selectKategori.innerHTML += `<option value="${item.id}">${item.nama_instansi}</option>`;
+        });
+
+        listKategori.forEach(item => {
+          selectKategori.innerHTML += `<option value="${item.id}">${item.nama_kategori}</option>`;
         });
       } catch (err) {
         console.error('Error load options:', err);
       }
     }
 
-    // 2. Load Data Pengumuman
-    // 1. Fetch Pengumuman & Tampilkan Gambar + Link Google Form di Arsip Admin
-async function fetchPengumuman() {
-  const tbody = document.getElementById('tabelPengumumanBody');
-  try {
-    const res = await fetch(`${API_PENGUMUMAN}?instansi_id=all`);
-    const result = await res.json();
-    const data = result.data || [];
+    // 2. Fetch Pengumuman
+    async function fetchPengumuman() {
+      const tbody = document.getElementById('tabelPengumumanBody');
+      try {
+        const res = await fetch(`${API_PENGUMUMAN}?instansi_id=all`);
+        const result = await res.json();
+        const data = result.data || [];
 
-    if (data.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Belum ada pengumuman tersimpan.</td></tr>`;
-      return;
+        if (data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Belum ada pengumuman tersimpan.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = '';
+        data.forEach((item, index) => {
+          const isEveryone = item.instansi_id == null || item.instansi_id == 1;
+          const badgeClass = isEveryone ? 'bg-success' : 'bg-primary';
+          const targetText = isEveryone ? 'Everyone (Publik)' : (item.nama_instansi || 'Internal');
+          const tgl = item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID') : '-';
+
+          const imgPreview = item.gambar 
+            ? `<a href="http://localhost:3000/uploads/${item.gambar}" target="_blank" class="me-2"><img src="http://localhost:3000/uploads/${item.gambar}" width="40" height="40" class="rounded border object-fit-cover"></a>`
+            : '';
+
+          const gformBtn = item.link_gform 
+            ? `<a href="${item.link_gform}" target="_blank" class="btn btn-xs btn-outline-success me-1"><i class="bi bi-file-earmark-spreadsheet-fill"></i> Buka Form</a>`
+            : '<span class="text-muted small">-</span>';
+
+          tbody.innerHTML += `
+            <tr>
+              <td>${index + 1}</td>
+              <td><div class="d-flex align-items-center">${imgPreview}<strong>${item.judul}</strong></div></td>
+              <td><span class="badge ${badgeClass}">${targetText}</span></td>
+              <td>${gformBtn}</td>
+              <td><small class="text-muted">${tgl}</small></td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-outline-danger" onclick="hapusPengumuman(${item.id})"><i class="bi bi-trash"></i> Hapus</button>
+              </td>
+            </tr>
+          `;
+        });
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Gagal memuat data pengumuman.</td></tr>`;
+      }
     }
 
-    tbody.innerHTML = '';
-    data.forEach((item, index) => {
-      const isEveryone = item.instansi_id == null || item.instansi_id == 1;
-      const badgeClass = isEveryone ? 'bg-success' : 'bg-primary';
-      const targetText = isEveryone ? 'Everyone (Publik)' : (item.nama_instansi || 'Internal');
-      const tgl = item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID') : '-';
-
-      // Elemen Gambar Surat (Jika Ada)
-      const imgPreview = item.gambar 
-        ? `<a href="http://localhost:3000/uploads/${item.gambar}" target="_blank" class="me-2">
-            <img src="http://localhost:3000/uploads/${item.gambar}" width="40" height="40" class="rounded border object-fit-cover" title="Klik untuk lihat gambar surat">
-           </a>`
-        : '';
-
-      // Elemen Link Google Form (Jika Ada)
-      const gformBtn = item.link_gform 
-        ? `<a href="${item.link_gform}" target="_blank" class="btn btn-xs btn-outline-success me-1" title="Buka Google Form / Responses">
-            <i class="bi bi-file-earmark-spreadsheet-fill"></i> Buka Form
-           </a>`
-        : '<span class="text-muted small">-</span>';
-
-      tbody.innerHTML += `
-        <tr>
-          <td>${index + 1}</td>
-          <td>
-            <div class="d-flex align-items-center">
-              ${imgPreview}
-              <div>
-                <strong>${item.judul}</strong>
-              </div>
-            </div>
-          </td>
-          <td><span class="badge ${badgeClass}">${targetText}</span></td>
-          <td>${gformBtn}</td>
-          <td><small class="text-muted">${tgl}</small></td>
-          <td class="text-center">
-            <button class="btn btn-sm btn-outline-danger" onclick="hapusPengumuman(${item.id})">
-              <i class="bi bi-trash"></i> Hapus
-            </button>
-          </td>
-        </tr>
-      `;
-    });
-  } catch (err) {
-    console.error('Error fetch pengumuman:', err);
-    tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Gagal memuat data pengumuman.</td></tr>`;
-  }
-}
-
-// 2. Submit Form Pengumuman dengan FormData (Support File Upload)
-document.getElementById('formPengumuman').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  
-  // Menggunakan FormData karena mengirimkan File Gambar
-  const formData = new FormData(this);
-
-  try {
-    const res = await fetch(API_PENGUMUMAN, {
-      method: 'POST',
-      body: formData // Kirim multipart/form-data
-    });
-
-    const result = await res.json();
-    if (res.ok && result.success) {
-      alert('Pengumuman & Surat berhasil diterbitkan!');
-      bootstrap.Modal.getInstance(document.getElementById('modalPengumuman')).hide();
-      this.reset();
-      fetchPengumuman();
-    } else {
-      alert('Gagal: ' + result.message);
-    }
-  } catch (err) {
-    console.error('Error submit pengumuman:', err);
-    alert('Terjadi kesalahan jaringan/server.');
-  }
-});
-
-    // 3. Load Data Berita
+    // 3. Fetch Berita
     async function fetchBerita() {
       const tbody = document.getElementById('tabelBeritaBody');
       try {
@@ -363,17 +322,24 @@ document.getElementById('formPengumuman').addEventListener('submit', async funct
 
         tbody.innerHTML = '';
         listBerita.forEach((item, index) => {
-          const gambar = item.gambar 
-            ? `<img src="http://localhost:3000/uploads/${item.gambar}" width="45" height="45" class="rounded object-fit-cover me-2">` 
+          let firstImage = '';
+          if (item.gambar) {
+            const gambarArray = item.gambar.split(',');
+            firstImage = gambarArray[0].trim();
+          }
+
+          const gambarHtml = firstImage 
+            ? `<img src="http://localhost:3000/uploads/${firstImage}" width="45" height="45" class="rounded object-fit-cover me-2">` 
             : '';
+            
           const tgl = item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID') : '-';
           const penulis = item.nama_penulis || 'Admin System';
-          const kategori = item.nama_kategori || 'Umum / Everyone';
+          const kategori = item.nama_kategori || 'Umum';
 
           tbody.innerHTML += `
             <tr>
               <td>${index + 1}</td>
-              <td><div class="d-flex align-items-center">${gambar}<strong>${item.judul}</strong></div></td>
+              <td><div class="d-flex align-items-center">${gambarHtml}<strong>${item.judul}</strong></div></td>
               <td><span class="badge bg-info text-dark">${kategori}</span></td>
               <td><i class="bi bi-person me-1"></i>${penulis}</td>
               <td><small class="text-muted">${tgl}</small></td>
@@ -385,7 +351,6 @@ document.getElementById('formPengumuman').addEventListener('submit', async funct
           `;
         });
       } catch (error) {
-        console.error('Error fetching berita:', error);
         tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">Gagal memuat data berita.</td></tr>`;
       }
     }
@@ -393,47 +358,65 @@ document.getElementById('formPengumuman').addEventListener('submit', async funct
     // 4. Modal Triggers
     function bukaModalPengumuman() {
       document.getElementById('formPengumuman').reset();
-      const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPengumuman'));
-      modal.show();
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPengumuman')).show();
+    }
+
+    function bukaModalKategori() {
+      document.getElementById('formKategori').reset();
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('modalKategori')).show();
     }
 
     function bukaModalBerita() {
       resetModalForm();
-      const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalBerita'));
-      modal.show();
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('modalBerita')).show();
     }
 
     // 5. Submit Form Pengumuman
     document.getElementById('formPengumuman').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const payload = {
-        judul: document.getElementById('pengumuman_judul').value,
-        instansi_id: document.getElementById('pengumuman_instansi_id').value,
-        isi: document.getElementById('pengumuman_isi').value
-      };
+      const formData = new FormData(this);
 
       try {
-        const res = await fetch(API_PENGUMUMAN, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
+        const res = await fetch(API_PENGUMUMAN, { method: 'POST', body: formData });
         const result = await res.json();
         if (res.ok && result.success) {
           alert('Pengumuman berhasil diterbitkan!');
           bootstrap.Modal.getInstance(document.getElementById('modalPengumuman')).hide();
+          this.reset();
           fetchPengumuman();
         } else {
           alert('Gagal: ' + result.message);
         }
       } catch (err) {
-        console.error('Error submit pengumuman:', err);
         alert('Terjadi kesalahan koneksi.');
       }
     });
 
-    // 6. Submit Form Berita
+    // 6. Submit Form Kategori Baru
+    document.getElementById('formKategori').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const payload = { nama_kategori: document.getElementById('nama_kategori').value };
+
+      try {
+        const res = await fetch(API_KATEGORI, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        
+        if (res.ok) {
+          alert('Kategori berhasil ditambahkan!');
+          bootstrap.Modal.getInstance(document.getElementById('modalKategori')).hide();
+          loadOptions();
+        } else {
+          alert('Gagal menambahkan kategori.');
+        }
+      } catch (err) {
+        console.error('Error:', err);
+      }
+    });
+
+    // 7. Submit Form Berita
     document.getElementById('formBerita').addEventListener('submit', async function(e) {
       e.preventDefault();
       const editId = document.getElementById('edit_id').value;
@@ -463,31 +446,17 @@ document.getElementById('formPengumuman').addEventListener('submit', async funct
       }
     });
 
-    // 7. Actions Delete
+    // 8. Delete & Edit
     async function hapusPengumuman(id) {
-      if (!confirm('Apakah Anda yakin ingin menghapus pengumuman ini?')) return;
-      try {
-        const res = await fetch(`${API_PENGUMUMAN}/${id}`, { method: 'DELETE' });
-        if (res.ok) {
-          alert('Pengumuman dihapus.');
-          fetchPengumuman();
-        }
-      } catch (err) {
-        console.error(err);
-      }
+      if (!confirm('Hapus pengumuman ini?')) return;
+      await fetch(`${API_PENGUMUMAN}/${id}`, { method: 'DELETE' });
+      fetchPengumuman();
     }
 
     async function hapusBerita(id) {
-      if (!confirm('Apakah Anda yakin ingin menghapus berita ini?')) return;
-      try {
-        const res = await fetch(`${API_BERITA}/${id}`, { method: 'DELETE' });
-        if (res.ok) {
-          alert('Berita dihapus.');
-          fetchBerita();
-        }
-      } catch (err) {
-        console.error(err);
-      }
+      if (!confirm('Hapus berita ini?')) return;
+      await fetch(`${API_BERITA}/${id}`, { method: 'DELETE' });
+      fetchBerita();
     }
 
     function editBerita(id) {
@@ -500,8 +469,7 @@ document.getElementById('formPengumuman').addEventListener('submit', async funct
       document.getElementById('konten').value = item.konten || '';
       document.getElementById('modalTitle').innerHTML = '<i class="bi bi-pencil-square me-2"></i>Edit Berita';
       
-      const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('modalBerita'));
-      modal.show();
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('modalBerita')).show();
     }
 
     function resetModalForm() {

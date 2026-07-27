@@ -40,11 +40,12 @@ CREATE TABLE users (
 );
 
 -- D. Tabel Berita
+-- D. Tabel Berita
 CREATE TABLE berita (
     id SERIAL PRIMARY KEY,
     judul VARCHAR(255) NOT NULL,
     konten TEXT NOT NULL,
-    gambar VARCHAR(255),
+    gambar TEXT, -- Diubah ke TEXT untuk menampung banyak nama file
     kategori_id INT REFERENCES kategori_berita(id) ON DELETE CASCADE,
     penulis_id INT REFERENCES users(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

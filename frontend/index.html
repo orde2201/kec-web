@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>eLEARNING - eLearning HTML Template</title>
+    <title>Web Kecamatan Rumbia</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -42,24 +42,27 @@
 
 
     <!-- Navbar Start --> 
-
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
         <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            
             <h2 class="m-0 text-dark"><img src="img/logo.png" style="transform: scale(0.3); margin: -13vw; padding-right: 6vw;" > Web Kecamatan Rumbia</h2>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <div class="navbar-nav ms-auto p-4 p-lg-0 align-items-lg-center">
                 <a href="index.html" class="nav-item nav-link active">Beranda</a>
-                <a href="about.html" class="nav-item nav-link">Tentang</a>
-                <a href="courses.html" class="nav-item nav-link">Pengumuman</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Search</a>
+                <a href="courses.html" class="nav-item nav-link">Berita Acara</a>
+                
+                <!-- INPUT PENCARIAN (MENGARAHKAN LANGSUNG KE COURSES.HTML) -->
+                <div class="nav-item px-3 py-2 py-lg-0">
+                    <div class="input-group" style="max-width: 280px;">
+                        <input type="text" id="search-input" class="form-control form-control-sm border-primary" placeholder="Cari judul berita..." aria-label="Cari berita">
+                        <button class="btn btn-sm btn-primary" type="button" id="search-btn" title="Cari Berita">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
                 </div>
-                <a href="contact.html" class="nav-item nav-link">Contact</a>
             </div>
             <a href="admin/html/index.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Login<i class="fa fa-arrow-right ms-3"></i></a>
         </div>
@@ -137,7 +140,7 @@
     <!-- Service End -->
 
 
-   <!-- About Start -->
+    <!-- About Start -->
     <div class="container-xxl py-5">
         <div class="container">
             <div class="row g-5">
@@ -150,8 +153,8 @@
                     <h6 class="section-title bg-white text-start text-primary pe-3">Tentang Kecamatan Rumbia</h6>
                     <h1 id="about-title" class="mb-4">Selamat Datang di Website Kecamatan Rumbia</h1>
                     <div id="about-desc-container" class="text-break" style="word-break: break-word; overflow-wrap: break-word;">
-    <p class="mb-4">Memuat deskripsi...</p>
-</div>
+                        <p class="mb-4">Memuat deskripsi...</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -159,8 +162,7 @@
     <!-- About End -->
 
 
-    <!-- news and annauncmen -->
-    <!-- news and annauncmen -->
+    <!-- News Section -->
     <div class="container-xxl py-5 category">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
@@ -168,30 +170,32 @@
                 <h1 class="mb-5">Berita dan Pengumuman Terbaru</h1>
             </div>
             
-            <!-- Wadah Data Berita yang sudah diperbaiki -->
+            <!-- Wadah Data Berita -->
             <div class="row g-4 justify-content-center" id="berita-container">
                 <div class="text-center">Memuat berita...</div>
             </div>
 
         </div>
     </div>
-    <!-- Categories End -->
+    <!-- News Section End -->
+
     <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Lokasi</h6>
-                <h1 class="mb-5">Lokasi Kami</h1>
+        <h6 class="section-title bg-white text-center text-primary px-3">Lokasi</h6>
+        <h1 class="mb-5">Lokasi Kami</h1>
     </div>
     
-    <!-- Paste kode Iframe dari Google Maps di bawah ini -->
+    <!-- Google Maps -->
+    <div class="text-center my-4">
     <iframe 
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.666427009756!2d106.82496411476887!3d-6.175392395529199!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5d2e764b12d%3A0x3d2ad6e1e0e9bcc8!2sMonumen%20Nasional!5e0!3m2!1sid!2sid!4v1690000000000!5m2!1sid!2sid" 
         width="600" 
         height="450" 
-        style="border:0;" 
-        
+        style="border:0; max-width: 100%;" 
         allowfullscreen="" 
         loading="lazy" 
         referrerpolicy="no-referrer-when-downgrade">
     </iframe>
+</div>
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
@@ -217,8 +221,6 @@
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                
-                
             </div>
         </div>
         <div class="container">
@@ -226,8 +228,6 @@
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                         &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
-
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
                         Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a><br><br>
                         Distributed By <a class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
                     </div>
@@ -245,10 +245,8 @@
     </div>
     <!-- Footer End -->
 
-
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -260,21 +258,30 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-</body>
+
+    <!-- SCRIPT MEMUAT BERITA DI BERANDA -->
+    <!-- SCRIPT MEMUAT BERITA DI BERANDA -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Panggil API backend Node.js
         fetch('http://localhost:3000/api/berita')
             .then(response => response.json())
             .then(data => {
                 const container = document.getElementById('berita-container');
-                container.innerHTML = ''; // Kosongkan wadah loading
+                container.innerHTML = '';
                 
                 data.forEach(berita => {
-                    const gambarUrl = berita.gambar ? `http://localhost:3000/uploads/${berita.gambar}` : 'img/default.jpg';
+                    // ====================================================
+                    // PERBAIKAN: Ambil foto pertama dari koma jika multi-foto
+                    // ====================================================
+                    let gambarUrl = 'img/default.jpg';
+                    if (berita.gambar && berita.gambar.trim() !== '') {
+                        const firstImage = berita.gambar.split(',')[0].trim();
+                        if (firstImage) {
+                            gambarUrl = `http://localhost:3000/uploads/${firstImage}`;
+                        }
+                    }
+
                     const tanggal = new Date(berita.created_at).toLocaleDateString('id-ID');
-                    
-                    // PERBAIKAN: Buat link detail berita berdasarkan ID berita
                     const linkDetail = `detail-berita.html?id=${berita.id}`;
 
                     const html = `
@@ -285,15 +292,13 @@
                                         <img class="img-fluid" src="${gambarUrl}" alt="${berita.judul}" style="height: 250px; width: 100%; object-fit: cover;">
                                     </a>
                                     <div class="w-100 d-flex justify-content-center position-absolute bottom-0 start-0 mb-4">
-                                        <!-- Tombol Baca Selengkapnya diarahkan ke linkDetail -->
                                         <a href="${linkDetail}" class="flex-shrink-0 btn btn-sm btn-primary px-3" style="border-radius: 30px;">Baca Selengkapnya</a>
                                     </div>
                                 </div>
                                 <div class="text-center p-4 pb-0 flex-grow-1">
                                     <div class="mb-3">
-                                        <span class="badge bg-primary">${berita.nama_kategori}</span>
+                                        <span class="badge bg-primary">${berita.nama_kategori || 'Umum'}</span>
                                     </div>
-                                    <!-- Judul juga diarahkan ke linkDetail -->
                                     <a href="${linkDetail}" class="text-dark">
                                         <h5 class="mb-4 text-hover-primary">${berita.judul}</h5>
                                     </a>
@@ -317,41 +322,63 @@
             })
             .catch(error => {
                 console.error('Error fetching berita:', error);
-                document.getElementById('berita-container').innerHTML = '<div class="text-danger text-center w-100 py-4">Gagal memuat berita dari server.</div>';
+                document.getElementById('berita-container').innerHTML = 
+                    '<div class="text-danger text-center w-100 py-4">Gagal memuat berita dari server.</div>';
             });
     });
+</script>
+    <!-- LOGIKA REDIRECT PENCARIAN KE COURSES.HTML -->
+    <script>
+        function executeSearchRedirect() {
+            const keyword = document.getElementById('search-input').value.trim();
+            if (keyword !== '') {
+                // Redirect ke courses.html membawa query parameter ?q=...
+                window.location.href = `courses.html?q=${encodeURIComponent(keyword)}`;
+            } else {
+                // Jika kosong, langsung buka courses.html
+                window.location.href = `courses.html`;
+            }
+        }
 
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Fetch data pengaturan beranda
-        fetch('http://localhost:3000/api/pengaturan')
-            .then(response => response.json())
-            .then(data => {
-                if(data && !data.error) {
-                    
-                    // 1. UPDATE FOTO HERO (SOLUSI OWL CAROUSEL)
-                    if(data.hero_image) {
-                        // Ambil SEMUA elemen yang memiliki id="hero-img" (termasuk hasil kloningan carousel)
-                        const heroImages = document.querySelectorAll('[id="hero-img"]');
-                        heroImages.forEach(img => {
-                            img.src = `http://localhost:3000/uploads/${data.hero_image}`;
-                        });
-                    }
-                    
-                    // 2. UPDATE TENTANG RUMBIA
-                    if(data.about_image) {
-                        document.getElementById('about-img').src = `http://localhost:3000/uploads/${data.about_image}`;
-                    }
-                    if(data.about_title) {
-                        document.getElementById('about-title').innerText = data.about_title;
-                    }
-                    if(data.about_desc) {
-                        document.getElementById('about-desc-container').innerHTML = `<p class="mb-4">${data.about_desc.replace(/\n/g, '<br>')}</p>`;
-                    }
+        document.addEventListener("DOMContentLoaded", function() {
+            // Klik tombol cari
+            document.getElementById('search-btn').addEventListener('click', executeSearchRedirect);
+
+            // Tekan tombol Enter pada input pencarian
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    executeSearchRedirect();
                 }
-            })
-            .catch(error => console.error('Error fetching pengaturan:', error));
-    });
-</script>
+            });
+        });
+    </script>
+
+    <!-- SCRIPT PENGATURAN BERANDA -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('http://localhost:3000/api/pengaturan')
+                .then(response => response.json())
+                .then(data => {
+                    if(data && !data.error) {
+                        if(data.hero_image) {
+                            const heroImages = document.querySelectorAll('[id="hero-img"]');
+                            heroImages.forEach(img => {
+                                img.src = `http://localhost:3000/uploads/${data.hero_image}`;
+                            });
+                        }
+                        if(data.about_image) {
+                            document.getElementById('about-img').src = `http://localhost:3000/uploads/${data.about_image}`;
+                        }
+                        if(data.about_title) {
+                            document.getElementById('about-title').innerText = data.about_title;
+                        }
+                        if(data.about_desc) {
+                            document.getElementById('about-desc-container').innerHTML = `<p class="mb-4">${data.about_desc.replace(/\n/g, '<br>')}</p>`;
+                        }
+                    }
+                })
+                .catch(error => console.error('Error fetching pengaturan:', error));
+        });
+    </script>
+</body>
 </html>
