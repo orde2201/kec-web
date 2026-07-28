@@ -3,7 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const { Pool } = require('pg');
+const nodemailer = require('nodemailer');
 
 // ==========================================
 // 1. INISIALISASI APP & KONFIGURASI DATABASE
@@ -21,16 +23,107 @@ const pool = new Pool({
 });
 
 // ==========================================
-// 2. MIDDLEWARE GLOBAL
+// 2. KONFIGURASI NODEMAILER (PENGIRIM EMAIL)
+// ==========================================
+const transporter = nodemailer.createTransport({
+  service: process.env.EMAIL_SERVICE || 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER || 'email.instansi@gmail.com',
+    pass: process.env.EMAIL_PASS || 'password-aplikasi-smtp',
+  },
+});
+
+// Helper: Kirim Email Notifikasi Pengumuman
+async function kirimEmailPengumuman({ id, judul, isi, link_gform, targetInstansiId }) {
+  try {
+    let emailQuery = '';
+    let queryParams = [];
+
+    if (!targetInstansiId || targetInstansiId == '1') {
+      emailQuery = `SELECT email FROM users WHERE email IS NOT NULL AND email != ''`;
+    } else {
+      emailQuery = `SELECT email FROM users WHERE instansi_id = $1 AND email IS NOT NULL AND email != ''`;
+      queryParams.push(targetInstansiId);
+    }
+
+    const { rows } = await pool.query(emailQuery, queryParams);
+    const emailList = rows.map(u => u.email).filter(Boolean);
+
+    if (emailList.length === 0) {
+      console.log('ℹ️ Tidak ada email user yang ditemukan untuk target instansi ini.');
+      return;
+    }
+
+    let namaTarget = 'Everyone / Publik';
+    if (targetInstansiId && targetInstansiId != '1') {
+      const resInstansi = await pool.query('SELECT nama_instansi FROM instansi WHERE id = $1', [targetInstansiId]);
+      if (resInstansi.rows.length > 0) {
+        namaTarget = resInstansi.rows[0].nama_instansi;
+      }
+    }
+
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:4000';
+    const linkPengumumanPortal = `${frontendUrl}/detail-pengumuman.html?id=${id}`;
+
+    const mailOptions = {
+      from: `"${process.env.EMAIL_FROM_NAME || 'Portal Kecamatan Rumbia'}" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER,
+      bcc: emailList,
+      subject: `[PENGUMUMAN - KEC RUMBIA untuk ${namaTarget}] ${judul}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px;">
+          <h2 style="color: #0d6efd; margin-top: 0;">${judul}</h2>
+          <p style="font-size: 13px; color: #6c757d;">Target Instansi: <strong>${namaTarget}</strong></p>
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+          
+          <div style="font-size: 15px; margin-bottom: 20px; white-space: pre-line;">
+            ${isi}
+          </div>
+
+          <div style="margin-top: 25px; text-align: center;">
+            <a href="${linkPengumumanPortal}" target="_blank" style="background-color: #0d6efd; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 6px; display: inline-block; font-weight: bold; font-size: 14px;">
+              🌐 Baca Pengumuman di Portal
+            </a>
+          </div>
+
+          ${link_gform ? `
+            <div style="margin-top: 12px; text-align: center;">
+              <a href="${link_gform}" target="_blank" style="background-color: #198754; color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 6px; display: inline-block; font-weight: bold; font-size: 13px;">
+                📋 Buka Form Lampiran / Google Form
+              </a>
+            </div>
+          ` : ''}
+
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0 15px 0;">
+          <p style="font-size: 12px; color: #888; text-align: center;">
+            Jika tombol tidak bisa diklik, salin link berikut ke browser Anda:<br>
+            <a href="${linkPengumumanPortal}" style="color: #0d6efd;">${linkPengumumanPortal}</a>
+          </p>
+        </div>
+      `
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`📧 Notifikasi email berhasil dikirim ke ${emailList.length} user. Message ID: ${info.messageId}`);
+  } catch (err) {
+    console.error('❌ Gagal mengirim email pengumuman:', err.message);
+  }
+}
+
+// ==========================================
+// 3. MIDDLEWARE GLOBAL & MULTER
 // ==========================================
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// ==========================================
-// 3. KONFIGURASI MULTER (UPLOAD GAMBAR)
-// ==========================================
+// Pastikan folder uploads tersedia
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+app.use('/uploads', express.static(uploadDir));
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -41,89 +134,81 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-
 // ==========================================
 // 4. ENDPOINTS MASTER KATEGORI & INSTANSI
 // ==========================================
 
-// A. Ambil Semua Kategori Berita (GET) - BARU
+// GET Semua Kategori
 app.get('/api/kategori', async (req, res) => {
   try {
     const query = 'SELECT id, nama_kategori FROM kategori_berita ORDER BY id ASC';
     const { rows } = await pool.query(query);
     res.json({ success: true, data: rows });
   } catch (err) {
-    console.error('Error GET /api/kategori:', err);
     res.status(500).json({ success: false, message: err.message, data: [] });
   }
 });
 
-// B. Ambil Semua Instansi (GET)
+// POST Tambah Kategori Berita Baru
+app.post('/api/kategori', async (req, res) => {
+  const { nama_kategori } = req.body;
+  if (!nama_kategori || nama_kategori.trim() === '') {
+    return res.status(400).json({ success: false, message: 'Nama kategori wajib diisi!' });
+  }
+
+  const cleanNama = nama_kategori.trim();
+  try {
+    const query = 'INSERT INTO kategori_berita (nama_kategori) VALUES ($1) RETURNING *';
+    const { rows } = await pool.query(query, [cleanNama]);
+    
+    // Sinkronkan sequence ID Postgres
+    await pool.query("SELECT setval('kategori_berita_id_seq', (SELECT MAX(id) FROM kategori_berita))");
+
+    res.status(201).json({ success: true, message: 'Kategori berhasil ditambahkan!', data: rows[0] });
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(400).json({ success: false, message: 'Nama kategori tersebut sudah terdaftar!' });
+    }
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// GET Semua Instansi
 app.get('/api/instansi', async (req, res) => {
   try {
     const query = 'SELECT id, nama_instansi FROM instansi ORDER BY id ASC';
     const { rows } = await pool.query(query);
     res.json({ success: true, data: rows });
   } catch (err) {
-    console.error('Error GET /api/instansi:', err);
     res.status(500).json({ success: false, message: err.message, data: [] });
   }
 });
 
-// C. Tambah Instansi Baru (+ OTOMATIS SYNC KE KATEGORI BERITA)
+// POST Tambah Instansi (Auto Sync dengan Kategori Berita)
+// POST Tambah Instansi (Tanpa Sync ke Kategori Berita)
 app.post('/api/instansi', async (req, res) => {
   const { nama_instansi } = req.body;
-
   if (!nama_instansi || nama_instansi.trim() === '') {
-    return res.status(400).json({ 
-      success: false, 
-      message: 'Nama instansi wajib diisi!' 
-    });
+    return res.status(400).json({ success: false, message: 'Nama instansi wajib diisi!' });
   }
 
   const cleanNama = nama_instansi.trim();
-
   try {
-    // 1. Simpan ke tabel instansi
-    const { rows } = await pool.query(
-      'INSERT INTO instansi (nama_instansi) VALUES ($1) RETURNING *',
-      [cleanNama]
-    );
-    const newInstansi = rows[0];
-
-    // 2. Otomatis buatkan kategori_berita dengan ID & Nama yang sejajar
-    await pool.query(
-      'INSERT INTO kategori_berita (id, nama_kategori) VALUES ($1, $2) ON CONFLICT (id) DO UPDATE SET nama_kategori = EXCLUDED.nama_kategori',
-      [newInstansi.id, newInstansi.nama_instansi]
-    );
-
-    // 3. Sync Sequence Kategori
-    await pool.query("SELECT setval('kategori_berita_id_seq', (SELECT MAX(id) FROM kategori_berita))");
-
-    res.status(201).json({ 
-      success: true, 
-      message: 'Instansi & Kategori berhasil ditambahkan!', 
-      data: newInstansi 
-    });
+    const { rows } = await pool.query('INSERT INTO instansi (nama_instansi) VALUES ($1) RETURNING *', [cleanNama]);
+    res.status(201).json({ success: true, message: 'Instansi berhasil ditambahkan!', data: rows[0] });
   } catch (err) {
-    console.error('Error POST /api/instansi:', err);
     if (err.code === '23505') {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Nama instansi tersebut sudah terdaftar di database!' 
-      });
+      return res.status(400).json({ success: false, message: 'Nama instansi tersebut sudah terdaftar!' });
     }
-    res.status(500).json({ 
-      success: false, 
-      message: err.message 
-    });
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 
+// ==========================================
+// 5. ENDPOINTS BERITA
+// ==========================================
 
-// ==========================================
-// ENDPOINTS API BERITA (MULTI-FOTO SUPPORT)
-// ==========================================
+// GET Semua Berita
 app.get('/api/berita', async (req, res) => {
   try {
     const query = `
@@ -140,8 +225,8 @@ app.get('/api/berita', async (req, res) => {
   }
 });
 
+// GET Detail Berita
 app.get('/api/berita/:id', async (req, res) => {
-  const { id } = req.params;
   try {
     const query = `
       SELECT b.*, k.nama_kategori, u."Nama" AS nama_penulis 
@@ -150,7 +235,7 @@ app.get('/api/berita/:id', async (req, res) => {
       LEFT JOIN users u ON b.penulis_id = u.id 
       WHERE b.id = $1
     `;
-    const { rows } = await pool.query(query, [id]);
+    const { rows } = await pool.query(query, [req.params.id]);
     if (rows.length === 0) return res.status(404).json({ error: "Berita tidak ditemukan" });
     res.json(rows[0]);
   } catch (err) {
@@ -158,28 +243,22 @@ app.get('/api/berita/:id', async (req, res) => {
   }
 });
 
-// TAMBAH BERITA (Mendukung Multi-Foto hingga 10 file)
+// POST Tambah Berita
 app.post('/api/berita', upload.array('gambar', 10), async (req, res) => {
   const { judul, konten, kategori_id, penulis_id } = req.body;
-  const gambarString = (req.files && req.files.length > 0) 
-    ? req.files.map(f => f.filename).join(',') 
-    : null;
+  const gambarString = (req.files && req.files.length > 0) ? req.files.map(f => f.filename).join(',') : null;
 
   try {
-    const query = `
-      INSERT INTO berita (judul, konten, gambar, kategori_id, penulis_id) 
-      VALUES ($1, $2, $3, $4, $5) RETURNING *
-    `;
+    const query = `INSERT INTO berita (judul, konten, gambar, kategori_id, penulis_id) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
     const values = [judul, konten, gambarString, kategori_id || 1, penulis_id || 1];
     const { rows } = await pool.query(query, values);
     res.status(201).json({ message: 'Berita berhasil ditambahkan', data: rows[0] });
   } catch (err) {
-    console.error('Error POST /berita:', err);
     res.status(500).json({ error: err.message });
   }
 });
 
-// EDIT BERITA (Mendukung Multi-Foto)
+// PUT Edit Berita
 app.put('/api/berita/:id', upload.array('gambar', 10), async (req, res) => {
   const { id } = req.params;
   const { judul, konten, kategori_id } = req.body;
@@ -189,22 +268,10 @@ app.put('/api/berita/:id', upload.array('gambar', 10), async (req, res) => {
     if (oldRes.rows.length === 0) return res.status(404).json({ error: "Berita tidak ditemukan" });
 
     const oldBerita = oldRes.rows[0];
-    const gambarString = (req.files && req.files.length > 0) 
-      ? req.files.map(f => f.filename).join(',') 
-      : oldBerita.gambar;
+    const gambarString = (req.files && req.files.length > 0) ? req.files.map(f => f.filename).join(',') : oldBerita.gambar;
 
-    const updateQuery = `
-      UPDATE berita 
-      SET judul = $1, konten = $2, kategori_id = $3, gambar = $4 
-      WHERE id = $5 RETURNING *
-    `;
-    const values = [
-      judul || oldBerita.judul, 
-      konten || oldBerita.konten, 
-      kategori_id || oldBerita.kategori_id, 
-      gambarString, 
-      id
-    ];
+    const updateQuery = `UPDATE berita SET judul = $1, konten = $2, kategori_id = $3, gambar = $4 WHERE id = $5 RETURNING *`;
+    const values = [judul || oldBerita.judul, konten || oldBerita.konten, kategori_id || oldBerita.kategori_id, gambarString, id];
 
     const { rows } = await pool.query(updateQuery, values);
     res.json({ message: 'Berita berhasil diperbarui', data: rows[0] });
@@ -213,6 +280,7 @@ app.put('/api/berita/:id', upload.array('gambar', 10), async (req, res) => {
   }
 });
 
+// DELETE Berita
 app.delete('/api/berita/:id', async (req, res) => {
   try {
     await pool.query('DELETE FROM berita WHERE id = $1', [req.params.id]);
@@ -223,8 +291,10 @@ app.delete('/api/berita/:id', async (req, res) => {
 });
 
 // ==========================================
-// ENDPOINTS PENGUMUMAN
+// 6. ENDPOINTS PENGUMUMAN
 // ==========================================
+
+// GET Pengumuman
 app.get('/api/pengumuman', async (req, res) => {
   const { instansi_id } = req.query;
   try {
@@ -233,7 +303,7 @@ app.get('/api/pengumuman', async (req, res) => {
 
     if (instansi_id === 'all') {
       query += ` ORDER BY p.created_at DESC`;
-    } else if (instansi_id && instansi_id !== 'null') {
+    } else if (instansi_id && instansi_id !== 'null' && instansi_id !== 'undefined' && instansi_id !== '') {
       query += ` WHERE p.instansi_id = $1 OR p.instansi_id IS NULL OR p.instansi_id = 1 ORDER BY p.created_at DESC`;
       params.push(instansi_id);
     } else {
@@ -247,8 +317,28 @@ app.get('/api/pengumuman', async (req, res) => {
   }
 });
 
+// GET Detail Pengumuman ID
+app.get('/api/pengumuman/:id', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT p.*, i.nama_instansi 
+      FROM pengumuman p 
+      LEFT JOIN instansi i ON p.instansi_id = i.id 
+      WHERE p.id = $1
+    `, [req.params.id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Pengumuman tidak ditemukan.' });
+    }
+    res.json({ success: true, data: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// POST Tambah Pengumuman
 app.post('/api/pengumuman', upload.single('gambar'), async (req, res) => {
-  const { judul, isi, instansi_id, link_gform } = req.body;
+  const { judul, isi, instansi_id, link_gform, kirim_email } = req.body;
   const gambar = req.file ? req.file.filename : null;
 
   if (!judul || !isi) {
@@ -259,15 +349,71 @@ app.post('/api/pengumuman', upload.single('gambar'), async (req, res) => {
     const targetInstansi = (instansi_id == '1' || !instansi_id) ? null : instansi_id;
     const query = `
       INSERT INTO pengumuman (judul, isi, instansi_id, link_gform, gambar) 
-      VALUES ($1, $2, $3, $4, $5) RETURNING *
+      VALUES ($1, $2, $3, $4, $5) 
+      RETURNING *
     `;
-    const { rows } = await pool.query(query, [judul, isi, targetInstansi, link_gform || null, gambar]);
-    res.status(201).json({ success: true, message: 'Pengumuman berhasil ditambahkan!', data: rows[0] });
+    const values = [judul, isi, targetInstansi, link_gform || null, gambar];
+    const { rows } = await pool.query(query, values);
+    const newPengumuman = rows[0];
+
+    if (kirim_email === 'true' || kirim_email === true) {
+      kirimEmailPengumuman({
+        id: newPengumuman.id,
+        judul: newPengumuman.judul,
+        isi: newPengumuman.isi,
+        link_gform: newPengumuman.link_gform,
+        targetInstansiId: newPengumuman.instansi_id
+      });
+    }
+
+    res.status(201).json({ success: true, message: 'Pengumuman berhasil diterbitkan!', data: newPengumuman });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 });
 
+// PUT Edit Pengumuman
+app.put('/api/pengumuman/:id', upload.single('gambar'), async (req, res) => {
+  const { id } = req.params;
+  const { judul, isi, instansi_id, link_gform, kirim_email } = req.body;
+
+  try {
+    const oldRes = await pool.query('SELECT * FROM pengumuman WHERE id = $1', [id]);
+    if (oldRes.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Pengumuman tidak ditemukan' });
+    }
+
+    const oldData = oldRes.rows[0];
+    const gambar = req.file ? req.file.filename : oldData.gambar;
+    const targetInstansi = (instansi_id == '1' || !instansi_id) ? null : instansi_id;
+
+    const updateQuery = `
+      UPDATE pengumuman 
+      SET judul = $1, isi = $2, instansi_id = $3, link_gform = $4, gambar = $5 
+      WHERE id = $6 
+      RETURNING *
+    `;
+    const values = [judul || oldData.judul, isi || oldData.isi, targetInstansi, link_gform || oldData.link_gform, gambar, id];
+    const { rows } = await pool.query(updateQuery, values);
+    const updatedPengumuman = rows[0];
+
+    if (kirim_email === 'true' || kirim_email === true) {
+      kirimEmailPengumuman({
+        id: updatedPengumuman.id,
+        judul: updatedPengumuman.judul,
+        isi: updatedPengumuman.isi,
+        link_gform: updatedPengumuman.link_gform,
+        targetInstansiId: updatedPengumuman.instansi_id
+      });
+    }
+
+    res.json({ success: true, message: 'Pengumuman berhasil diperbarui!', data: updatedPengumuman });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// DELETE Pengumuman
 app.delete('/api/pengumuman/:id', async (req, res) => {
   try {
     await pool.query('DELETE FROM pengumuman WHERE id = $1', [req.params.id]);
@@ -276,58 +422,63 @@ app.delete('/api/pengumuman/:id', async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 });
-// Endpoint Detail Pengumuman berdasarkan ID
-app.get('/api/pengumuman/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
 
-    // PERBAIKAN: Gunakan pool.query (bukan db.query)
-    const result = await pool.query(`
-      SELECT p.*, i.nama_instansi 
-      FROM pengumuman p 
-      LEFT JOIN instansi i ON p.instansi_id = i.id 
-      WHERE p.id = $1
-    `, [id]);
+// ==========================================
+// HELPER: HITUNG UKURAN FOLDER UPLOADS
+// ==========================================
+function getFolderSize(dirPath) {
+  let totalSize = 0;
+  if (!fs.existsSync(dirPath)) return 0;
 
-    if (result.rows.length === 0) {
-      return res.status(404).json({ 
-        success: false, 
-        message: 'Pengumuman tidak ditemukan.' 
-      });
+  const files = fs.readdirSync(dirPath);
+  for (const file of files) {
+    const filePath = path.join(dirPath, file);
+    const stats = fs.statSync(filePath);
+    if (stats.isFile()) {
+      totalSize += stats.size;
+    } else if (stats.isDirectory()) {
+      totalSize += getFolderSize(filePath);
     }
+  }
+  return totalSize;
+}
 
-    res.json({ 
-      success: true, 
-      data: result.rows[0] 
+// ==========================================
+// ENDPOINT: DETEKSI PENGGUNAAN STORAGE
+// ==========================================
+app.get('/api/storage-stats', (req, res) => {
+  try {
+    const uploadDir = path.join(__dirname, 'uploads');
+    
+    // Hitung total byte folder uploads
+    const totalBytes = getFolderSize(uploadDir);
+    const uploadsSizeMB = parseFloat((totalBytes / (1024 * 1024)).toFixed(2));
+    
+    // Kuota penyimpanan aplikasi (Default: 1024 MB / 1 GB)
+    const maxQuotaMB = parseInt(process.env.MAX_STORAGE_QUOTA_MB || '1024', 10);
+
+    res.json({
+      success: true,
+      data: {
+        uploadsSizeMB: uploadsSizeMB,
+        maxQuotaMB: maxQuotaMB,
+        freeDiskGB: 20,   // Nilai estimasi / default fisik disk
+        totalDiskGB: 50
+      }
     });
-  } catch (error) {
-    console.error('Error Get Detail Pengumuman:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Terjadi kesalahan pada server backend: ' + error.message 
-    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message, data: null });
   }
 });
-
-
-
 // ==========================================
-// 6. ENDPOINTS MASTER USERS & AUTHENTICATION
+// 7. ENDPOINTS USERS & AUTHENTICATION
 // ==========================================
 
-// A. Ambil Semua Users (GET)
+// GET Semua Users
 app.get('/api/users', async (req, res) => {
   try {
     const query = `
-      SELECT 
-        u.id, 
-        u."Nama", 
-        u.email, 
-        u.phone, 
-        u."hakAkses", 
-        u.notes, 
-        u.instansi_id, 
-        i.nama_instansi 
+      SELECT u.id, u."Nama", u.email, u.phone, u."hakAkses", u.notes, u.instansi_id, i.nama_instansi 
       FROM users u 
       LEFT JOIN instansi i ON u.instansi_id = i.id 
       ORDER BY u.id ASC
@@ -335,18 +486,14 @@ app.get('/api/users', async (req, res) => {
     const { rows } = await pool.query(query);
     res.json({ success: true, data: rows });
   } catch (err) {
-    console.error('Error GET /api/users:', err);
     res.status(500).json({ success: false, message: err.message, data: [] });
   }
 });
 
-// B. Tambah User Baru (POST)
+// POST Tambah User Baru
 app.post('/api/add-users', async (req, res) => {
   const { Nama, email, password, phone, hakAkses, instansi_id, notes } = req.body;
-
-  if (!password) {
-    return res.status(400).json({ success: false, message: 'Password wajib diisi!' });
-  }
+  if (!password) return res.status(400).json({ success: false, message: 'Password wajib diisi!' });
 
   try {
     const query = `
@@ -354,27 +501,17 @@ app.post('/api/add-users', async (req, res) => {
       VALUES ($1, $2, $3, $4, $5, $6, $7) 
       RETURNING id, "Nama", email, phone, "hakAkses", instansi_id, notes
     `;
-    const values = [Nama, email, password, phone, hakAkses, instansi_id, notes || null];
+    const values = [Nama, email, password, phone, hakAkses || 'User', instansi_id, notes || null];
     const { rows } = await pool.query(query, values);
-
-    res.status(201).json({ 
-      success: true, 
-      message: 'User baru berhasil ditambahkan!', 
-      data: rows[0] 
-    });
+    res.status(201).json({ success: true, message: 'User baru berhasil ditambahkan!', data: rows[0] });
   } catch (err) {
-    console.error('Error POST /api/add-users:', err);
-    res.status(500).json({ 
-      success: false, 
-      message: err.message 
-    });
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 
-// C. Login User (POST)
+// POST Login User
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
-
   try {
     const query = `
       SELECT u.id, u."Nama", u.email, u.phone, u."hakAkses", u.instansi_id, u.password, i.nama_instansi 
@@ -383,255 +520,31 @@ app.post('/api/login', async (req, res) => {
       WHERE u.email = $1
     `;
     const { rows } = await pool.query(query, [email]);
-
-    if (rows.length === 0) {
-      return res.status(401).json({ success: false, message: 'Email tidak terdaftar!' });
-    }
+    if (rows.length === 0) return res.status(401).json({ success: false, message: 'Email tidak terdaftar!' });
 
     const user = rows[0];
-
-    if (user.password !== password) {
-      return res.status(401).json({ success: false, message: 'Password salah!' });
-    }
+    if (user.password !== password) return res.status(401).json({ success: false, message: 'Password salah!' });
 
     delete user.password;
-
-    res.json({
-      success: true,
-      message: 'Login berhasil',
-      user: user
-    });
-
+    res.json({ success: true, message: 'Login berhasil', user: user });
   } catch (error) {
-    console.error('Error Login:', error);
-    res.status(500).json({ success: false, message: 'Terjadi kesalahan sistem: ' + error.message });
-  }
-});
-
-// D. Pengumuman (GET)
-// ==========================================
-// ENDPOINTS PENGUMUMAN (STRICT INSTANSI FILTER)
-// ==========================================
-
-// A. Ambil Pengumuman (Disesuaikan Hak Akses User)
-// ==========================================
-// ENDPOINTS PENGUMUMAN (SUPPORT ARCHIVE & 'ALL')
-// ==========================================
-
-// A. Ambil Pengumuman (Disesuaikan Hak Akses User / Admin / Archive)
-app.get('/api/pengumuman', async (req, res) => {
-  const { instansi_id } = req.query;
-
-  try {
-    let query = `
-      SELECT p.*, i.nama_instansi 
-      FROM pengumuman p
-      LEFT JOIN instansi i ON p.instansi_id = i.id
-    `;
-    let params = [];
-
-    // 1. KASUS ADMIN / ARSIP SEMUA PENGUMUMAN (instansi_id = 'all')
-    if (instansi_id === 'all') {
-      // Ambil SEMUA pengumuman tanpa filter
-      query += ` ORDER BY p.created_at DESC`;
-    } 
-    // 2. KASUS USER LOGIN (Memiliki ID Instansi Spesifik)
-    else if (instansi_id && instansi_id !== 'null' && instansi_id !== 'undefined' && instansi_id !== '') {
-      // Tampilkan HANYA Pengumuman Instansinya + Pengumuman Publik (NULL atau ID 1)
-      query += ` WHERE p.instansi_id = $1 OR p.instansi_id IS NULL OR p.instansi_id = 1 ORDER BY p.created_at DESC`;
-      params.push(instansi_id);
-    } 
-    // 3. KASUS PUBLIK / BELUM LOGIN
-    else {
-      // HANYA tampilkan pengumuman Publik (NULL atau ID 1)
-      query += ` WHERE p.instansi_id IS NULL OR p.instansi_id = 1 ORDER BY p.created_at DESC`;
-    }
-
-    const { rows } = await pool.query(query, params);
-    res.json({ success: true, data: rows });
-
-  } catch (error) {
-    console.error('Error GET Pengumuman:', error);
-    res.status(500).json({ success: false, message: 'Gagal mengambil data pengumuman: ' + error.message });
-  }
-});
-
-// B. Tambah Pengumuman Baru (Khusus Admin dari Dashboard)
-// Tambah Pengumuman Baru (Support Upload Gambar Surat & Link Google Form)
-app.post('/api/pengumuman', upload.single('gambar'), async (req, res) => {
-  const { judul, isi, instansi_id, link_gform } = req.body;
-  const gambar = req.file ? req.file.filename : null;
-
-  if (!judul || !isi) {
-    return res.status(400).json({ success: false, message: 'Judul dan isi pengumuman wajib diisi!' });
-  }
-
-  try {
-    // Jika instansi_id '1' atau kosong, jadikan NULL (Publik/Everyone)
-    const targetInstansi = (instansi_id == '1' || !instansi_id) ? null : instansi_id;
-
-    const query = `
-      INSERT INTO pengumuman (judul, isi, instansi_id, link_gform, gambar) 
-      VALUES ($1, $2, $3, $4, $5) 
-      RETURNING *
-    `;
-    const values = [judul, isi, targetInstansi, link_gform || null, gambar];
-    const { rows } = await pool.query(query, values);
-
-    res.status(201).json({
-      success: true,
-      message: 'Pengumuman berhasil ditambahkan!',
-      data: rows[0]
-    });
-  } catch (error) {
-    console.error('Error POST Pengumuman:', error);
-    res.status(500).json({ success: false, message: error.message });
-  }
-});
-
-// C. Hapus Pengumuman
-app.delete('/api/pengumuman/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    await pool.query('DELETE FROM pengumuman WHERE id = $1', [id]);
-    res.json({ success: true, message: 'Pengumuman berhasil dihapus' });
-  } catch (error) {
-    console.error('Error DELETE Pengumuman:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 });
 
 // ==========================================
-// 7. ENDPOINTS PENGATURAN BERANDA
+// 8. ENDPOINTS PENGATURAN BERANDA
 // ==========================================
 
+// GET Pengaturan Halaman
 app.get('/api/pengaturan', async (req, res) => {
   try {
     const query = 'SELECT * FROM pengaturan_halaman ORDER BY id ASC LIMIT 1';
     const { rows } = await pool.query(query);
-    
-    if (rows.length > 0) {
-      res.json(rows[0]);
-    } else {
-      res.status(404).json({ error: 'Data pengaturan belum ada di database' });
-    }
+    res.json(rows.length > 0 ? rows[0] : {});
   } catch (err) {
-    console.error('Error GET /api/pengaturan:', err);
     res.status(500).json({ error: err.message });
   }
-});
-
-const handlePengaturanUpdate = async (req, res) => {
-  try {
-    const { about_title, about_desc } = req.body;
-
-    const currentRes = await pool.query('SELECT * FROM pengaturan_halaman ORDER BY id ASC LIMIT 1');
-    const currentData = currentRes.rows[0];
-
-    let hero_image = currentData ? currentData.hero_image : null;
-    let about_image = currentData ? currentData.about_image : null;
-
-    if (req.files && req.files['hero_image']) {
-      hero_image = req.files['hero_image'][0].filename;
-    }
-    if (req.files && req.files['about_image']) {
-      about_image = req.files['about_image'][0].filename;
-    }
-
-    if (currentData) {
-      const updateQuery = `
-        UPDATE pengaturan_halaman 
-        SET hero_image = $1, 
-            about_image = $2, 
-            about_title = $3, 
-            about_desc = $4, 
-            updated_at = CURRENT_TIMESTAMP 
-        WHERE id = $5 
-        RETURNING *
-      `;
-      const values = [hero_image, about_image, about_title, about_desc, currentData.id];
-      const { rows } = await pool.query(updateQuery, values);
-
-      res.json({ success: true, message: 'Pengaturan beranda berhasil diupdate!', data: rows[0] });
-    } else {
-      const insertQuery = `
-        INSERT INTO pengaturan_halaman (hero_image, about_image, about_title, about_desc) 
-        VALUES ($1, $2, $3, $4) 
-        RETURNING *
-      `;
-      const values = [hero_image, about_image, about_title, about_desc];
-      const { rows } = await pool.query(insertQuery, values);
-
-      res.json({ success: true, message: 'Pengaturan beranda berhasil dibuat!', data: rows[0] });
-    }
-  } catch (err) {
-    console.error('Error Update Pengaturan:', err);
-    res.status(500).json({ success: false, message: 'Gagal update beranda: ' + err.message });
-  }
-};
-
-const fs = require('fs');
-
-
-// Path absolut ke folder uploads
-const UPLOADS_DIR = path.join(__dirname, 'uploads'); 
-
-// Fungsi pembantu menghitung total ukuran folder uploads (Bytes)
-function getDirectorySize(dirPath) {
-    let totalSize = 0;
-    if (!fs.existsSync(dirPath)) return 0;
-
-    const files = fs.readdirSync(dirPath);
-    for (const file of files) {
-        const filePath = path.join(dirPath, file);
-        const stats = fs.statSync(filePath);
-        if (stats.isFile()) {
-            totalSize += stats.size;
-        } else if (stats.isDirectory()) {
-            totalSize += getDirectorySize(filePath);
-        }
-    }
-    return totalSize;
-}
-
-// Endpoint Statistik Storage & Disk Server
-app.get('/api/storage-stats', (req, res) => {
-    try {
-        // 1. Hitung total ukuran riil folder uploads
-        const uploadsSizeBytes = getDirectorySize(UPLOADS_DIR);
-
-        // 2. Cek info kapasitas fisik disk tempat folder uploads berada
-        let totalDiskBytes = 0;
-        let freeDiskBytes = 0;
-
-        if (fs.statfsSync) {
-            const diskStats = fs.statfsSync(UPLOADS_DIR);
-            totalDiskBytes = diskStats.bsize * diskStats.blocks;
-            freeDiskBytes = diskStats.bsize * diskStats.bavail;
-        }
-
-        // Konversi ke MB dan GB
-        const uploadsSizeMB = parseFloat((uploadsSizeBytes / (1024 * 1024)).toFixed(2));
-        const totalDiskGB = parseFloat((totalDiskBytes / (1024 * 1024 * 1024)).toFixed(2));
-        const freeDiskGB = parseFloat((freeDiskBytes / (1024 * 1024 * 1024)).toFixed(2));
-
-        res.json({
-            success: true,
-            data: {
-                uploadsSizeBytes,
-                uploadsSizeMB,
-                totalDiskBytes,
-                totalDiskGB,
-                freeDiskGB,
-                // Alokasi Quota Khusus Aplikasi (Opsional: misal dibatasi 1GB / 1000MB untuk app)
-                // Jika ingin menggunakan total kapasitas device penuh, gunakan totalDiskGB
-                maxQuotaMB: 1024 // 1 GB Kuota Maksimal Aplikasi (Bisa disesuaikan)
-            }
-        });
-    } catch (error) {
-        console.error("Error reading storage stats:", error);
-        res.status(500).json({ success: false, message: "Gagal membaca storage server" });
-    }
 });
 
 const pengaturanUpload = upload.fields([
@@ -639,13 +552,42 @@ const pengaturanUpload = upload.fields([
   { name: 'about_image', maxCount: 1 }
 ]);
 
+const handlePengaturanUpdate = async (req, res) => {
+  try {
+    const { about_title, about_desc } = req.body;
+    const currentRes = await pool.query('SELECT * FROM pengaturan_halaman ORDER BY id ASC LIMIT 1');
+    const currentData = currentRes.rows[0];
+
+    let hero_image = currentData ? currentData.hero_image : null;
+    let about_image = currentData ? currentData.about_image : null;
+
+    if (req.files && req.files['hero_image']) hero_image = req.files['hero_image'][0].filename;
+    if (req.files && req.files['about_image']) about_image = req.files['about_image'][0].filename;
+
+    if (currentData) {
+      const updateQuery = `
+        UPDATE pengaturan_halaman 
+        SET hero_image = $1, about_image = $2, about_title = $3, about_desc = $4, updated_at = CURRENT_TIMESTAMP 
+        WHERE id = $5 RETURNING *
+      `;
+      const { rows } = await pool.query(updateQuery, [hero_image, about_image, about_title, about_desc, currentData.id]);
+      res.json({ success: true, message: 'Pengaturan beranda berhasil diupdate!', data: rows[0] });
+    } else {
+      const insertQuery = `INSERT INTO pengaturan_halaman (hero_image, about_image, about_title, about_desc) VALUES ($1, $2, $3, $4) RETURNING *`;
+      const { rows } = await pool.query(insertQuery, [hero_image, about_image, about_title, about_desc]);
+      res.json({ success: true, message: 'Pengaturan beranda berhasil dibuat!', data: rows[0] });
+    }
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 app.post('/api/pengaturan', pengaturanUpload, handlePengaturanUpdate);
 app.post('/api/pengaturan/update', pengaturanUpload, handlePengaturanUpdate);
 
-
 // ==========================================
-// 8. JALANKAN SERVER
+// 9. JALANKAN SERVER
 // ==========================================
 app.listen(PORT, () => {
-    console.log(`🚀 Backend server berjalan di port ${PORT}`);
+  console.log(`🚀 Backend server berjalan di port ${PORT}`);
 });

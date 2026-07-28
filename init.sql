@@ -12,14 +12,14 @@ DROP TABLE IF EXISTS pengaturan_halaman CASCADE;
 -- 2. PEMBUATAN TABEL-TABEL
 -- ============================================================
 
--- A. Tabel Instansi
+-- A. Tabel Instansi (Untuk Target Pengumuman & Unit Kerja User)
 CREATE TABLE instansi (
     id SERIAL PRIMARY KEY,
     nama_instansi VARCHAR(255) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- B. Tabel Kategori Berita
+-- B. Tabel Kategori Berita (Khusus Pengelompokan Berita)
 CREATE TABLE kategori_berita (
     id SERIAL PRIMARY KEY,
     nama_kategori VARCHAR(255) NOT NULL UNIQUE,
@@ -40,18 +40,17 @@ CREATE TABLE users (
 );
 
 -- D. Tabel Berita
--- D. Tabel Berita
 CREATE TABLE berita (
     id SERIAL PRIMARY KEY,
     judul VARCHAR(255) NOT NULL,
     konten TEXT NOT NULL,
-    gambar TEXT, -- Diubah ke TEXT untuk menampung banyak nama file
+    gambar TEXT,
     kategori_id INT REFERENCES kategori_berita(id) ON DELETE CASCADE,
     penulis_id INT REFERENCES users(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- E. Tabel Pengumuman (instansi_id NULL = Everyone / Publik)
+-- E. Tabel Pengumuman
 CREATE TABLE pengumuman (
     id SERIAL PRIMARY KEY,
     judul VARCHAR(255) NOT NULL,
@@ -73,10 +72,10 @@ CREATE TABLE pengaturan_halaman (
 );
 
 -- ============================================================
--- 3. INPUT DATA AWAL (SEEDING TERSELARAS)
+-- 3. INPUT DATA AWAL (SEEDING TERPISAH & TERSTRUKTUR)
 -- ============================================================
 
--- Seed Data Instansi (ID 1-5 diselaraskan)
+-- Seed Data Instansi
 INSERT INTO instansi (id, nama_instansi) VALUES
 (1, 'Umum / Publik'),
 (2, 'Operations'),
@@ -84,20 +83,20 @@ INSERT INTO instansi (id, nama_instansi) VALUES
 (4, 'Content'),
 (5, 'Finance');
 
--- Seed Data Kategori Berita (ID 1-5 persis sama)
+-- Seed Data Kategori Berita (Bukan Instansi!)
 INSERT INTO kategori_berita (id, nama_kategori) VALUES
-(1, 'Umum / Everyone'),
-(2, 'Operations'),
-(3, 'Sales'),
-(4, 'Content'),
-(5, 'Finance');
+(1, 'Umum'),
+(2, 'Pemerintahan'),
+(3, 'Kegiatan Masyarakat'),
+(4, 'Pendidikan & Kebudayaan'),
+(5, 'Ekonomi & Usaha');
 
 -- Seed Data Users (Default Admin & User)
 INSERT INTO users (id, "Nama", email, password, phone, "hakAkses", instansi_id, notes) VALUES
 (1, 'Admin Utama', 'admin@gmail.com', 'admin123', '081234567890', 'Admin', 2, 'Superadmin Sistem'),
 (2, 'User Biasa', 'user@gmail.com', 'user123', '089876543210', 'User', 3, 'Staf Sales');
 
--- Seed Data Pengumuman Awal (Termasuk Kolom link_gform dan gambar)
+-- Seed Data Pengumuman Awal
 INSERT INTO pengumuman (id, judul, isi, instansi_id, link_gform, gambar) VALUES
 (1, 'Selamat Datang di Portal Resmi', 'Pengumuman ini ditujukan untuk seluruh pengunjung publik maupun pengguna terdaftar.', NULL, 'https://forms.gle/sampleLink', NULL),
 (2, 'Pengumuman Khusus Tim Operations', 'Diharapkan seluruh anggota tim Operations mengikuti rapat internal pukul 14.00 WIB.', 2, NULL, NULL);
@@ -111,7 +110,7 @@ INSERT INTO pengaturan_halaman (id, about_title, about_desc) VALUES
 (1, 'Tentang Kecamatan Rumbia', 'Portal informasi dan layanan resmi Kecamatan Rumbia.');
 
 -- ============================================================
--- 4. SINKRONISASI SEQUENCE (ID Otomatis Mulai dari ID 6)
+-- 4. SINKRONISASI SEQUENCE (Agar auto increment ID mulai dari 6/3)
 -- ============================================================
 SELECT setval('instansi_id_seq', (SELECT MAX(id) FROM instansi));
 SELECT setval('kategori_berita_id_seq', (SELECT MAX(id) FROM kategori_berita));

@@ -112,14 +112,17 @@
         </div>
       </main>
 
-      <!-- MODAL PENGUMUMAN -->
+      <!-- MODAL PENGUMUMAN (BISA TAMBAH & EDIT) -->
       <div class="modal fade" id="modalPengumuman" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <form id="formPengumuman" enctype="multipart/form-data">
+              <!-- Hidden ID untuk EDIT Pengumuman -->
+              <input type="hidden" id="edit_pengumuman_id" name="edit_id">
+
               <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title"><i class="bi bi-megaphone me-2"></i>Tambah Pengumuman Instansi</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title" id="modalPengumumanTitle"><i class="bi bi-megaphone me-2"></i>Tambah Pengumuman Instansi</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" onclick="resetModalPengumuman()"></button>
               </div>
               <div class="modal-body">
                 <div class="mb-3">
@@ -134,6 +137,7 @@
                   <div class="col-md-6 mb-3">
                     <label class="form-label fw-semibold">Gambar Surat / Lampiran</label>
                     <input type="file" name="gambar" class="form-control" accept="image/*">
+                    <small class="text-muted d-block mt-1">* Kosongkan jika tidak ingin mengubah gambar (saat edit)</small>
                   </div>
                 </div>
                 <div class="mb-3">
@@ -144,10 +148,22 @@
                   <label class="form-label fw-semibold">Isi Pengumuman</label>
                   <textarea name="isi" class="form-control" rows="4" required></textarea>
                 </div>
+
+                <!-- OPSI KIRIM EMAIL (OPSIONAL) -->
+                <div class="card bg-light border-0 p-3 mb-2">
+                  <div class="form-check form-switch mb-0">
+                    <input class="form-check-input" type="checkbox" name="kirim_email" id="kirimEmailPengumuman" value="true">
+                    <label class="form-check-label fw-semibold text-primary" for="kirimEmailPengumuman">
+                      <i class="bi bi-envelope-at me-1"></i> Kirim Notifikasi Email ke Instansi/User Terkait
+                    </label>
+                  </div>
+                  <small class="text-muted mt-1 ps-4">Opsional. Centang jika Anda ingin mengirimkan pesan/notifikasi pengumuman ini secara langsung ke email pengguna.</small>
+                </div>
+
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Simpan Pengumuman</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetModalPengumuman()">Batal</button>
+                <button type="submit" id="btnSimpanPengumuman" class="btn btn-primary">Simpan Pengumuman</button>
               </div>
             </form>
           </div>
@@ -200,7 +216,6 @@
                   </div>
                   <div class="col-md-6 mb-3">
                     <label class="form-label fw-semibold">Gambar Berita (Bisa Pilih Banyak Foto)</label>
-                    <!-- Ditambahkan atribut MULTIPLE agar bisa upload >1 foto -->
                     <input type="file" id="gambar" name="gambar" class="form-control" accept="image/*" multiple>
                     <small class="text-muted">* Tahan CTRL / SHIFT untuk memilih lebih dari 1 foto</small>
                   </div>
@@ -232,6 +247,7 @@
     const API_KATEGORI = 'http://localhost:3000/api/kategori';
 
     let listBerita = [];
+    let listPengumuman = []; // Array penampung data pengumuman
 
     // 1. Load Dropdown Options
     async function loadOptions() {
@@ -268,15 +284,15 @@
       try {
         const res = await fetch(`${API_PENGUMUMAN}?instansi_id=all`);
         const result = await res.json();
-        const data = result.data || [];
+        listPengumuman = result.data || [];
 
-        if (data.length === 0) {
+        if (listPengumuman.length === 0) {
           tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted py-4">Belum ada pengumuman tersimpan.</td></tr>`;
           return;
         }
 
         tbody.innerHTML = '';
-        data.forEach((item, index) => {
+        listPengumuman.forEach((item, index) => {
           const isEveryone = item.instansi_id == null || item.instansi_id == 1;
           const badgeClass = isEveryone ? 'bg-success' : 'bg-primary';
           const targetText = isEveryone ? 'Everyone (Publik)' : (item.nama_instansi || 'Internal');
@@ -298,6 +314,7 @@
               <td>${gformBtn}</td>
               <td><small class="text-muted">${tgl}</small></td>
               <td class="text-center">
+                <button class="btn btn-sm btn-outline-warning me-1" onclick="editPengumuman(${item.id})"><i class="bi bi-pencil"></i> Edit</button>
                 <button class="btn btn-sm btn-outline-danger" onclick="hapusPengumuman(${item.id})"><i class="bi bi-trash"></i> Hapus</button>
               </td>
             </tr>
@@ -355,10 +372,18 @@
       }
     }
 
-    // 4. Modal Triggers
+    // 4. Modal Triggers & Reset Functions
     function bukaModalPengumuman() {
-      document.getElementById('formPengumuman').reset();
+      resetModalPengumuman();
       bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPengumuman')).show();
+    }
+
+    function resetModalPengumuman() {
+      document.getElementById('formPengumuman').reset();
+      document.getElementById('edit_pengumuman_id').value = '';
+      document.getElementById('kirimEmailPengumuman').checked = false;
+      document.getElementById('modalPengumumanTitle').innerHTML = '<i class="bi bi-megaphone me-2"></i>Tambah Pengumuman Instansi';
+      document.getElementById('btnSimpanPengumuman').innerText = 'Simpan Pengumuman';
     }
 
     function bukaModalKategori() {
@@ -371,52 +396,90 @@
       bootstrap.Modal.getOrCreateInstance(document.getElementById('modalBerita')).show();
     }
 
-    // 5. Submit Form Pengumuman
+    function resetModalForm() {
+      document.getElementById('formBerita').reset();
+      document.getElementById('edit_id').value = '';
+      document.getElementById('modalTitle').innerHTML = '<i class="bi bi-journal-plus me-2"></i>Tambah Berita Baru';
+      document.getElementById('btnSimpan').innerText = 'Simpan Berita';
+    }
+
+    // 5. EDIT PENGUMUMAN (Fungsi untuk mengisi data ke Modal)
+    function editPengumuman(id) {
+      const item = listPengumuman.find(p => p.id === id);
+      if (!item) return;
+
+      document.getElementById('edit_pengumuman_id').value = item.id;
+      document.querySelector('#formPengumuman input[name="judul"]').value = item.judul || '';
+      document.querySelector('#formPengumuman select[name="instansi_id"]').value = item.instansi_id || '';
+      document.querySelector('#formPengumuman input[name="link_gform"]').value = item.link_gform || '';
+      document.querySelector('#formPengumuman textarea[name="isi"]').value = item.isi || '';
+      
+      // Email default tidak dicentang saat edit (kecuali admin ingin mengirim ulang)
+      document.getElementById('kirimEmailPengumuman').checked = false;
+
+      document.getElementById('modalPengumumanTitle').innerHTML = '<i class="bi bi-pencil-square me-2"></i>Edit Pengumuman';
+      document.getElementById('btnSimpanPengumuman').innerText = 'Update Pengumuman';
+
+      bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPengumuman')).show();
+    }
+
+    // 6. Submit Form Pengumuman (Mendukung Tambah [POST] dan Edit [PUT])
     document.getElementById('formPengumuman').addEventListener('submit', async function(e) {
       e.preventDefault();
+      const editId = document.getElementById('edit_pengumuman_id').value;
       const formData = new FormData(this);
 
+      const url = editId ? `${API_PENGUMUMAN}/${editId}` : API_PENGUMUMAN;
+      const method = editId ? 'PUT' : 'POST';
+
       try {
-        const res = await fetch(API_PENGUMUMAN, { method: 'POST', body: formData });
+        const res = await fetch(url, { method: method, body: formData });
         const result = await res.json();
-        if (res.ok && result.success) {
-          alert('Pengumuman berhasil diterbitkan!');
+
+        if (res.ok && (result.success || res.status === 200)) {
+          alert(editId ? 'Pengumuman berhasil diubah!' : 'Pengumuman berhasil diterbitkan!');
           bootstrap.Modal.getInstance(document.getElementById('modalPengumuman')).hide();
-          this.reset();
+          resetModalPengumuman();
           fetchPengumuman();
         } else {
-          alert('Gagal: ' + result.message);
+          alert('Gagal: ' + (result.message || result.error || 'Terjadi kesalahan server'));
         }
       } catch (err) {
+        console.error('Error submit pengumuman:', err);
         alert('Terjadi kesalahan koneksi.');
       }
     });
 
-    // 6. Submit Form Kategori Baru
-    document.getElementById('formKategori').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const payload = { nama_kategori: document.getElementById('nama_kategori').value };
+    // 7. Submit Form Kategori Baru
+    // 7. Submit Form Kategori Baru
+document.getElementById('formKategori').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const payload = { nama_kategori: document.getElementById('nama_kategori').value };
 
-      try {
-        const res = await fetch(API_KATEGORI, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        
-        if (res.ok) {
-          alert('Kategori berhasil ditambahkan!');
-          bootstrap.Modal.getInstance(document.getElementById('modalKategori')).hide();
-          loadOptions();
-        } else {
-          alert('Gagal menambahkan kategori.');
-        }
-      } catch (err) {
-        console.error('Error:', err);
-      }
+  try {
+    const res = await fetch(API_KATEGORI, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
+    
+    const result = await res.json();
 
-    // 7. Submit Form Berita
+    if (res.ok && result.success) {
+      alert('Kategori berhasil ditambahkan!');
+      bootstrap.Modal.getInstance(document.getElementById('modalKategori')).hide();
+      document.getElementById('formKategori').reset(); // Reset form setelah sukses
+      loadOptions(); // Refresh dropdown kategori pada form berita
+    } else {
+      alert('Gagal: ' + (result.message || 'Gagal menambahkan kategori.'));
+    }
+  } catch (err) {
+    console.error('Error:', err);
+    alert('Terjadi kesalahan koneksi atau server.');
+  }
+});
+
+    // 8. Submit Form Berita
     document.getElementById('formBerita').addEventListener('submit', async function(e) {
       e.preventDefault();
       const editId = document.getElementById('edit_id').value;
@@ -446,7 +509,7 @@
       }
     });
 
-    // 8. Delete & Edit
+    // 9. Delete Functions
     async function hapusPengumuman(id) {
       if (!confirm('Hapus pengumuman ini?')) return;
       await fetch(`${API_PENGUMUMAN}/${id}`, { method: 'DELETE' });
@@ -468,13 +531,9 @@
       document.getElementById('kategori_id').value = item.kategori_id || '';
       document.getElementById('konten').value = item.konten || '';
       document.getElementById('modalTitle').innerHTML = '<i class="bi bi-pencil-square me-2"></i>Edit Berita';
+      document.getElementById('btnSimpan').innerText = 'Update Berita';
       
       bootstrap.Modal.getOrCreateInstance(document.getElementById('modalBerita')).show();
-    }
-
-    function resetModalForm() {
-      document.getElementById('formBerita').reset();
-      document.getElementById('edit_id').value = '';
     }
 
     document.addEventListener("DOMContentLoaded", () => {

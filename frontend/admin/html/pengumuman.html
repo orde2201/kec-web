@@ -21,6 +21,28 @@
       text-decoration: underline !important;
     }
   </style>
+   <script>
+    (function checkAuth() {
+      try {
+        const userRaw = localStorage.getItem('user');
+        const currentUser = userRaw ? JSON.parse(userRaw) : null;
+
+        if (!currentUser || typeof currentUser !== 'object') {
+          window.location.href = './login.html';
+          return;
+        }
+
+        const role = currentUser.hakAkses || currentUser.hak_akses;
+        if (role == true) {
+          window.location.href = 'pengumuman.html';
+        }
+      } catch (error) {
+        console.error('Data session rusak:', error);
+        localStorage.removeItem('user');
+        window.location.href = 'login.html';
+      }
+    })();
+  </script>
 </head>
 <body class="bg-light">
 
