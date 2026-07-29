@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/css/style.css">
-   <script>
+  <script>
     (function checkAuth() {
       try {
         const userRaw = localStorage.getItem('user');
@@ -97,35 +97,41 @@
           ? new Date(item.created_at).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
           : '-';
 
-        // 3. Logika Render Gambar (Single & Carousel Multiple)
+        // 3. Logika Render Gambar (Diatur agar tidak terpotong / contain)
         let gambarHTML = '';
         if (item.gambar && item.gambar.trim() !== '') {
           const gambarArray = item.gambar.split(',').map(g => g.trim()).filter(g => g !== '');
           
           if (gambarArray.length === 1) {
+            // FOTO TUNGGAL
             gambarHTML = `
-              <div class="mb-4 text-center">
+              <div class="mb-4 text-center bg-light p-2 rounded border">
                 <img src="http://localhost:3000/uploads/${gambarArray[0]}" 
                      alt="${item.judul}" 
-                     class="img-fluid rounded shadow-sm w-100" 
-                     style="max-height: 480px; object-fit: cover;">
+                     class="img-fluid rounded shadow-sm mx-auto d-block" 
+                     style="max-height: 520px; width: auto; object-fit: contain;">
               </div>
             `;
           } else if (gambarArray.length > 1) {
+            // MULTIPLE FOTO (CAROUSEL SLIDER)
             let indicators = '';
             let carouselItems = '';
+            
             gambarArray.forEach((img, idx) => {
               const active = idx === 0 ? 'active' : '';
               indicators += `<button type="button" data-bs-target="#carouselDetail" data-bs-slide-to="${idx}" class="${active}"></button>`;
               carouselItems += `
-                <div class="carousel-item ${active}">
-                  <img src="http://localhost:3000/uploads/${img}" class="d-block w-100 rounded" style="max-height: 480px; object-fit: cover;" alt="Foto ${idx + 1}">
+                <div class="carousel-item ${active} bg-dark rounded text-center" style="min-height: 350px;">
+                  <img src="http://localhost:3000/uploads/${img}" 
+                       class="d-block mx-auto img-fluid rounded" 
+                       style="max-height: 520px; height: 520px; width: auto; object-fit: contain;" 
+                       alt="Foto ${idx + 1}">
                 </div>
               `;
             });
 
             gambarHTML = `
-              <div id="carouselDetail" class="carousel slide mb-4 shadow-sm rounded" data-bs-ride="carousel">
+              <div id="carouselDetail" class="carousel slide mb-4 shadow-sm rounded bg-dark overflow-hidden" data-bs-ride="carousel">
                 <div class="carousel-indicators">${indicators}</div>
                 <div class="carousel-inner rounded">${carouselItems}</div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselDetail" data-bs-slide="prev">

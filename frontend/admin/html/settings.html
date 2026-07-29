@@ -1,27 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="adminHMD professional admin dashboard template">
-  <title>Settings | adminHMD</title>
+  <title>Dashboard & Management Storage | adminHMD</title>
 
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/css/style.css">
+      
+  <script>
+    (function checkAuth() {
+      try {
+        const userRaw = localStorage.getItem('user');
+        const currentUser = userRaw ? JSON.parse(userRaw) : null;
+
+        if (!currentUser || typeof currentUser !== 'object') {
+          window.location.href = './login.html';
+          return;
+        }
+
+        const role = currentUser.hakAkses || currentUser.hak_akses;
+        if (role !== 'Admin') {
+          alert('Akses ditolak! Halaman ini hanya untuk Admin.');
+          window.location.href = 'pengumuman.html';
+        }
+      } catch (error) {
+        console.error('Data session rusak:', error);
+        localStorage.removeItem('user');
+        window.location.href = 'login.html';
+      }
+    })();
+  </script>
 </head>
 
 <body>
   <div class="admin-shell">
     <div class="sidebar-backdrop" data-sidebar-close></div>
 
-    <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
+    <aside class="admin-sidebar" id="adminSidebar">
       <div class="sidebar-header">
-        <a class="brand-mark" href="index.html" aria-label="adminHMD dashboard">
-          <span class="brand-icon"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i></span>
+        <a class="brand-mark" href="index.html">
+          <span class="brand-icon"><i class="bi bi-grid-1x2-fill"></i></span>
           <span class="brand-copy">
-            <span class="brand-title">adminHMD</span>
-            <span class="brand-subtitle">Admin Template</span>
+            <span class="brand-title">Admin</span>
+            <span class="brand-subtitle">Kecamatan Rumbia</span>
           </span>
         </a>
       </div>
@@ -37,137 +61,143 @@
         </a>
         <a class="nav-link" href="add-user.html">
           <span class="nav-icon"><i class="bi bi-person-plus"></i></span>
-          <span class="nav-text">Add User</span>
+          <span class="nav-text">Tambah User</span>
         </a>
-        <a class="nav-link" href="alerts.html">
+        <a class="nav-link" href="berita-acara-pengumuman.html">
           <span class="nav-icon"><i class="bi bi-newspaper"></i></span>
           <span class="nav-text">Berita & Pengumuman</span>
         </a>
-        <a class="nav-link" href="components.html">
+        <a class="nav-link" href="beranda.html">
           <span class="nav-icon"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
-          <span class="nav-text">Components</span>
+          <span class="nav-text">Edit Beranda</span>
+        </a>
+        <a class="nav-link" href="add-page.html">
+          <span class="nav-icon"><i class="bi bi-file-earmark-plus"></i></span>
+          <span class="nav-text">Halaman Header</span>
         </a>
         <a class="nav-link" href="settings.html">
           <span class="nav-icon"><i class="bi bi-gear"></i></span>
           <span class="nav-text">Settings</span>
         </a>
       </nav>
-
-      <div class="sidebar-user">
-        <img class="avatar-img avatar-md sidebar-user-avatar" src="../assets/images/avatar/avatar.jpg" alt="Admin Hasan">
-        <strong>Admin Hasan</strong>
-        <small>Active Workspace</small>
-      </div>
-
-      <div class="sidebar-footer">
-        <span class="status-dot"></span>
-        <span class="sidebar-footer-text">System running smoothly</span>
-      </div>
     </aside>
 
     <div class="admin-main">
-      <nav class="navbar admin-navbar navbar-expand bg-white">
-        <div class="container-fluid px-3 px-lg-4">
-          <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar" aria-expanded="true" aria-label="Toggle sidebar">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-
-          <form class="d-none d-md-flex ms-3 flex-grow-1" role="search">
-            <input class="form-control search-input" type="search" placeholder="Search users, orders, reports" aria-label="Search">
-          </form>
-
-          <div class="navbar-actions ms-auto">
-            <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" title="Switch color theme">
-              <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
-            </button>
-            <div class="dropdown">
-              <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifications">
-                <span class="notification-dot"></span>
-                <i class="bi bi-bell" aria-hidden="true"></i>
-              </button>
-              <div class="dropdown-menu dropdown-menu-end notification-menu">
-                <div class="dropdown-header fw-bold text-body">Notifications</div>
-                <a class="dropdown-item" href="users.html">
-                  <span class="notification-title">New user registered</span>
-                  <span class="notification-time">4 minutes ago</span>
-                </a>
-                <a class="dropdown-item" href="charts.html">
-                  <span class="notification-title">Revenue target reached</span>
-                  <span class="notification-time">32 minutes ago</span>
-                </a>
-                <a class="dropdown-item" href="settings.html">
-                  <span class="notification-title">Security review completed</span>
-                  <span class="notification-time">1 hour ago</span>
-                </a>
-              </div>
-            </div>
-
-            <div class="dropdown">
-              <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img class="avatar-img avatar-sm" src="../assets/images/avatar/avatar.jpg" alt="Admin Hasan">
-                <span class="profile-name d-none d-sm-inline">Admin Hasan</span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-                <li><a class="dropdown-item" href="settings.html">Account settings</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="login.html">Sign out</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       <main class="dashboard-content">
         <div class="container-fluid px-3 px-lg-4 py-4">
-          <div class="page-heading">
-            <div class="page-heading-copy">
-              <span class="page-icon"><i class="bi bi-gear" aria-hidden="true"></i></span>
-              <div>
-                <p class="eyebrow mb-1">Workspace</p>
-                <h1 class="h3 mb-1">Settings</h1>
-                <p class="text-muted mb-0">Customize workspace defaults, security options, and notification preferences.</p>
-              </div>
-            </div>
-            
+          <div class="page-heading mb-4">
+            <h1 class="h3">Pengaturan Website (Logo & Footer)</h1>
+            <p class="text-muted">Kelola logo instansi dan informasi footer publik.</p>
           </div>
 
-          <section class="row g-3">
-            <div class="col-12 col-xl-6">
-              <form class="panel needs-validation" novalidate>
-                <div class="panel-header"><div><h2 class="h5 mb-1 section-title"><i class="bi bi-sliders" aria-hidden="true"></i><span>General Settings</span></h2><p class="text-muted mb-0">Configure workspace identity and defaults.</p></div></div>
-                <div class="mb-3"><label class="form-label" for="workspaceName">Workspace name</label><input class="form-control" id="workspaceName" type="text" value="adminHMD Workspace" required><div class="invalid-feedback">Workspace name is required.</div></div>
-                <div class="mb-3"><label class="form-label" for="defaultLanguage">Default language</label><select class="form-select" id="defaultLanguage"><option selected>English</option><option>Bangla</option><option>Spanish</option></select></div>
-                <button class="btn btn-primary" type="submit"><i class="bi bi-check2-circle" aria-hidden="true"></i> Save Settings</button>
-              </form>
-            </div>
-            <div class="col-12 col-xl-6">
-              <div class="panel h-100">
-                <div class="panel-header"><div><h2 class="h5 mb-1 section-title"><i class="bi bi-toggles2" aria-hidden="true"></i><span>Preferences</span></h2><p class="text-muted mb-0">Control notifications and security options.</p></div></div>
-                <div class="settings-list">
-                  <label class="settings-row"><span><strong>Email alerts</strong><small>Receive important account updates.</small></span><input class="form-check-input" type="checkbox" checked></label>
-                  <label class="settings-row"><span><strong>Weekly reports</strong><small>Send summary reports every Monday.</small></span><input class="form-check-input" type="checkbox" checked></label>
-                  <label class="settings-row"><span><strong>Two-factor authentication</strong><small>Require extra verification for admins.</small></span><input class="form-check-input" type="checkbox"></label>
+          <form id="settingsForm" enctype="multipart/form-data">
+            <div class="row g-4">
+              <!-- PENGATURAN LOGO -->
+              <div class="col-12 col-lg-5">
+                <div class="card p-3 shadow-sm">
+                  <h5 class="card-title mb-3"><i class="bi bi-image me-2"></i>Logo Website</h5>
+                  <div class="mb-3 text-center">
+                    <img id="logoPreview" src="../../img/logo.png" alt="Logo Preview" style="max-height: 120px; object-fit: contain;" class="border p-2 rounded mb-2">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Unggah Logo Baru</label>
+                    <input type="file" id="logoInput" name="logo" class="form-control" accept="image/*">
+                    <small class="text-muted">Format PNG/JPG (Rekomendasi latar transparan)</small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PENGATURAN FOOTER -->
+              <div class="col-12 col-lg-7">
+                <div class="card p-3 shadow-sm">
+                  <h5 class="card-title mb-3"><i class="bi bi-layout-bottom me-2"></i>Pengaturan Footer</h5>
+                  
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Tentang Singkat / Deskripsi Footer</label>
+                    <textarea class="form-control" id="footerAbout" name="footer_about" rows="3" placeholder="Deskripsi singkat kecamatan di footer..."></textarea>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Alamat Instansi</label>
+                    <input type="text" class="form-control" id="footerAddress" name="footer_address" placeholder="Jl. Raya Rumbia No. 1...">
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label fw-bold">Nomor Telepon</label>
+                      <input type="text" class="form-control" id="footerPhone" name="footer_phone" placeholder="+62 ...">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label fw-bold">Email Instansi</label>
+                      <input type="email" class="form-control" id="footerEmail" name="footer_email" placeholder="info@rumbia.go.id">
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Teks Copyright</label>
+                    <input type="text" class="form-control" id="footerCopyright" name="footer_copyright" placeholder="Kecamatan Rumbia">
+                  </div>
+
+                  <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
+                    <i class="bi bi-save me-1"></i> Simpan Pengaturan
+                  </button>
                 </div>
               </div>
             </div>
-          </section>
+          </form>
+
         </div>
       </main>
-
-      <footer class="admin-footer">
-        <div class="container-fluid px-3 px-lg-4">
-          <span>Copyright 2026 adminHMD. <br> Developed by <a target="_blank" class="fw-bold text-success" href="https://github.com/HasanMahmudDev">Md. Hasan Mahmud</a> • Distributed by <a target="_blank" class="fw-bold text-success" href="https://themewagon.com">ThemeWagon</a> </span>
-          <span>Professional dashboard template.</span>
-          <span>Workspace settings page.</span>
-        </div>
-      </footer>
     </div>
   </div>
 
   <script src="../assets/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/main.js"></script>
+
+  <!-- SCRIPT UTAMA DASHBOARD -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Load data pengaturan saat ini
+        fetch('http://localhost:3000/api/pengaturan')
+            .then(res => res.json())
+            .then(data => {
+                if(data && !data.error) {
+                    if(data.logo) {
+                        document.getElementById('logoPreview').src = `http://localhost:3000/uploads/${data.logo}`;
+                    }
+                    if(data.footer_about) document.getElementById('footerAbout').value = data.footer_about;
+                    if(data.footer_address) document.getElementById('footerAddress').value = data.footer_address;
+                    if(data.footer_phone) document.getElementById('footerPhone').value = data.footer_phone;
+                    if(data.footer_email) document.getElementById('footerEmail').value = data.footer_email;
+                    if(data.footer_copyright) document.getElementById('footerCopyright').value = data.footer_copyright;
+                }
+            })
+            .catch(err => console.error("Error loading settings:", err));
+
+        // Form Submit
+        document.getElementById('settingsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('http://localhost:3000/api/pengaturan/update', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(resData => {
+                if(resData.success) {
+                    alert('Pengaturan Logo & Footer berhasil disimpan!');
+                    location.reload();
+                } else {
+                    alert('Gagal menyimpan: ' + (resData.message || 'Error server'));
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Terjadi kesalahan koneksi ke server.');
+            });
+        });
+    });
+  </script>
 </body>
 </html>

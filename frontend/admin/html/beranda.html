@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="adminHMD professional admin dashboard template">
-  <title>Users | adminHMD</title>
+  <title>Components | adminHMD</title>
 
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
@@ -15,6 +15,7 @@
   <div class="admin-shell">
     <div class="sidebar-backdrop" data-sidebar-close></div>
 
+    <!-- SIDEBAR -->
     <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
       <div class="sidebar-header">
         <a class="brand-mark" href="index.html">
@@ -79,7 +80,7 @@
           </button>
 
           <form class="d-none d-md-flex ms-3 flex-grow-1" role="search">
-            <input class="form-control search-input" type="search" placeholder="Search users, roles, teams" aria-label="Search">
+            <input class="form-control search-input" type="search" placeholder="Search users, orders, reports" aria-label="Search">
           </form>
 
           <div class="navbar-actions ms-auto">
@@ -96,6 +97,14 @@
                 <a class="dropdown-item" href="users.html">
                   <span class="notification-title">New user registered</span>
                   <span class="notification-time">4 minutes ago</span>
+                </a>
+                <a class="dropdown-item" href="charts.html">
+                  <span class="notification-title">Revenue target reached</span>
+                  <span class="notification-time">32 minutes ago</span>
+                </a>
+                <a class="dropdown-item" href="settings.html">
+                  <span class="notification-title">Security review completed</span>
+                  <span class="notification-time">1 hour ago</span>
                 </a>
               </div>
             </div>
@@ -117,58 +126,105 @@
       </nav>
 
       <main class="dashboard-content">
-        <div class="container-fluid px-3 px-lg-4 py-4">
-          <div class="page-heading">
-            <div class="page-heading-copy">
-              <span class="page-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
-              <div>
-                <p class="eyebrow mb-1">Management</p>
-                <h1 class="h3 mb-1">Users</h1>
-              </div>
-            </div>
-          </div>
-
-          <section class="panel mt-3">
-            <div class="panel-header">
-              <div>
-                <h2 class="h5 mb-1 section-title"><i class="bi bi-table" aria-hidden="true"></i><span>User List</span></h2>
-              </div>
-            </div>
-
-            <div class="card border-0 shadow-sm mt-3">
-              <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                  <thead class="table-light">
-                    <tr>
-                      <th>ID</th>
-                      <th>Nama</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Hak Akses</th>
-                      <th>Instansi</th>
-                      <th>Notes</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody id="userTableBody">
-                    <tr>
-                      <td colspan="8" class="text-center text-muted py-4">
-                        <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
-                        Memuat data user...
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section>
+  <div class="container-fluid px-3 px-lg-4 py-4">
+    <div class="page-heading">
+      <div class="page-heading-copy">
+        <span class="page-icon"><i class="bi bi-gear" aria-hidden="true"></i></span>
+        <div>
+          <h1 class="h3 mb-1">Pengaturan Beranda</h1>
+          <p class="text-muted mb-0">Ubah foto banner dan teks tentang kecamatan rumbia di sini.</p>
         </div>
-      </main>
+      </div>
+    </div>
+
+    <section class="row g-3">
+      <div class="col-12">
+        <div class="panel">
+          <!-- Form Edit Beranda -->
+          <form id="formPengaturan" enctype="multipart/form-data">
+            
+            <h2 class="h5 mb-3 section-title"><i class="bi bi-image" aria-hidden="true"></i><span>Foto Paling Atas (Hero Banner)</span></h2>
+            <div class="mb-4">
+              <label class="form-label">Upload Foto Banner Baru</label>
+              <input type="file" class="form-control" id="hero_image" name="hero_image" accept="image/*">
+              <small class="text-muted">Kosongkan jika tidak ingin mengubah foto saat ini.</small>
+            </div>
+
+            <hr class="my-4">
+
+            <h2 class="h5 mb-3 section-title"><i class="bi bi-info-square" aria-hidden="true"></i><span>Tentang Kecamatan Rumbia</span></h2>
+            <div class="mb-3">
+              <label class="form-label">Upload Foto Tentang</label>
+              <input type="file" class="form-control" id="about_image" name="about_image" accept="image/*">
+              <small class="text-muted">Kosongkan jika tidak ingin mengubah foto saat ini.</small>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Judul (Contoh: Selamat Datang di...)</label>
+              <input type="text" class="form-control" id="about_title" name="about_title" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Deskripsi Lengkap</label>
+              <textarea class="form-control" id="about_desc" name="about_desc" rows="5" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3"><i class="bi bi-save"></i> Simpan Perubahan</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- Tambahkan script ini sebelum </body> di halaman Admin -->
+<script>
+  // Fungsi untuk mengambil data saat ini dan mengisinya ke dalam form input
+  document.addEventListener("DOMContentLoaded", function() {
+      fetch('http://localhost:3000/api/pengaturan')
+          .then(res => res.json())
+          .then(data => {
+              if(data) {
+                  document.getElementById('about_title').value = data.about_title || '';
+                  document.getElementById('about_desc').value = data.about_desc || '';
+              }
+          });
+  });
+
+  // Fungsi untuk mensubmit form ke backend
+  document.getElementById('formPengaturan').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      let formData = new FormData();
+      formData.append('about_title', document.getElementById('about_title').value);
+      formData.append('about_desc', document.getElementById('about_desc').value);
+      
+      const heroImage = document.getElementById('hero_image').files[0];
+      const aboutImage = document.getElementById('about_image').files[0];
+      
+      if(heroImage) formData.append('hero_image', heroImage);
+      if(aboutImage) formData.append('about_image', aboutImage);
+
+      // Pastikan API endpoint PUT / POST ini tersedia di Node.js Anda
+      fetch('http://localhost:3000/api/pengaturan/update', {
+          method: 'POST', // atau PUT tergantung backend Anda
+          body: formData
+      })
+      .then(response => response.json())
+      .then(result => {
+          alert('Berhasil mengupdate halaman beranda!');
+          window.location.reload();
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert('Gagal mengupdate.');
+      });
+  });
+</script>
 
       <footer class="admin-footer">
         <div class="container-fluid px-3 px-lg-4">
           <span>Copyright 2026 adminHMD. <br> Developed by <a target="_blank" class="fw-bold text-success" href="https://github.com/HasanMahmudDev">Md. Hasan Mahmud</a> • Distributed by <a target="_blank" class="fw-bold text-success" href="https://themewagon.com">ThemeWagon</a> </span>
-          <span>User management dashboard.</span>
+          <span>Professional dashboard template.</span>
+          <span>Reusable UI components.</span>
         </div>
       </footer>
     </div>
@@ -176,68 +232,5 @@
 
   <script src="../assets/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/main.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', fetchUsers);
-
-    async function fetchUsers() {
-      const TARGET_API_URL = 'http://localhost:3000/api/users';
-      const tableBody = document.getElementById('userTableBody');
-
-      try {
-        const response = await fetch(TARGET_API_URL);
-        
-        if (!response.ok) {
-          throw new Error(`Server respon HTTP error ${response.status}`);
-        }
-
-        const result = await response.json();
-        
-        // Memastikan data fleksibel (baik berupa array langsung [...] maupun { data: [...] })
-        const usersList = Array.isArray(result) ? result : (result.data || []);
-
-        if (usersList.length > 0) {
-          tableBody.innerHTML = '';
-
-          usersList.forEach(user => {
-            const namaUser = user.Nama || user.nama || '-';
-            const hakAkses = user.hakAkses || user.hak_akses || 'User';
-            const instansi = user.nama_instansi || `Instansi ID: ${user.instansi_id}`;
-
-            const row = `
-              <tr>
-                <td><strong>#${user.id}</strong></td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <i class="bi bi-person-circle fs-4 text-secondary me-2"></i>
-                    <span>${namaUser}</span>
-                  </div>
-                </td>
-                <td>${user.email}</td>
-                <td>${user.phone}</td>
-                <td>
-                  <span class="badge ${hakAkses === 'Admin' ? 'bg-danger-subtle text-danger' : 'bg-primary-subtle text-primary'} px-2 py-1">
-                    ${hakAkses}
-                  </span>
-                </td>
-                <td><span class="text-muted fw-bold">${instansi}</span></td>
-                <td><small class="text-wrap d-inline-block text-truncate" style="max-width: 150px;">${user.notes || '-'}</small></td>
-                <td>
-                  <button class="btn btn-sm btn-outline-danger" onclick="alert('Fitur hapus ID: ${user.id}')"><i class="bi bi-trash"></i></button>
-                </td>
-              </tr>
-            `;
-            tableBody.insertAdjacentHTML('beforeend', row);
-          });
-        } else {
-          tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-muted py-4">Belum ada data user terdaftar.</td></tr>`;
-        }
-
-      } catch (error) {
-        console.error('Error saat mengambil data:', error);
-        tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">Gagal terhubung ke backend server (${error.message}).</td></tr>`;
-      }
-    }
-  </script>
 </body>
 </html>

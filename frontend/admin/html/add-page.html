@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="adminHMD professional admin dashboard template">
+  <title>Dashboard & Management Storage | adminHMD</title>
+
+  <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+      
+  <script>
+    (function checkAuth() {
+      try {
+        const userRaw = localStorage.getItem('user');
+        const currentUser = userRaw ? JSON.parse(userRaw) : null;
+
+        if (!currentUser || typeof currentUser !== 'object') {
+          window.location.href = './login.html';
+          return;
+        }
+
+        const role = currentUser.hakAkses || currentUser.hak_akses;
+        if (role !== 'Admin') {
+          alert('Akses ditolak! Halaman ini hanya untuk Admin.');
+          window.location.href = 'pengumuman.html';
+        }
+      } catch (error) {
+        console.error('Data session rusak:', error);
+        localStorage.removeItem('user');
+        window.location.href = 'login.html';
+      }
+    })();
+  </script>
+</head>
+
+<body>
+   <div class="admin-shell">
+    <div class="sidebar-backdrop" data-sidebar-close></div>
+
+    <!-- Sidebar Admin -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-header">
+        <a class="brand-mark" href="index.html">
+          <span class="brand-icon"><i class="bi bi-grid-1x2-fill"></i></span>
+          <span class="brand-copy">
+            <span class="brand-title">Admin</span>
+            <span class="brand-subtitle">Kecamatan Rumbia</span>
+          </span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="nav-link active" href="index.html">
+          <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
+          <span class="nav-text">Dashboard</span>
+        </a>
+        <a class="nav-link" href="users.html">
+          <span class="nav-icon"><i class="bi bi-people"></i></span>
+          <span class="nav-text">Users</span>
+        </a>
+        <a class="nav-link" href="add-user.html">
+          <span class="nav-icon"><i class="bi bi-person-plus"></i></span>
+          <span class="nav-text">Tambah User</span>
+        </a>
+        <a class="nav-link" href="berita-acara-pengumuman.html">
+          <span class="nav-icon"><i class="bi bi-newspaper"></i></span>
+          <span class="nav-text">Berita & Pengumuman</span>
+        </a>
+        <a class="nav-link" href="beranda.html">
+          <span class="nav-icon"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
+          <span class="nav-text">Edit Beranda</span>
+        </a>
+        <a class="nav-link" href="add-page.html">
+          <span class="nav-icon"><i class="bi bi-file-earmark-plus"></i></span>
+          <span class="nav-text">Halaman Header</span>
+        </a>
+        <a class="nav-link" href="settings.html">
+          <span class="nav-icon"><i class="bi bi-gear"></i></span>
+          <span class="nav-text">Settings</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Content Utama -->
+    <div class="admin-main">
+      <main class="dashboard-content">
+        <div class="container-fluid px-3 px-lg-4 py-4">
+          
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h1 class="h3 mb-1">Kelola Halaman & Menu Header</h1>
+              <p class="text-muted mb-0">Tambah, edit, atau sesuaikan menu kustom yang muncul di header navbar publik.</p>
+            </div>
+            <button class="btn btn-primary" onclick="resetForm()">
+              <i class="bi bi-plus-circle me-1"></i> Buat Halaman Baru
+            </button>
+          </div>
+
+          <div class="row g-4">
+            <!-- FORM TAMBAH / EDIT -->
+            <div class="col-12 col-lg-5">
+              <div class="card p-3 shadow-sm">
+                <h5 class="card-title mb-3" id="formTitle"><i class="bi bi-pencil-square me-2"></i>Tambah Halaman Baru</h5>
+                <form id="pageForm" enctype="multipart/form-data">
+                  <input type="hidden" id="pageId" value="">
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Judul Halaman / Nama Menu <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="judul" required placeholder="Contoh: Profil Kecamatan">
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Slug URL (Opsional)</label>
+                    <input type="text" class="form-control" id="slug" placeholder="contoh: profil-kecamatan">
+                    <small class="text-muted">Biarkan kosong untuk generate otomatis dari judul.</small>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Urutan Menu</label>
+                    <input type="number" class="form-control" id="urutan" value="1" min="0">
+                  </div>
+
+                  <!-- INPUT GAMBAR DEPAN HALAMAN -->
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Gambar Halaman / Banner (Opsional)</label>
+                    <input type="file" class="form-control" id="gambar" accept="image/*" onchange="previewImage(event)">
+                    <small class="text-muted">Format: JPG, PNG, WEBP (Maks 2MB).</small>
+                    <div id="previewWrapper" class="mt-2 d-none">
+                      <p class="small text-muted mb-1">Pratinjau Gambar:</p>
+                      <img id="imgPreview" src="" alt="Preview Gambar" class="img-thumbnail" style="max-height: 160px; object-fit: cover;">
+                    </div>
+                  </div>
+
+                  <div class="mb-3 form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="tampilkanHeader" checked>
+                    <label class="form-check-label fw-bold" for="tampilkanHeader">Tampilkan di Header Navbar</label>
+                  </div>
+
+                  <!-- KONTEN TEXTAREA DENGAN PERBAIKAN ENTER -->
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Konten Halaman <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="konten" rows="10" required 
+                              style="white-space: pre-wrap;" 
+                              placeholder="Masukkan isi penjelasan halaman di sini... Tekan Enter untuk membuat baris baru."></textarea>
+                    <small class="text-muted d-block mt-1">
+                      <i class="bi bi-info-circle me-1"></i> Baris baru/Enter akan tersimpan otomatis. Anda juga dapat menggunakan tag HTML seperti <code>&lt;p&gt;</code>, <code>&lt;br&gt;</code>, atau <code>&lt;b&gt;</code>.
+                    </small>
+                  </div>
+
+                  <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-success flex-grow-1">
+                      <i class="bi bi-check-circle me-1"></i> Simpan Halaman
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">Batal</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- TABEL DAFTAR HALAMAN -->
+            <div class="col-12 col-lg-7">
+              <div class="card p-3 shadow-sm">
+                <h5 class="card-title mb-3"><i class="bi bi-list-stars me-2"></i>Daftar Halaman Header</h5>
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Urutan</th>
+                        <th>Gambar</th>
+                        <th>Judul Menu</th>
+                        <th>Status</th>
+                        <th class="text-end">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody id="pageTableBody">
+                      <tr>
+                        <td colspan="5" class="text-center py-3">Memuat halaman...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/main.js"></script>
+
+  <!-- SCRIPT UTAMA DASHBOARD -->
+  <script>
+    const API_URL = 'http://localhost:3000/api/halaman';
+
+    document.addEventListener("DOMContentLoaded", function() {
+      loadPages();
+
+      document.getElementById('pageForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        savePage();
+      });
+    });
+
+    // 1. FUNGSI MEMUAT DAFTAR HALAMAN
+    function loadPages() {
+      fetch(API_URL)
+        .then(res => res.json())
+        .then(resData => {
+          const tbody = document.getElementById('pageTableBody');
+          tbody.innerHTML = '';
+
+          const pages = resData.data || resData;
+
+          if(!Array.isArray(pages) || pages.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="text-center py-3 text-muted">Belum ada halaman kustom.</td></tr>';
+            return;
+          }
+
+          pages.forEach(page => {
+            const imgHtml = page.gambar 
+              ? `<img src="http://localhost:3000/uploads/${page.gambar}" class="rounded" style="width: 45px; height: 35px; object-fit: cover;">`
+              : `<span class="badge bg-light text-muted border">No Img</span>`;
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td><span class="badge bg-secondary">${page.urutan}</span></td>
+              <td>${imgHtml}</td>
+              <td class="fw-bold">
+                ${page.judul}<br>
+                <small class="text-muted fw-normal"><code>/page.html?slug=${page.slug}</code></small>
+              </td>
+              <td>
+                ${page.tampilkan_di_header 
+                  ? '<span class="badge bg-success">Aktif</span>' 
+                  : '<span class="badge bg-light text-dark border">Sembunyi</span>'}
+              </td>
+              <td class="text-end">
+                <a href="../../page.html?slug=${page.slug}" target="_blank" class="btn btn-sm btn-outline-info me-1" title="Pratinjau"><i class="bi bi-eye"></i></a>
+                <button class="btn btn-sm btn-outline-warning me-1" onclick="editPage(${page.id})" title="Edit Halaman"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deletePage(${page.id})" title="Hapus Halaman"><i class="bi bi-trash"></i></button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        })
+        .catch(err => console.error("Error loading pages:", err));
+    }
+
+    // 2. FUNGSI PRATINJAU GAMBAR
+    function previewImage(event) {
+      const file = event.target.files[0];
+      const previewWrapper = document.getElementById('previewWrapper');
+      const imgPreview = document.getElementById('imgPreview');
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imgPreview.src = e.target.result;
+          previewWrapper.classList.remove('d-none');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // 3. FUNGSI SIMPAN & EDIT DATA (MENGGUNAKAN FORMDATA)
+    function savePage() {
+  const id = document.getElementById('pageId').value;
+  const formData = new FormData();
+
+  formData.append('judul', document.getElementById('judul').value);
+  formData.append('slug', document.getElementById('slug').value);
+  formData.append('urutan', document.getElementById('urutan').value);
+  
+  // PERBAIKAN: Gunakan 'true' / 'false' secara konsisten
+  formData.append('tampilkan_di_header', document.getElementById('tampilkanHeader').checked ? 'true' : 'false');
+  formData.append('konten', document.getElementById('konten').value);
+
+  const fileInput = document.getElementById('gambar');
+  if (fileInput.files[0]) {
+    formData.append('gambar', fileInput.files[0]);
+  }
+
+  const method = id ? 'PUT' : 'POST';
+  const url = id ? `${API_URL}/${id}` : API_URL;
+
+  fetch(url, {
+    method: method,
+    body: formData
+  })
+  .then(res => res.json())
+  .then(resData => {
+    if(resData.success || resData.id) {
+      alert(resData.message || 'Halaman berhasil disimpan!');
+      resetForm();
+      loadPages();
+    } else {
+      alert('Gagal menyimpan: ' + (resData.message || 'Terjadi kesalahan pada backend.'));
+    }
+  })
+  .catch(err => {
+    console.error("Error saving page:", err);
+    alert('Terjadi kesalahan koneksi server');
+  });
+}
+    // 4. FUNGSI EDIT HALAMAN (LOAD DATA KE FORM)
+    function editPage(id) {
+      fetch(`${API_URL}/${id}`)
+        .then(res => res.json())
+        .then(resData => {
+          const p = resData.data || resData;
+          if(p && p.id) {
+            document.getElementById('pageId').value = p.id;
+            document.getElementById('judul').value = p.judul || '';
+            document.getElementById('slug').value = p.slug || '';
+            document.getElementById('urutan').value = p.urutan || 1;
+            document.getElementById('tampilkanHeader').checked = p.tampilkan_di_header == 1 || p.tampilkan_di_header === true;
+            document.getElementById('konten').value = p.konten || '';
+
+            // Tampilkan preview gambar yang sudah ada sebelumnya
+            const previewWrapper = document.getElementById('previewWrapper');
+            const imgPreview = document.getElementById('imgPreview');
+            if (p.gambar) {
+              imgPreview.src = `http://localhost:3000/uploads/${p.gambar}`;
+              previewWrapper.classList.remove('d-none');
+            } else {
+              imgPreview.src = '';
+              previewWrapper.classList.add('d-none');
+            }
+
+            document.getElementById('formTitle').innerHTML = `<i class="bi bi-pencil-square me-2"></i>Edit Halaman (${p.judul})`;
+            
+            // Scroll halus ke atas ke arah form
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        })
+        .catch(err => console.error("Error fetching detail page:", err));
+    }
+
+    // 5. FUNGSI HAPUS HALAMAN
+    function deletePage(id) {
+      if(confirm('Apakah Anda yakin ingin menghapus halaman ini?')) {
+        fetch(`${API_URL}/${id}`, { method: 'DELETE' })
+          .then(res => res.json())
+          .then(resData => {
+            alert(resData.message || 'Halaman berhasil dihapus');
+            loadPages();
+          })
+          .catch(err => console.error("Error deleting page:", err));
+      }
+    }
+
+    // 6. FUNGSI RESET FORM
+    function resetForm() {
+      document.getElementById('pageId').value = '';
+      document.getElementById('pageForm').reset();
+      document.getElementById('tampilkanHeader').checked = true;
+      document.getElementById('previewWrapper').classList.add('d-none');
+      document.getElementById('imgPreview').src = '';
+      document.getElementById('formTitle').innerHTML = `<i class="bi bi-pencil-square me-2"></i>Tambah Halaman Baru`;
+    }
+  </script>
+</body>
+</html>

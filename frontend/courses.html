@@ -42,31 +42,92 @@
 
 
     <!-- Navbar Start --> 
-    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-dark"><img src="img/logo.png" style="transform: scale(0.3); margin: -13vw; padding-right: 6vw;" > Web Kecamatan Rumbia</h2>
+    <!-- NAVBAR UTAMA -->
+    <nav class="navbar navbar-expand bg-white navbar-light shadow-sm sticky-top py-2 px-3 px-lg-4">
+    <div class="container-fluid p-0">
+        <!-- 1. LOGO & NAMA (Di Sebelah Kiri) -->
+        <a href="index.html" class="navbar-brand d-flex align-items-center me-auto">
+            <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 130%; width: auto;" class="me-2"> 
+            <span id="site-name" class="fw-bold text-dark fs-5 d-none d-sm-inline">Web Kecamatan Rumbia</span>
+            <span class="fw-bold text-dark fs-6 d-inline d-sm-none">Kec. Rumbia</span>
         </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
+
+        <!-- SEMUA ELEMEN DI BAWAH INI AKAN KUMPUL DI SEBELAH KANAN -->
+
+        <!-- 2. 2 MENU INTI (Tampak di Laptop/Desktop) -->
+        <div class="navbar-nav d-none d-md-flex align-items-center me-3">
+            <a href="index.html" class="nav-link px-3 active fw-semibold">Beranda</a>
+            <a href="courses.html" class="nav-link px-3 fw-semibold">Berita Acara</a>
+        </div>
+
+        <!-- 3. PENCARIAN DI LUAR BURGER -->
+        <div class="me-2" style="max-width: 220px;">
+            <div class="input-group input-group-sm">
+                <input type="text" id="navbar-search-input" class="form-control border-primary" placeholder="Cari berita...">
+                <button class="btn btn-primary px-2 px-sm-3" type="button" id="navbar-search-btn" title="Cari Berita">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 4. TOMBOL BURGER -->
+        <button class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0" 
+                type="button" 
+                data-bs-toggle="offcanvas" 
+                data-bs-target="#offcanvasNavbar" 
+                aria-controls="offcanvasNavbar"
+                title="Menu Lainnya"
+                style="width: 38px; height: 38px; min-width: 38px;">
+            <i class="fa fa-bars fs-5 text-primary"></i>
         </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0 align-items-lg-center">
-                <a href="index.html" class="nav-item nav-link">Beranda</a>
-                <a href="courses.html" class="nav-item nav-link active">Berita Acara</a>
-                
-                <!-- INPUT PENCARIAN DIREKTORI BERITA -->
-                <div class="nav-item px-3 py-2 py-lg-0">
-                    <div class="input-group" style="max-width: 280px;">
-                        <input type="text" id="search-input" class="form-control form-control-sm border-primary" placeholder="Cari judul berita..." aria-label="Cari berita">
-                        <button class="btn btn-sm btn-primary" type="button" id="search-btn" title="Cari Berita">
-                            <i class="fa fa-search"></i>
-                        </button>
+    </div>
+</nav>
+
+    <!-- SIDEBAR BURGER MENU (OFFCANVAS SLIDE-OUT) -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <!-- HEADER SIDEBAR -->
+        <div class="offcanvas-header border-bottom bg-light">
+            <h5 class="offcanvas-title fw-bold text-primary fs-6" id="offcanvasNavbarLabel">
+                <i class="fa fa-compass me-2"></i> Navigasi & Menu
+            </h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        
+        <!-- ISI SIDEBAR -->
+        <div class="offcanvas-body d-flex flex-column justify-content-between p-4">
+            <div>
+                <!-- MENU INTI (Tampil Khusus di Layar HP/Tablet) -->
+                <div class="d-md-none mb-4">
+                    <div class="text-muted small fw-bold mb-2">MENU UTAMA</div>
+                    <div class="list-group list-group-flush">
+                        <a href="index.html" class="list-group-item list-group-item-action border-0 px-0 fw-bold text-primary">
+                            <i class="fa fa-home me-2"></i> Beranda
+                        </a>
+                        <a href="courses.html" class="list-group-item list-group-item-action border-0 px-0 fw-semibold text-dark">
+                            <i class="fa fa-newspaper me-2"></i> Berita Acara
+                        </a>
+                    </div>
+                    <hr class="text-muted my-3">
+                </div>
+
+                <!-- DAFTAR HALAMAN KUSTOM (DIINJEKSI VIA JAVASCRIPT) -->
+                <div>
+                    <div class="text-muted small fw-bold mb-2">HALAMAN & INFORMASI</div>
+                    <div class="list-group list-group-flush" id="offcanvas-custom-pages">
+                        <span class="text-muted small italic">Memuat daftar halaman...</span>
                     </div>
                 </div>
             </div>
-            <a href="admin/html/index.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Login<i class="fa fa-arrow-right ms-3"></i></a>
+
+            <!-- AREA BOTTOM / TOMBOL LOGIN -->
+            <div class="pt-4 border-top mt-4">
+                <a href="admin/html/index.html" class="btn btn-primary w-100 py-2 rounded-pill fw-bold d-flex align-items-center justify-content-center shadow-sm">
+                    Login Sistem <i class="fa fa-arrow-right ms-2"></i>
+                </a>
+            </div>
         </div>
-    </nav>
+    </div>
+    <!-- Navbar End -->
     <!-- Navbar End -->
 
 
@@ -97,44 +158,24 @@
     <!-- Berita End -->
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">Quick Link</h4>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Contact Us</a>
-                    <a class="btn btn-link" href="">Privacy Policy</a>
-                    <a class="btn btn-link" href="">Terms & Condition</a>
-                    <a class="btn btn-link" href="">FAQs & Help</a>
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Kecamatan Rumbia</h4>
+                    <p id="footer-about-text">Portal Layanan Publik & Informasi Resmi Kecamatan Rumbia.</p>
                 </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">Contact</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Tautan Cepat</h4>
+                    <a class="btn btn-link" href="index.html">Beranda</a>
+                    <a class="btn btn-link" href="courses.html">Berita Acara</a>
+                    <span id="footer-custom-links"></span>
                 </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">Gallery</h4>
-                    <div class="row g-2 pt-2">
-                        <div class="col-4"><img class="img-fluid bg-light p-1" src="img/course-1.jpg" alt=""></div>
-                        <div class="col-4"><img class="img-fluid bg-light p-1" src="img/course-2.jpg" alt=""></div>
-                        <div class="col-4"><img class="img-fluid bg-light p-1" src="img/course-3.jpg" alt=""></div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">Newsletter</h4>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Kontak Kami</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i><span id="footer-address">Jl. Raya Kecamatan Rumbia</span></p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i><span id="footer-phone">+62 812 3456 7890</span></p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i><span id="footer-email">info@rumbia.go.id</span></p>
                 </div>
             </div>
         </div>
@@ -142,17 +183,7 @@
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
-                        Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a><br><br>
-                        Distributed By <a class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <div class="footer-menu">
-                            <a href="">Home</a>
-                            <a href="">Cookies</a>
-                            <a href="">Help</a>
-                            <a href="">FQAs</a>
-                        </div>
+                        &copy; <span id="footer-copyright-text">Kecamatan Rumbia</span>, All Right Reserved.
                     </div>
                 </div>
             </div>
@@ -180,43 +211,103 @@
     let masterBerita = []; // Menyimpan data master berita dari database API
 
     document.addEventListener("DOMContentLoaded", function() {
-        // Fetch berita dari API backend Node.js
-        fetch('http://localhost:3000/api/berita')
-            .then(response => response.json())
-            .then(data => {
-                masterBerita = Array.isArray(data) ? data : [];
-                
-                // Cek jika ada query string pencarian dari URL (misal: ?q=kata)
-                const urlParams = new URLSearchParams(window.location.search);
-                const queryParam = urlParams.get('q');
-                if (queryParam) {
-                    document.getElementById('search-input').value = queryParam;
-                    performSearch();
-                } else {
-                    renderBerita(masterBerita);
+    // 1. Ambil kata kunci dari URL (?q=... atau ?search=...)
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchKeyword = urlParams.get('q') || urlParams.get('search') || '';
+
+    // Isi kembali input pencarian di navbar jika ada kata kunci
+    const searchInput = document.getElementById('navbar-search-input');
+    if (searchInput && searchKeyword) {
+        searchInput.value = searchKeyword;
+    }
+
+    // 2. Susun URL API dengan parameter pencarian
+    let fetchUrl = 'http://localhost:3000/api/berita';
+    if (searchKeyword) {
+        fetchUrl += `?q=${encodeURIComponent(searchKeyword)}`;
+    }
+
+    // 3. Fetch Data Berita
+    fetch(fetchUrl)
+        .then(response => {
+            if (!response.ok) throw new Error("Gagal mengambil data dari server");
+            return response.json();
+        })
+        .then(resData => {
+            const container = document.getElementById('berita-container');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            // Penanganan fleksibel: mendukung Array langsung atau { success: true, data: [...] }
+            const listBerita = Array.isArray(resData) ? resData : (resData.data || []);
+
+            if (listBerita.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fa fa-search fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Berita tidak ditemukan</h5>
+                        <p class="small text-secondary">${searchKeyword ? `Tidak ada berita dengan kata kunci "${searchKeyword}".` : 'Belum ada berita yang diterbitkan.'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Tampilkan berita
+            listBerita.forEach(berita => {
+                let gambarUrl = 'img/default.jpg';
+                if (berita.gambar && berita.gambar.trim() !== '') {
+                    const firstImage = berita.gambar.split(',')[0].trim();
+                    if (firstImage) gambarUrl = `http://localhost:3000/uploads/${firstImage}`;
                 }
-            })
-            .catch(error => {
-                console.error('Error fetching berita:', error);
-                document.getElementById('berita-container').innerHTML = 
-                    '<div class="text-danger text-center py-4 w-100">Gagal memuat berita dari server.</div>';
+
+                const tanggal = berita.created_at 
+                    ? new Date(berita.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                    : '-';
+                const linkDetail = `detail-berita.html?id=${berita.id}`;
+
+                const html = `
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="course-item bg-light h-100 d-flex flex-column shadow-sm rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                <a href="${linkDetail}">
+                                    <img class="img-fluid" src="${gambarUrl}" alt="${berita.judul}" style="height: 220px; width: 100%; object-fit: cover;">
+                                </a>
+                            </div>
+                            <div class="p-4 flex-grow-1 d-flex flex-column justify-content-between">
+                                <div>
+                                    <span class="badge bg-primary mb-2">${berita.nama_kategori || 'Umum'}</span>
+                                    <a href="${linkDetail}" class="text-dark text-decoration-none">
+                                        <h5 class="mb-3 text-hover-primary">${berita.judul}</h5>
+                                    </a>
+                                    <p class="text-muted small" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                        ${berita.konten ? berita.konten.replace(/<[^>]*>?/gm, '') : ''}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="d-flex border-top mt-auto bg-white">
+                                <small class="flex-fill text-center border-end py-2 text-muted"><i class="fa fa-user-tie text-primary me-2"></i>${berita.nama_penulis || 'Admin'}</small>
+                                <small class="flex-fill text-center py-2 text-muted"><i class="fa fa-calendar text-primary me-2"></i>${tanggal}</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', html);
             });
-
-        // Event Listener Tombol Cari
-        document.getElementById('search-btn').addEventListener('click', performSearch);
-
-        // Live Search saat mengetik di input search
-        document.getElementById('search-input').addEventListener('input', performSearch);
-
-        // Jalankan pencarian jika tombol Enter ditekan
-        document.getElementById('search-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
-                document.getElementById('berita-section').scrollIntoView({ behavior: 'smooth' });
+        })
+        .catch(error => {
+            console.error('Error fetching berita:', error);
+            const container = document.getElementById('berita-container');
+            if (container) {
+                container.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <p class="text-danger fw-bold mb-1">Gagal memuat berita dari server.</p>
+                        <small class="text-muted">Pastikan koneksi server backend di port 3000 berjalan dengan baik.</small>
+                    </div>
+                `;
             }
         });
-    });
-
+});
     // Fungsi Render Berita ke Kontainer
     function renderBerita(listBerita) {
         const container = document.getElementById('berita-container');
@@ -323,5 +414,84 @@
         renderBerita(masterBerita);
     }
 </script>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Load Pengaturan
+            fetch('http://localhost:3000/api/pengaturan')
+                .then(response => response.json())
+                .then(data => {
+                    if(data && !data.error) {
+                        if(data.logo) document.getElementById('site-logo').src = `http://localhost:3000/uploads/${data.logo}`;
+                        if(data.hero_image) document.getElementById('hero-img').src = `http://localhost:3000/uploads/${data.hero_image}`;
+                        if(data.about_image) document.getElementById('about-img').src = `http://localhost:3000/uploads/${data.about_image}`;
+                        if(data.about_title) document.getElementById('about-title').innerText = data.about_title;
+                        if(data.about_desc) document.getElementById('about-desc-container').innerHTML = `<p class="mb-4">${data.about_desc.replace(/\n/g, '<br>')}</p>`;
+                        if(data.footer_about) document.getElementById('footer-about-text').innerText = data.footer_about;
+                        if(data.footer_address) document.getElementById('footer-address').innerText = data.footer_address;
+                        if(data.footer_phone) document.getElementById('footer-phone').innerText = data.footer_phone;
+                        if(data.footer_email) document.getElementById('footer-email').innerText = data.footer_email;
+                        if(data.footer_copyright) document.getElementById('footer-copyright-text').innerText = data.footer_copyright;
+                    }
+                })
+                .catch(error => console.error('Error fetching pengaturan:', error));
+
+            // Handler Pencarian
+            const searchBtn = document.getElementById('navbar-search-btn');
+            const searchInput = document.getElementById('navbar-search-input');
+
+            function doSearch() {
+                const keyword = searchInput ? searchInput.value.trim() : '';
+                window.location.href = keyword ? `courses.html?q=${encodeURIComponent(keyword)}` : `courses.html`;
+            }
+
+            if (searchBtn && searchInput) {
+                searchBtn.addEventListener('click', doSearch);
+                searchInput.addEventListener('keyup', function(e) {
+                    if (e.key === 'Enter') doSearch();
+                });
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('http://localhost:3000/api/halaman?header_only=true')
+                .then(res => res.json())
+                .then(resData => {
+                    const offcanvasContainer = document.getElementById('offcanvas-custom-pages');
+                    const footerCustomLinks = document.getElementById('footer-custom-links');
+                    
+                    if(resData.data && resData.data.length > 0) {
+                        if (offcanvasContainer) offcanvasContainer.innerHTML = '';
+                        
+                        resData.data.forEach(page => {
+                            // Injeksi menu ke Offcanvas Sidebar
+                            if (offcanvasContainer) {
+                                const navItem = document.createElement('a');
+                                navItem.href = `page.html?slug=${page.slug}`;
+                                navItem.className = 'list-group-item list-group-item-action border-0 px-0 py-2 text-secondary fw-medium d-flex align-items-center';
+                                navItem.innerHTML = `<i class="fa fa-angle-right text-primary me-2 fs-6"></i><span>${page.judul}</span>`;
+                                offcanvasContainer.appendChild(navItem);
+                            }
+
+                            // Injeksi menu ke Footer Link
+                            if (footerCustomLinks) {
+                                const footerItem = document.createElement('a');
+                                footerItem.href = `page.html?slug=${page.slug}`;
+                                footerItem.className = 'btn btn-link';
+                                footerItem.innerText = page.judul;
+                                footerCustomLinks.appendChild(footerItem);
+                            }
+                        });
+                    } else {
+                        if (offcanvasContainer) offcanvasContainer.innerHTML = '<span class="text-muted small">Belum ada halaman kustom.</span>';
+                    }
+                })
+                .catch(err => {
+                    console.error("Error loading header pages:", err);
+                    const offcanvasContainer = document.getElementById('offcanvas-custom-pages');
+                    if (offcanvasContainer) offcanvasContainer.innerHTML = '<span class="text-danger small">Gagal memuat menu.</span>';
+                });
+        });
+    </script>
 </body>
 </html>

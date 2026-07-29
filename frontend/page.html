@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <title>Halaman | Web Kecamatan Rumbia</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+    <!-- NAVBAR UTAMA -->
+    <nav class="navbar navbar-expand bg-white navbar-light shadow-sm sticky-top py-2 px-3 px-lg-4">
+        <div class="container-fluid p-0">
+            <!-- 1. LOGO & NAMA (Di Sebelah Kiri) -->
+            <a href="index.html" class="navbar-brand d-flex align-items-center me-auto">
+                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 130%; width: auto;" class="me-2"> 
+                <span id="site-name" class="fw-bold text-dark fs-5 d-none d-sm-inline">Web Kecamatan Rumbia</span>
+                <span class="fw-bold text-dark fs-6 d-inline d-sm-none">Kec. Rumbia</span>
+            </a>
+
+            <!-- 2. 2 MENU INTI (Tampak di Laptop/Desktop) -->
+            <div class="navbar-nav d-none d-md-flex align-items-center me-3">
+                <a href="index.html" class="nav-link px-3 fw-semibold">Beranda</a>
+                <a href="courses.html" class="nav-link px-3 fw-semibold">Berita Acara</a>
+            </div>
+
+            <!-- 3. PENCARIAN -->
+            <div class="me-2" style="max-width: 220px;">
+                <div class="input-group input-group-sm">
+                    <input type="text" id="navbar-search-input" class="form-control border-primary" placeholder="Cari berita...">
+                    <button class="btn btn-primary px-2 px-sm-3" type="button" id="navbar-search-btn" title="Cari Berita">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4. TOMBOL BURGER -->
+            <button class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0" 
+                    type="button" 
+                    data-bs-toggle="offcanvas" 
+                    data-bs-target="#offcanvasNavbar" 
+                    aria-controls="offcanvasNavbar"
+                    title="Menu Lainnya"
+                    style="width: 38px; height: 38px; min-width: 38px;">
+                <i class="fa fa-bars fs-5 text-primary"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- SIDEBAR BURGER MENU (OFFCANVAS SLIDE-OUT) -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header border-bottom bg-light">
+            <h5 class="offcanvas-title fw-bold text-primary fs-6" id="offcanvasNavbarLabel">
+                <i class="fa fa-compass me-2"></i> Navigasi & Menu
+            </h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        
+        <div class="offcanvas-body d-flex flex-column justify-content-between p-4">
+            <div>
+                <div class="d-md-none mb-4">
+                    <div class="text-muted small fw-bold mb-2">MENU UTAMA</div>
+                    <div class="list-group list-group-flush">
+                        <a href="index.html" class="list-group-item list-group-item-action border-0 px-0 fw-semibold text-dark">
+                            <i class="fa fa-home me-2"></i> Beranda
+                        </a>
+                        <a href="courses.html" class="list-group-item list-group-item-action border-0 px-0 fw-semibold text-dark">
+                            <i class="fa fa-newspaper me-2"></i> Berita Acara
+                        </a>
+                    </div>
+                    <hr class="text-muted my-3">
+                </div>
+
+                <div>
+                    <div class="text-muted small fw-bold mb-2">HALAMAN & INFORMASI</div>
+                    <div class="list-group list-group-flush" id="offcanvas-custom-pages">
+                        <span class="text-muted small italic">Memuat daftar halaman...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-top mt-4">
+                <a href="admin/html/index.html" class="btn btn-primary w-100 py-2 rounded-pill fw-bold d-flex align-items-center justify-content-center shadow-sm">
+                    Login Sistem <i class="fa fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Header Banner Start -->
+    <div class="container-fluid bg-primary py-5 mb-5 page-header" style="background: linear-gradient(rgba(24, 29, 56, .7), rgba(24, 29, 56, .7)), url('img/image.png') center center no-repeat; background-size: cover;">
+        <div class="container py-5 text-center">
+            <h1 class="display-4 text-white animated slideInDown" id="page-title">Memuat Halaman...</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb justify-content-center text-uppercase">
+                    <li class="breadcrumb-item"><a class="text-white" href="index.html">Beranda</a></li>
+                    <li class="breadcrumb-item text-white active" aria-current="page" id="breadcrumb-title">...</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Header Banner End -->
+
+    <!-- Konten Utama Halaman Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <!-- Penambahan style="white-space: pre-wrap;" agar enter / newline terbaca -->
+                    <div id="page-content" class="bg-light p-4 p-md-5 rounded shadow-sm lh-lg" style="white-space: pre-wrap; word-break: break-word;">
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Sedang mengambil konten halaman...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Konten Utama Halaman End -->
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Kecamatan Rumbia</h4>
+                    <p id="footer-about-text">Portal Layanan Publik & Informasi Resmi Kecamatan Rumbia.</p>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Tautan Cepat</h4>
+                    <a class="btn btn-link" href="index.html">Beranda</a>
+                    <a class="btn btn-link" href="courses.html">Berita Acara</a>
+                    <div id="footer-custom-links"></div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Kontak Kami</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i><span id="footer-address">Jl. Raya Kecamatan Rumbia</span></p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i><span id="footer-phone">+62 812 3456 7890</span></p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i><span id="footer-email">info@rumbia.go.id</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <span id="footer-copyright-text">Kecamatan Rumbia</span>, All Right Reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <!-- Consolidated JavaScript Logic -->
+    <script>
+        const API_BASE = 'http://localhost:3000/api';
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const slug = urlParams.get('slug');
+
+            if (!slug) {
+                renderNotFound("Parameter Slug Tidak Ditemukan");
+                return;
+            }
+
+            // 1. Fetch Isi Detail Halaman
+            fetch(`${API_BASE}/halaman/${slug}`)
+                .then(res => res.json())
+                .then(resData => {
+                    const page = resData.data || resData;
+                    if (page && page.judul) {
+                        document.title = `${page.judul} | Web Kecamatan Rumbia`;
+                        document.getElementById('page-title').innerText = page.judul;
+                        document.getElementById('breadcrumb-title').innerText = page.judul;
+                        
+                        // Menampilkan Gambar Jika Ada
+                        let imgHtml = '';
+                        if (page.gambar) {
+                            imgHtml = `<img src="http://localhost:3000/uploads/${page.gambar}" class="img-fluid rounded mb-4 w-100" style="max-height: 450px; object-fit: cover;" alt="${page.judul}">`;
+                        }
+
+                        document.getElementById('page-content').innerHTML = imgHtml + page.konten;
+                    } else {
+                        renderNotFound("Halaman tidak ditemukan.");
+                    }
+                })
+                .catch(err => {
+                    console.error("Error fetching page content:", err);
+                    renderNotFound("Gagal terhubung ke server backend API.");
+                });
+
+            // 2. Fetch Menu Navigasi Header Kustom (Offcanvas & Footer)
+            fetch(`${API_BASE}/halaman?header_only=true`)
+                .then(res => res.json())
+                .then(resData => {
+                    const offcanvasContainer = document.getElementById('offcanvas-custom-pages');
+                    const footerCustomLinks = document.getElementById('footer-custom-links');
+                    const pages = resData.data || resData;
+
+                    if (Array.isArray(pages) && pages.length > 0) {
+                        if (offcanvasContainer) offcanvasContainer.innerHTML = '';
+                        if (footerCustomLinks) footerCustomLinks.innerHTML = '';
+
+                        pages.forEach(page => {
+                            const isActive = page.slug === slug;
+
+                            // Injeksi ke Offcanvas Sidebar
+                            if (offcanvasContainer) {
+                                const navItem = document.createElement('a');
+                                navItem.href = `page.html?slug=${page.slug}`;
+                                navItem.className = `list-group-item list-group-item-action border-0 px-0 py-2 ${isActive ? 'text-primary fw-bold' : 'text-secondary fw-medium'} d-flex align-items-center`;
+                                navItem.innerHTML = `<i class="fa fa-angle-right text-primary me-2 fs-6"></i><span>${page.judul}</span>`;
+                                offcanvasContainer.appendChild(navItem);
+                            }
+
+                            // Injeksi ke Footer
+                            if (footerCustomLinks) {
+                                const footerItem = document.createElement('a');
+                                footerItem.href = `page.html?slug=${page.slug}`;
+                                footerItem.className = 'btn btn-link';
+                                footerItem.innerText = page.judul;
+                                footerCustomLinks.appendChild(footerItem);
+                            }
+                        });
+                    } else if (offcanvasContainer) {
+                        offcanvasContainer.innerHTML = '<span class="text-muted small">Belum ada halaman kustom.</span>';
+                    }
+                })
+                .catch(err => console.error("Error fetching custom pages:", err));
+
+            // 3. Fetch Pengaturan Website (Logo & Footer)
+            fetch(`${API_BASE}/pengaturan`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && !data.error) {
+                        if (data.logo) {
+                            document.getElementById('site-logo').src = `http://localhost:3000/uploads/${data.logo}`;
+                        }
+                        if (data.footer_about) document.getElementById('footer-about-text').innerText = data.footer_about;
+                        if (data.footer_address) document.getElementById('footer-address').innerText = data.footer_address;
+                        if (data.footer_phone) document.getElementById('footer-phone').innerText = data.footer_phone;
+                        if (data.footer_email) document.getElementById('footer-email').innerText = data.footer_email;
+                        if (data.footer_copyright) document.getElementById('footer-copyright-text').innerText = data.footer_copyright;
+                    }
+                })
+                .catch(err => console.error("Error fetching settings:", err));
+
+            // 4. Handler Pencarian
+            const searchBtn = document.getElementById('navbar-search-btn');
+            const searchInput = document.getElementById('navbar-search-input');
+
+            function doSearch() {
+                const keyword = searchInput ? searchInput.value.trim() : '';
+                window.location.href = keyword ? `courses.html?q=${encodeURIComponent(keyword)}` : `courses.html`;
+            }
+
+            if (searchBtn && searchInput) {
+                searchBtn.addEventListener('click', doSearch);
+                searchInput.addEventListener('keyup', function (e) {
+                    if (e.key === 'Enter') doSearch();
+                });
+            }
+        });
+
+        function renderNotFound(message) {
+            document.title = "Halaman Tidak Ditemukan | Web Kecamatan Rumbia";
+            document.getElementById('page-title').innerText = "404 - Tidak Ditemukan";
+            document.getElementById('breadcrumb-title').innerText = "Not Found";
+            document.getElementById('page-content').style.whiteSpace = 'normal';
+            document.getElementById('page-content').innerHTML = `
+                <div class="text-center py-5">
+                    <i class="bi bi-exclamation-triangle text-warning display-1"></i>
+                    <h3 class="mt-3">Mohon Maaf</h3>
+                    <p class="text-muted">${message}</p>
+                    <a href="index.html" class="btn btn-primary mt-3"><i class="fa fa-home me-2"></i>Kembali ke Beranda</a>
+                </div>
+            `;
+        }
+    </script>
+</body>
+
+</html>
