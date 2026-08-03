@@ -85,10 +85,26 @@
     <div class="admin-main">
       <main class="dashboard-content">
         <div class="container-fluid px-3 px-lg-4 py-4">
-          <div class="page-heading mb-4">
-            <h1 class="h3">Pengaturan Website (Logo & Footer)</h1>
-            <p class="text-muted">Kelola logo instansi dan informasi footer publik.</p>
+          <nav class="navbar admin-navbar navbar-expand bg-white">
+        <div class="container-fluid px-3 px-lg-4">
+          <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar" aria-expanded="true" aria-label="Toggle sidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div class="navbar-actions ms-auto">
+           
+          <div class="dropdown">
+              <div class="container-fluid px-3 px-lg-4">
+          <button type="button" id="btnSignOut" class="btn btn-outline-danger btn-sm">
+            <i class="bi bi-box-arrow-right"></i> Sign Out
+          </button>
+        </div>
+              
+            </div>
           </div>
+        </div>
+      </nav>
 
           <form id="settingsForm" enctype="multipart/form-data">
             <div class="row g-4">
@@ -198,6 +214,28 @@
             });
         });
     });
+    document.addEventListener('DOMContentLoaded', function () {
+  const btnSignOut = document.getElementById('btnSignOut');
+
+  if (btnSignOut) {
+    btnSignOut.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      // 1. Konfirmasi opsional ke pengguna (opsional)
+      if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
+        
+        // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // 3. Arahkan kembali pengguna ke halaman login
+        window.location.href = 'login.html';
+      }
+    });
+  }
+});
   </script>
 </body>
 </html>

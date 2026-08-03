@@ -96,11 +96,9 @@
             <span></span><span></span><span></span>
           </button>
 
-          <div class="navbar-actions ms-auto">
-            <a href="login.html" class="btn btn-outline-danger btn-sm">
-              <i class="bi bi-box-arrow-right"></i> Sign Out
-            </a>
-          </div>
+          <button type="button" id="btnSignOut" class="btn btn-outline-danger btn-sm">
+            <i class="bi bi-box-arrow-right"></i> Sign Out
+          </button>
         </div>
       </nav>
 
@@ -417,6 +415,29 @@
     }
 
     document.addEventListener('DOMContentLoaded', loadDashboardData);
+    document.addEventListener('DOMContentLoaded', function () {
+  const btnSignOut = document.getElementById('btnSignOut');
+
+  if (btnSignOut) {
+    btnSignOut.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      // 1. Konfirmasi opsional ke pengguna (opsional)
+      if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
+        
+        // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // 3. Arahkan kembali pengguna ke halaman login
+        window.location.href = 'login.html';
+      }
+    });
+  }
+});
   </script>
+  
 </body>
 </html>

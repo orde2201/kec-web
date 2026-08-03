@@ -55,11 +55,6 @@
         </a>
       </nav>
 
-      <div class="sidebar-user">
-        <img class="avatar-img avatar-md sidebar-user-avatar" src="../assets/images/avatar/avatar.jpg" alt="Admin">
-        <strong id="sidebarUserName">Admin System</strong>
-        <small id="sidebarUserRole">Administrator</small>
-      </div>
 
       <div class="sidebar-footer">
         <span class="status-dot"></span>
@@ -735,6 +730,28 @@
       fetchPengumuman();
       fetchBerita();
     });
+    document.addEventListener('DOMContentLoaded', function () {
+  const btnSignOut = document.getElementById('btnSignOut');
+
+  if (btnSignOut) {
+    btnSignOut.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      // 1. Konfirmasi opsional ke pengguna (opsional)
+      if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
+        
+        // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // 3. Arahkan kembali pengguna ke halaman login
+        window.location.href = 'login.html';
+      }
+    });
+  }
+});
   </script>
 </body>
 </html>
