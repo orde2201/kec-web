@@ -1,28 +1,22 @@
 {
-  "name": "backend",
+  "name": "portal-kecamatan-rumbia-backend",
   "version": "1.0.0",
-  "description": "backend",
-  "main": "server.js",
+  "description": "Backend API Portal Kecamatan Rumbia (struktur router & controller)",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node app.js",
+    "dev": "node --watch app.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "bcrypt": "^6.0.0",
-    "bcryptjs": "^3.0.3",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "express-rate-limit": "^8.6.1",
-    "helmet": "^8.3.0",
-    "nodemailer": "^9.0.3",
-    "pg": "^8.22.0",
-    "sanitize-html": "^2.17.6"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.14"
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^7.1.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.14",
+    "pg": "^8.12.0",
+    "sanitize-html": "^2.13.0"
   }
 }

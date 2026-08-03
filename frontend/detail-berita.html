@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Detail Berita - Kecamatan Rumbia</title>
+    <title>Detail Berita - Web Kecamatan Rumbia</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
 
-    <!-- Google Web Fonts (Sama persis seperti index.html) -->
+    <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Customized Bootstrap & Style Tema Utama -->
+    <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
@@ -89,7 +89,6 @@
 
         .sidebar-card {
             background: #ffffff;
-            
             border-radius: 12px;
             padding: 1.5rem;
         }
@@ -116,23 +115,30 @@
 </head>
 
 <body>
-    <!-- NAVBAR UTAMA (100% SAMA PERSIS DENGAN INDEX.HTML) -->
+    <!-- ==================== SPINNER LOADING ==================== -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <!-- ==================== NAVBAR UTAMA ==================== -->
     <nav class="navbar navbar-expand bg-white navbar-light shadow-sm sticky-top py-2 px-3 px-lg-4">
         <div class="container-fluid p-0">
-            <!-- 1. LOGO & NAMA -->
+            <!-- 1. Logo & Nama Website -->
             <a href="index.html" class="navbar-brand d-flex align-items-center me-auto">
-                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 130%; width: auto;" class="me-2"> 
+                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 130%; width: auto;" class="me-2" onerror="this.src='img/logo.png';"> 
                 <span id="site-name" class="fw-bold text-dark fs-5 d-none d-sm-inline">Web Kecamatan Rumbia</span>
                 <span class="fw-bold text-dark fs-6 d-inline d-sm-none">Kec. Rumbia</span>
             </a>
 
-            <!-- 2. MENU INTI (DESKTOP) -->
+            <!-- 2. Menu Navigasi Utama (Desktop) -->
             <div class="navbar-nav d-none d-md-flex align-items-center me-3">
                 <a href="index.html" class="nav-link px-3 fw-semibold">Beranda</a>
-                <a href="courses.html" class="nav-link px-3 active fw-semibold">Berita Acara</a>
+                <a href="berita_acara.html" class="nav-link px-3 active fw-semibold">Berita Acara</a>
             </div>
 
-            <!-- 3. PENCARIAN -->
+            <!-- 3. Form Pencarian Quick Search -->
             <div class="me-2" style="max-width: 220px;">
                 <div class="input-group input-group-sm">
                     <input type="text" id="navbar-search-input" class="form-control border-primary" placeholder="Cari berita...">
@@ -142,7 +148,7 @@
                 </div>
             </div>
 
-            <!-- 4. TOMBOL BURGER -->
+            <!-- 4. Tombol Menu Offcanvas Sidebar -->
             <button class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0" 
                     type="button" 
                     data-bs-toggle="offcanvas" 
@@ -155,7 +161,7 @@
         </div>
     </nav>
 
-    <!-- SIDEBAR BURGER MENU (OFFCANVAS 100% SAMA DENGAN INDEX.HTML) -->
+    <!-- ==================== OFFCANVAS SIDEBAR MENU ==================== -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
         <div class="offcanvas-header border-bottom bg-light">
             <h5 class="offcanvas-title fw-bold text-primary fs-6" id="offcanvasNavbarLabel">
@@ -166,21 +172,21 @@
         
         <div class="offcanvas-body d-flex flex-column justify-content-between p-4">
             <div>
-                <!-- MENU INTI MOBILE -->
+                <!-- Menu Khusus Layar Mobile -->
                 <div class="d-md-none mb-4">
                     <div class="text-muted small fw-bold mb-2">MENU UTAMA</div>
                     <div class="list-group list-group-flush">
                         <a href="index.html" class="list-group-item list-group-item-action border-0 px-0 fw-semibold text-dark">
                             <i class="fa fa-home me-2"></i> Beranda
                         </a>
-                        <a href="courses.html" class="list-group-item list-group-item-action border-0 px-0 fw-bold text-primary">
+                        <a href="berita_acara.html" class="list-group-item list-group-item-action border-0 px-0 fw-bold text-primary">
                             <i class="fa fa-newspaper me-2"></i> Berita Acara
                         </a>
                     </div>
                     <hr class="text-muted my-3">
                 </div>
 
-                <!-- DAFTAR HALAMAN KUSTOM -->
+                <!-- Kontainer Halaman Kustom (Diinjeksi via API JS) -->
                 <div>
                     <div class="text-muted small fw-bold mb-2">HALAMAN & INFORMASI</div>
                     <div class="list-group list-group-flush" id="offcanvas-custom-pages">
@@ -189,7 +195,7 @@
                 </div>
             </div>
 
-            <!-- AREA BOTTOM / TOMBOL LOGIN -->
+            <!-- Tombol Portal Login -->
             <div class="pt-4 border-top mt-4">
                 <a href="admin/html/index.html" class="btn btn-primary w-100 py-2 rounded-pill fw-bold d-flex align-items-center justify-content-center shadow-sm">
                     Login Sistem <i class="fa fa-arrow-right ms-2"></i>
@@ -198,20 +204,20 @@
         </div>
     </div>
 
-    <!-- MAIN CONTENT CONTAINER -->
+    <!-- ==================== KONTEN UTAMA DETAIL BERITA ==================== -->
     <div class="container py-5">
-        <!-- BREADCRUMB -->
+        <!-- Breadcrumb Navigasi -->
         <nav aria-label="breadcrumb" class="mb-4">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="index.html"><i class="fa fa-home me-1"></i>Beranda</a></li>
-                <li class="breadcrumb-item"><a href="courses.html">Berita</a></li>
+                <li class="breadcrumb-item"><a href="berita_acara.html">Berita Acara</a></li>
                 <li class="breadcrumb-item active text-primary" id="breadcrumb-title" aria-current="page">Detail Berita</li>
             </ol>
         </nav>
 
-        <!-- LAYOUT UTAMA -->
+        <!-- Layout Utama -->
         <div class="row g-4">
-            <!-- KOLOM KONTEN BERITA -->
+            <!-- Kolom Konten Berita -->
             <div class="col-lg-8" id="detail-container">
                 <div class="bg-white rounded p-5 text-center shadow-sm border">
                     <div class="spinner-border text-primary mb-2" role="status"></div>
@@ -219,7 +225,7 @@
                 </div>
             </div>
 
-            <!-- KOLOM SIDEBAR BAGIKAN BERITA -->
+            <!-- Kolom Sidebar Bagikan Berita -->
             <div class="col-lg-4">
                 <div class="sticky-top">
                     <div class="sidebar-card shadow-sm mb-4">
@@ -237,27 +243,62 @@
         </div>
     </div>
 
-    <!-- FOOTER -->
-    <footer class="bg-dark text-light border-top py-4">
-        <div class="container text-center small">
-            <p class="mb-1">&copy; 2026 Pemerintah Kecamatan Rumbia. Hak Cipta Dilindungi.</p>
-            <span class="text-muted">Informasi Publik & Portal Berita Resmi</span>
+    <!-- ==================== FOOTER ==================== -->
+    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Kecamatan Rumbia</h4>
+                    <p id="footer-about-text">Portal Layanan Publik & Informasi Resmi Kecamatan Rumbia.</p>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Tautan Cepat</h4>
+                    <a class="btn btn-link" href="index.html">Beranda</a>
+                    <a class="btn btn-link" href="berita_acara.html">Berita Acara</a>
+                    <span id="footer-custom-links"></span>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Kontak Kami</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i><span id="footer-address">Jl. Raya Kecamatan Rumbia</span></p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i><span id="footer-phone">+62 812 3456 7890</span></p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i><span id="footer-email">info@rumbia.go.id</span></p>
+                </div>
+            </div>
         </div>
-    </footer>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <span id="footer-copyright-text">Kecamatan Rumbia</span>, All Right Reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- JS LIBRARIES (SAMA DENGAN INDEX.HTML) -->
+    <!-- Tombol Kembali Ke Atas -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- ==================== VENDOR SCRIPTS ==================== -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/main.js"></script>
 
+    <!-- ==================== CORE API & DETAIL BERITA LOGIC ==================== -->
     <script>
+        /**
+         * CONFIGURATION
+         */
+        const API_BASE_URL = 'http://localhost:3000';
+
         function copyLink() {
             navigator.clipboard.writeText(window.location.href);
             alert("Link berita berhasil disalin ke clipboard!");
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            const API_BASE = "http://localhost:3000/api";
+            console.log("[DEBUG - Init] Halaman Detail Berita dimuat.");
+
             const urlParams = new URLSearchParams(window.location.search);
             const beritaId = urlParams.get('id');
 
@@ -268,178 +309,247 @@
             document.getElementById('share-tw').href = `https://twitter.com/intent/tweet?url=${currentUrl}`;
 
             // 2. FETCH DETAIL BERITA
+            loadDetailBerita(beritaId);
+
+            // 3. FETCH PENGATURAN SITUS
+            loadPengaturanHalaman();
+
+            // 4. FETCH HALAMAN KUSTOM
+            loadHeaderPages();
+
+            // 5. HANDLER PENCARIAN NAVBAR
+            initSearchHandler();
+        });
+
+        /**
+         * Fetch dan Render Konten Berita Berdasarkan ID
+         */
+        function loadDetailBerita(beritaId) {
+            const container = document.getElementById('detail-container');
+
             if (!beritaId) {
-                document.getElementById('detail-container').innerHTML = `
-                    <div class="alert alert-danger border-0 shadow-sm">
-                        <i class="fa fa-exclamation-triangle me-2"></i> Berita tidak ditemukan (ID berita tidak valid).
-                    </div>`;
-            } else {
-                fetch(`${API_BASE}/berita/${beritaId}`)
-                    .then(res => {
-                        if (!res.ok) throw new Error('Data tidak ditemukan');
-                        return res.json();
-                    })
-                    .then(berita => {
-                        const container = document.getElementById('detail-container');
-                        
-                        const tanggal = new Date(berita.created_at).toLocaleDateString('id-ID', {
-                            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-                        });
-
-                        document.title = `${berita.judul} - Kecamatan Rumbia`;
-                        document.getElementById('breadcrumb-title').innerText = berita.judul.length > 30 ? berita.judul.substring(0, 30) + '...' : berita.judul;
-
-                        // Render Gambar/Galeri
-                        let galeriHTML = '';
-                        let hasMultipleImages = false;
-
-                        if (berita.gambar && berita.gambar.trim() !== '') {
-                            const gambarArray = berita.gambar.split(',').map(g => g.trim()).filter(g => g !== '');
-                            
-                            if (gambarArray.length === 1) {
-                                galeriHTML = `
-                                    <div class="mb-4">
-                                        <img class="img-fluid w-100 rounded" 
-                                             src="http://localhost:3000/uploads/${gambarArray[0]}" 
-                                             alt="${berita.judul}" 
-                                             style="max-height: 480px; object-fit: cover;">
-                                    </div>`;
-                            } else if (gambarArray.length > 1) {
-                                hasMultipleImages = true;
-                                let indicators = '';
-                                let carouselInner = '';
-
-                                gambarArray.forEach((img, idx) => {
-                                    const activeClass = idx === 0 ? 'active' : '';
-                                    indicators += `<button type="button" data-bs-target="#sliderBerita" data-bs-slide-to="${idx}" class="${activeClass}" aria-label="Slide ${idx + 1}"></button>`;
-                                    carouselInner += `
-                                        <div class="carousel-item ${activeClass}">
-                                            <img src="http://localhost:3000/uploads/${img}" class="d-block w-100" style="max-height: 480px; object-fit: cover;" alt="Foto ${idx + 1}">
-                                        </div>`;
-                                });
-
-                                galeriHTML = `
-                                    <div id="sliderBerita" class="carousel slide mb-4 shadow-sm rounded overflow-hidden" data-bs-ride="carousel">
-                                        <div class="carousel-indicators">${indicators}</div>
-                                        <div class="carousel-inner">${carouselInner}</div>
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#sliderBerita" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#sliderBerita" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        </button>
-                                    </div>`;
-                            }
-                        } else {
-                            galeriHTML = `<img class="img-fluid w-100 rounded mb-4" src="img/default.jpg" style="max-height: 400px; object-fit: cover;">`;
-                        }
-
-                        // Estimasi Waktu Baca
-                        const wordCount = berita.konten ? berita.konten.replace(/<[^>]*>?/gm, '').split(/\s+/).length : 0;
-                        const readTime = Math.ceil(wordCount / 200) || 1;
-
-                        // Render Konten
-                        container.innerHTML = `
-                            <article class="bg-white p-4 p-md-5 rounded border shadow-sm">
-                                <div class="mb-3">
-                                    <span class="badge bg-primary fw-bold text-uppercase px-3 py-2 rounded-pill mb-3">
-                                        ${berita.nama_kategori || 'Warta Kecamatan'}
-                                    </span>
-                                    <h1 class="h2 fw-bold text-dark mb-3">${berita.judul}</h1>
-                                    
-                                    <div class="d-flex align-items-center text-muted pb-3 border-bottom flex-wrap gap-3 small">
-                                        <span><i class="fa fa-user text-primary me-1"></i> ${berita.nama_penulis || 'Redaksi'}</span>
-                                        <span><i class="fa fa-calendar-alt text-primary me-1"></i> ${tanggal}</span>
-                                        <span><i class="fa fa-clock text-primary me-1"></i> ${readTime} mnt baca</span>
-                                    </div>
-                                </div>
-
-                                ${galeriHTML}
-
-                                <div class="berita-content">
-                                    ${berita.konten}
-                                </div>
-
-                                <div class="mt-5 pt-3 border-top d-flex justify-content-between align-items-center">
-                                    <a href="index.html" class="btn btn-outline-secondary rounded-pill px-4">
-                                        <i class="fa fa-arrow-left me-2"></i>Kembali
-                                    </a>
-                                </div>
-                            </article>`;
-
-                        if (hasMultipleImages) {
-                            const sliderElement = document.getElementById('sliderBerita');
-                            if (sliderElement && typeof bootstrap !== 'undefined') {
-                                new bootstrap.Carousel(sliderElement, { interval: 4000, wrap: true, touch: true });
-                            }
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        document.getElementById('detail-container').innerHTML = `
-                            <div class="alert alert-danger border-0 shadow-sm p-4 text-center">
-                                <i class="fa fa-exclamation-circle fa-2x mb-2 text-danger"></i>
-                                <h5>Gagal Memuat Berita</h5>
-                                <p class="mb-0">Maaf, konten berita tidak dapat ditemukan atau koneksi terputus.</p>
-                            </div>`;
-                    });
+                console.error("[DEBUG - Detail] ID Berita tidak ditemukan pada parameter URL.");
+                if (container) {
+                    container.innerHTML = `
+                        <div class="alert alert-danger border-0 shadow-sm p-4">
+                            <i class="fa fa-exclamation-triangle me-2"></i> Berita tidak ditemukan (ID berita tidak valid).
+                        </div>`;
+                }
+                return;
             }
 
-            // 3. FETCH PENGATURAN LOGO
-            fetch(`${API_BASE}/pengaturan`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data && !data.error) {
-                        const siteLogo = document.getElementById('site-logo');
-                        if (siteLogo && data.logo) {
-                            siteLogo.src = `http://localhost:3000/uploads/${data.logo}`;
+            const endpoint = `${API_BASE_URL}/api/berita/${beritaId}`;
+            console.log(`[DEBUG - Detail] Fetching: ${endpoint}`);
+
+            fetch(endpoint)
+                .then(res => {
+                    if (!res.ok) throw new Error(`HTTP Error Status: ${res.status}`);
+                    return res.json();
+                })
+                .then(berita => {
+                    console.log("[DEBUG - Detail] Data Berita Diterima:", berita);
+
+                    if (!container) return;
+
+                    const tanggal = berita.created_at 
+                        ? new Date(berita.created_at).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+                        : '-';
+
+                    document.title = `${berita.judul} - Kecamatan Rumbia`;
+                    
+                    const breadcrumbTitle = document.getElementById('breadcrumb-title');
+                    if (breadcrumbTitle) {
+                        breadcrumbTitle.innerText = berita.judul.length > 30 ? berita.judul.substring(0, 30) + '...' : berita.judul;
+                    }
+
+                    // Render Gambar/Galeri
+                    let galeriHTML = '';
+                    let hasMultipleImages = false;
+
+                    if (berita.gambar && typeof berita.gambar === 'string' && berita.gambar.trim() !== '') {
+                        const gambarArray = berita.gambar.split(',').map(g => g.trim()).filter(g => g !== '');
+
+                        if (gambarArray.length === 1) {
+                            galeriHTML = `
+                                <div class="mb-4">
+                                    <img class="img-fluid w-100 rounded" 
+                                         src="${API_BASE_URL}/uploads/${gambarArray[0]}" 
+                                         alt="${berita.judul}" 
+                                         style="max-height: 480px; object-fit: cover;"
+                                         onerror="this.onerror=null; this.src='img/default.jpg';">
+                                </div>`;
+                        } else if (gambarArray.length > 1) {
+                            hasMultipleImages = true;
+                            let indicators = '';
+                            let carouselInner = '';
+
+                            gambarArray.forEach((img, idx) => {
+                                const activeClass = idx === 0 ? 'active' : '';
+                                indicators += `<button type="button" data-bs-target="#sliderBerita" data-bs-slide-to="${idx}" class="${activeClass}" aria-label="Slide ${idx + 1}"></button>`;
+                                carouselInner += `
+                                    <div class="carousel-item ${activeClass}">
+                                        <img src="${API_BASE_URL}/uploads/${img}" class="d-block w-100" style="max-height: 480px; object-fit: cover;" alt="Foto ${idx + 1}" onerror="this.onerror=null; this.src='img/default.jpg';">
+                                    </div>`;
+                            });
+
+                            galeriHTML = `
+                                <div id="sliderBerita" class="carousel slide mb-4 shadow-sm rounded overflow-hidden" data-bs-ride="carousel">
+                                    <div class="carousel-indicators">${indicators}</div>
+                                    <div class="carousel-inner">${carouselInner}</div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#sliderBerita" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#sliderBerita" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    </button>
+                                </div>`;
+                        }
+                    } else {
+                        galeriHTML = `<img class="img-fluid w-100 rounded mb-4" src="img/default.jpg" style="max-height: 400px; object-fit: cover;">`;
+                    }
+
+                    // Estimasi Waktu Baca
+                    const wordCount = berita.konten ? berita.konten.replace(/<[^>]*>?/gm, '').split(/\s+/).length : 0;
+                    const readTime = Math.ceil(wordCount / 200) || 1;
+
+                    // Render HTML Utama
+                    container.innerHTML = `
+                        <article class="bg-white p-4 p-md-5 rounded border shadow-sm">
+                            <div class="mb-3">
+                                <span class="badge bg-primary fw-bold text-uppercase px-3 py-2 rounded-pill mb-3">
+                                    ${berita.nama_kategori || 'Warta Kecamatan'}
+                                </span>
+                                <h1 class="h2 fw-bold text-dark mb-3">${berita.judul}</h1>
+                                
+                                <div class="d-flex align-items-center text-muted pb-3 border-bottom flex-wrap gap-3 small">
+                                    <span><i class="fa fa-user text-primary me-1"></i> ${berita.nama_penulis || 'Redaksi'}</span>
+                                    <span><i class="fa fa-calendar-alt text-primary me-1"></i> ${tanggal}</span>
+                                    <span><i class="fa fa-clock text-primary me-1"></i> ${readTime} mnt baca</span>
+                                </div>
+                            </div>
+
+                            ${galeriHTML}
+
+                            <div class="berita-content">
+                                ${berita.konten || ''}
+                            </div>
+
+                            <div class="mt-5 pt-3 border-top d-flex justify-content-between align-items-center">
+                                <a href="berita_acara.html" class="btn btn-outline-secondary rounded-pill px-4">
+                                    <i class="fa fa-arrow-left me-2"></i>Kembali ke Berita
+                                </a>
+                            </div>
+                        </article>`;
+
+                    if (hasMultipleImages) {
+                        const sliderElement = document.getElementById('sliderBerita');
+                        if (sliderElement && typeof bootstrap !== 'undefined') {
+                            new bootstrap.Carousel(sliderElement, { interval: 4000, wrap: true, touch: true });
                         }
                     }
                 })
-                .catch(err => console.error('Error fetching pengaturan:', err));
+                .catch(error => {
+                    console.error('[DEBUG - Detail] Error fetching berita detail:', error);
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="alert alert-danger border-0 shadow-sm p-4 text-center">
+                                <i class="fa fa-exclamation-circle fa-2x mb-2 text-danger"></i>
+                                <h5>Gagal Memuat Berita</h5>
+                                <p class="mb-0">Maaf, konten berita tidak dapat ditemukan atau koneksi ke server terputus.</p>
+                            </div>`;
+                    }
+                });
+        }
 
-            // 4. FETCH HALAMAN KUSTOM UNTUK OFFCANVAS
-            fetch(`${API_BASE}/halaman?header_only=true`)
+        /**
+         * Load Pengaturan Situs
+         */
+        function loadPengaturanHalaman() {
+            fetch(`${API_BASE_URL}/api/pengaturan`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && !data.error) {
+                        setElementSrc('site-logo', data.logo ? `${API_BASE_URL}/uploads/${data.logo}` : null);
+                        setElementText('footer-about-text', data.footer_about);
+                        setElementText('footer-address', data.footer_address);
+                        setElementText('footer-phone', data.footer_phone);
+                        setElementText('footer-email', data.footer_email);
+                        setElementText('footer-copyright-text', data.footer_copyright);
+                    }
+                })
+                .catch(err => console.error('[DEBUG - Pengaturan] Error:', err));
+        }
+
+        /**
+         * Load Halaman Kustom (Navigasi Header & Footer)
+         */
+        function loadHeaderPages() {
+            fetch(`${API_BASE_URL}/api/halaman?header_only=true`)
                 .then(res => res.json())
                 .then(resData => {
                     const offcanvasContainer = document.getElementById('offcanvas-custom-pages');
-                    if (offcanvasContainer) {
-                        if (resData.data && resData.data.length > 0) {
-                            offcanvasContainer.innerHTML = '';
-                            resData.data.forEach(page => {
+                    const footerCustomLinks = document.getElementById('footer-custom-links');
+                    const pages = resData.data || [];
+
+                    if (pages.length > 0) {
+                        if (offcanvasContainer) offcanvasContainer.innerHTML = '';
+
+                        pages.forEach(page => {
+                            if (offcanvasContainer) {
                                 const navItem = document.createElement('a');
                                 navItem.href = `page.html?slug=${page.slug}`;
                                 navItem.className = 'list-group-item list-group-item-action border-0 px-0 py-2 text-secondary fw-medium d-flex align-items-center';
                                 navItem.innerHTML = `<i class="fa fa-angle-right text-primary me-2 fs-6"></i><span>${page.judul}</span>`;
                                 offcanvasContainer.appendChild(navItem);
-                            });
-                        } else {
-                            offcanvasContainer.innerHTML = '<span class="text-muted small">Belum ada halaman kustom.</span>';
-                        }
+                            }
+
+                            if (footerCustomLinks) {
+                                const footerItem = document.createElement('a');
+                                footerItem.href = `page.html?slug=${page.slug}`;
+                                footerItem.className = 'btn btn-link';
+                                footerItem.innerText = page.judul;
+                                footerCustomLinks.appendChild(footerItem);
+                            }
+                        });
+                    } else {
+                        if (offcanvasContainer) offcanvasContainer.innerHTML = '<span class="text-muted small">Belum ada halaman kustom.</span>';
                     }
                 })
-                .catch(err => {
-                    console.error("Error loading pages:", err);
-                    const offcanvasContainer = document.getElementById('offcanvas-custom-pages');
-                    if (offcanvasContainer) offcanvasContainer.innerHTML = '<span class="text-danger small">Gagal memuat menu.</span>';
-                });
+                .catch(err => console.error("[DEBUG - HeaderPages] Error:", err));
+        }
 
-            // 5. PENCARIAN NAVBAR
+        /**
+         * Handler Pencarian Berita pada Navbar
+         */
+        function initSearchHandler() {
             const searchBtn = document.getElementById('navbar-search-btn');
             const searchInput = document.getElementById('navbar-search-input');
 
-            function doSearch() {
+            function executeSearch() {
                 const keyword = searchInput ? searchInput.value.trim() : '';
-                window.location.href = keyword ? `courses.html?q=${encodeURIComponent(keyword)}` : `courses.html`;
+                window.location.href = keyword ? `berita_acara.html?q=${encodeURIComponent(keyword)}` : `berita_acara.html`;
             }
 
             if (searchBtn && searchInput) {
-                searchBtn.addEventListener('click', doSearch);
+                searchBtn.addEventListener('click', executeSearch);
                 searchInput.addEventListener('keyup', function(e) {
-                    if (e.key === 'Enter') doSearch();
+                    if (e.key === 'Enter') executeSearch();
                 });
             }
-        });
+        }
+
+        // Helper Functions
+        function setElementSrc(id, url) {
+            if (!url) return;
+            const el = document.getElementById(id);
+            if (el) el.src = url;
+        }
+
+        function setElementText(id, text) {
+            if (!text) return;
+            const el = document.getElementById(id);
+            if (el) el.innerText = text;
+        }
     </script>
 </body>
 </html>

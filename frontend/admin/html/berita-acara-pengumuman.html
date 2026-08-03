@@ -239,7 +239,7 @@
               <div class="modal-body">
                 <div class="mb-3">
                   <label class="form-label fw-semibold">Judul Pengumuman</label>
-                  <input type="text" name="judul" class="form-control" placeholder="Contoh: Pengisian Formulir Pegawai" required>
+                  <input type="text" id="judul_pengumuman" name="judul" class="form-control" placeholder="Contoh: Pengisian Formulir Pegawai" required>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
@@ -258,16 +258,19 @@
                 </div>
                 <div class="mb-3">
                   <label class="form-label fw-semibold">Isi Pengumuman</label>
-                  <textarea name="isi" class="form-control" rows="4" required></textarea>
+                  <textarea id="isi_pengumuman" name="isi" class="form-control" rows="4" required></textarea>
                 </div>
+                
+                <!-- CHECKBOX BROADCAST WHATSAPP -->
                 <div class="card bg-light border-0 p-3 mb-2">
                   <div class="form-check form-switch mb-0">
-                    <input class="form-check-input" type="checkbox" name="kirim_email" id="kirimEmailPengumuman" value="true">
-                    <label class="form-check-label fw-semibold text-primary" for="kirimEmailPengumuman">
-                      <i class="bi bi-envelope-at me-1"></i> Kirim Notifikasi Email ke Instansi/User Terkait
+                    <input class="form-check-input" type="checkbox" name="kirim_wa" id="kirimWaPengumuman" value="true">
+                    <label class="form-check-label fw-semibold text-success" for="kirimWaPengumuman">
+                      <i class="bi bi-whatsapp me-1"></i> Broadcast WhatsApp ke No. HP User Instansi Terkait
                     </label>
                   </div>
                 </div>
+
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetModalPengumuman()">Batal</button>
@@ -606,7 +609,7 @@
     function resetModalPengumuman() {
       document.getElementById('formPengumuman').reset();
       document.getElementById('edit_pengumuman_id').value = '';
-      document.getElementById('kirimEmailPengumuman').checked = false;
+      document.getElementById('kirimWaPengumuman').checked = false;
       document.getElementById('modalPengumumanTitle').innerHTML = '<i class="bi bi-megaphone me-2"></i>Tambah Pengumuman Instansi';
       document.getElementById('btnSimpanPengumuman').innerText = 'Simpan Pengumuman';
     }
@@ -632,7 +635,7 @@
       document.querySelector('#formPengumuman select[name="instansi_id"]').value = item.instansi_id || '';
       document.querySelector('#formPengumuman input[name="link_gform"]').value = item.link_gform || '';
       document.querySelector('#formPengumuman textarea[name="isi"]').value = item.isi || '';
-      document.getElementById('kirimEmailPengumuman').checked = false;
+      document.getElementById('kirimWaPengumuman').checked = false;
 
       document.getElementById('modalPengumumanTitle').innerHTML = '<i class="bi bi-pencil-square me-2"></i>Edit Pengumuman';
       document.getElementById('btnSimpanPengumuman').innerText = 'Update Pengumuman';
@@ -640,9 +643,11 @@
       bootstrap.Modal.getOrCreateInstance(document.getElementById('modalPengumuman')).show();
     }
 
+    // Submit Form Pengumuman (Termasuk Kirim WA Parameter)
     document.getElementById('formPengumuman').addEventListener('submit', async function(e) {
       e.preventDefault();
       const editId = document.getElementById('edit_pengumuman_id').value;
+      const isKirimWa = document.getElementById('kirimWaPengumuman').checked;
       const formData = new FormData(this);
 
       const url = editId ? `${API_PENGUMUMAN}/${editId}` : API_PENGUMUMAN;
@@ -653,7 +658,12 @@
         const result = await res.json();
 
         if (res.ok && (result.success || res.status === 200)) {
-          alert(editId ? 'Pengumuman berhasil diubah!' : 'Pengumuman berhasil diterbitkan!');
+          let msg = editId ? 'Pengumuman berhasil diubah!' : 'Pengumuman berhasil diterbitkan!';
+          if (isKirimWa) {
+            msg += '\n\n📲 Process Broadcast WA sedang dikirim oleh server ke pengguna instansi terkait.';
+          }
+          alert(msg);
+
           bootstrap.Modal.getInstance(document.getElementById('modalPengumuman')).hide();
           resetModalPengumuman();
           fetchPengumuman();

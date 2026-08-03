@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <title>Berita & Pengumuman - Web Kecamatan Rumbia</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- ==================== SPINNER LOADING ==================== -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <!-- ==================== NAVBAR UTAMA ==================== -->
+    <nav class="navbar navbar-expand bg-white navbar-light shadow-sm sticky-top py-2 px-3 px-lg-4">
+        <div class="container-fluid p-0">
+            <!-- 1. Logo & Nama Website -->
+            <a href="index.html" class="navbar-brand d-flex align-items-center me-auto">
+                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 130%; width: auto;" class="me-2" onerror="this.src='img/logo.png';"> 
+                <span id="site-name" class="fw-bold text-dark fs-5 d-none d-sm-inline">Web Kecamatan Rumbia</span>
+                <span class="fw-bold text-dark fs-6 d-inline d-sm-none">Kec. Rumbia</span>
+            </a>
+
+            <!-- 2. Menu Navigasi Utama -->
+            <div class="navbar-nav d-none d-md-flex align-items-center me-3">
+                <a href="index.html" class="nav-link px-3 fw-semibold">Beranda</a>
+                <a href="berita_acara.html" class="nav-link px-3 active fw-semibold">Berita Acara</a>
+            </div>
+
+            <!-- 3. Form Pencarian Navbar -->
+            <div class="me-2" style="max-width: 220px;">
+                <div class="input-group input-group-sm">
+                    <input type="text" id="navbar-search-input" class="form-control border-primary" placeholder="Cari berita...">
+                    <button class="btn btn-primary px-2 px-sm-3" type="button" id="navbar-search-btn" title="Cari Berita">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4. Tombol Menu Offcanvas Sidebar -->
+            <button class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0" 
+                    type="button" 
+                    data-bs-toggle="offcanvas" 
+                    data-bs-target="#offcanvasNavbar" 
+                    aria-controls="offcanvasNavbar"
+                    title="Menu Lainnya"
+                    style="width: 38px; height: 38px; min-width: 38px;">
+                <i class="fa fa-bars fs-5 text-primary"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ==================== OFFCANVAS SIDEBAR MENU ==================== -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header border-bottom bg-light">
+            <h5 class="offcanvas-title fw-bold text-primary fs-6" id="offcanvasNavbarLabel">
+                <i class="fa fa-compass me-2"></i> Navigasi & Menu
+            </h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        
+        <div class="offcanvas-body d-flex flex-column justify-content-between p-4">
+            <div>
+                <!-- Menu Khusus Layar Mobile -->
+                <div class="d-md-none mb-4">
+                    <div class="text-muted small fw-bold mb-2">MENU UTAMA</div>
+                    <div class="list-group list-group-flush">
+                        <a href="index.html" class="list-group-item list-group-item-action border-0 px-0 fw-semibold text-dark">
+                            <i class="fa fa-home me-2"></i> Beranda
+                        </a>
+                        <a href="berita_acara.html" class="list-group-item list-group-item-action border-0 px-0 fw-bold text-primary">
+                            <i class="fa fa-newspaper me-2"></i> Berita Acara
+                        </a>
+                    </div>
+                    <hr class="text-muted my-3">
+                </div>
+
+                <!-- Kontainer Halaman Kustom (Diinjeksi via API JS) -->
+                <div>
+                    <div class="text-muted small fw-bold mb-2">HALAMAN & INFORMASI</div>
+                    <div class="list-group list-group-flush" id="offcanvas-custom-pages">
+                        <span class="text-muted small italic">Memuat daftar halaman...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombol Portal Login -->
+            <div class="pt-4 border-top mt-4">
+                <a href="admin/html/index.html" class="btn btn-primary w-100 py-2 rounded-pill fw-bold d-flex align-items-center justify-content-center shadow-sm">
+                    Login Sistem <i class="fa fa-arrow-right ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SEKSI BERITA ACARA ==================== -->
+    <div class="container-xxl py-5" id="berita-section">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Berita & Update</h6>
+                <h1 class="mb-5" id="page-heading-title">Daftar Berita Terbaru</h1>
+            </div>
+
+            <!-- Panel Indicator Pencarian -->
+            <div id="search-info" class="text-center mb-4 d-none">
+                <span class="badge bg-primary fs-6 px-3 py-2">
+                    Hasil pencarian untuk kata kunci: <strong id="search-keyword-text"></strong>
+                </span>
+                <button class="btn btn-sm btn-outline-danger ms-2" onclick="resetSearch()">
+                    <i class="fa fa-times me-1"></i>Reset / Tampilkan Semua
+                </button>
+            </div>
+
+            <!-- Kontainer Hasil Rendering Kartu Berita -->
+            <div class="row g-4 justify-content-center" id="berita-container">
+                <div class="text-center text-muted">Memuat berita...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Kecamatan Rumbia</h4>
+                    <p id="footer-about-text">Portal Layanan Publik & Informasi Resmi Kecamatan Rumbia.</p>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Tautan Cepat</h4>
+                    <a class="btn btn-link" href="index.html">Beranda</a>
+                    <a class="btn btn-link" href="berita_acara.html">Berita Acara</a>
+                    <span id="footer-custom-links"></span>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="text-white mb-3">Kontak Kami</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i><span id="footer-address">Jl. Raya Kecamatan Rumbia</span></p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i><span id="footer-phone">+62 812 3456 7890</span></p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i><span id="footer-email">info@rumbia.go.id</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <span id="footer-copyright-text">Kecamatan Rumbia</span>, All Right Reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tombol Kembali Ke Atas -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- ==================== VENDOR SCRIPTS ==================== -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+
+    <!-- ==================== CORE API & SEARCH LOGIC ==================== -->
+    <script>
+        /**
+         * CONFIGURATION
+         */
+        const API_BASE_URL = 'http://localhost:3000';
+        let masterBerita = []; // Menyimpan cache data berita untuk pencarian interaktif di frontend
+
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("[DEBUG - Init] Halaman Berita Acara dimuat.");
+
+            // 1. Load Halaman Kustom (Header Sidebar & Footer)
+            loadHeaderPages();
+
+            // 2. Load Pengaturan Footer & Logo
+            loadPengaturanHalaman();
+
+            // 3. Load & Inisialisasi Berita (Mendukung query URL ?q=...)
+            initBeritaPage();
+
+            // 4. Inisialisasi Handler Tombol & Input Pencarian Navbar
+            initSearchHandler();
+        });
+
+        /**
+         * Mengambil dan memproses berita berdasarkan kata kunci URL / Master Data
+         */
+        function initBeritaPage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchKeyword = urlParams.get('q') || urlParams.get('search') || '';
+
+            // Sinkronkan text di input search jika ada parameter URL
+            const searchInput = document.getElementById('navbar-search-input');
+            if (searchInput && searchKeyword) {
+                searchInput.value = searchKeyword;
+            }
+
+            const endpoint = `${API_BASE_URL}/api/berita`;
+            console.log(`[DEBUG - Berita] Fetching dari endpoint: ${endpoint}`);
+
+            fetch(endpoint)
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP Error Status: ${response.status}`);
+                    return response.json();
+                })
+                .then(resData => {
+                    console.log("[DEBUG - Berita] Response Diterima:", resData);
+
+                    // Normalisasi data dari API
+                    masterBerita = Array.isArray(resData) ? resData : (resData.data || []);
+
+                    // Jika ada kata kunci di URL, lakukan filtering
+                    if (searchKeyword) {
+                        performSearch(searchKeyword);
+                    } else {
+                        renderBerita(masterBerita);
+                    }
+                })
+                .catch(error => {
+                    console.error('[DEBUG - Berita] Error fetching berita:', error);
+                    const container = document.getElementById('berita-container');
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="col-12 text-center py-5">
+                                <p class="text-danger fw-bold mb-1"><i class="fa fa-exclamation-triangle me-2"></i>Gagal memuat berita dari server.</p>
+                                <small class="text-muted">Pastikan server backend di port 3000 berjalan dengan baik.</small>
+                            </div>
+                        `;
+                    }
+                });
+        }
+
+        /**
+         * Render HTML Kartu Berita
+         */
+        function renderBerita(listBerita) {
+            const container = document.getElementById('berita-container');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            if (!listBerita || listBerita.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fa fa-search text-muted fa-3x mb-3"></i>
+                        <h5 class="text-muted">Tidak ada berita yang ditemukan.</h5>
+                    </div>
+                `;
+                return;
+            }
+
+            listBerita.forEach(berita => {
+                // Parsing foto pertama dari format koma
+                let gambarUrl = 'img/default.jpg';
+                if (berita.gambar && typeof berita.gambar === 'string' && berita.gambar.trim() !== '') {
+                    const firstImage = berita.gambar.split(',')[0].trim();
+                    if (firstImage) gambarUrl = `${API_BASE_URL}/uploads/${firstImage}`;
+                }
+
+                const tanggal = berita.created_at 
+                    ? new Date(berita.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                    : '-';
+                
+                const linkDetail = `detail-berita.html?id=${berita.id}`;
+                const previewText = berita.konten ? berita.konten.replace(/<[^>]*>?/gm, '') : '';
+
+                const htmlCard = `
+                    <div class="col-lg-4 col-md-6 mb-4 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="course-item bg-light h-100 d-flex flex-column shadow-sm rounded overflow-hidden">
+                            <div class="position-relative overflow-hidden">
+                                <a href="${linkDetail}">
+                                    <img class="img-fluid" 
+                                         src="${gambarUrl}" 
+                                         alt="${berita.judul}" 
+                                         style="height: 220px; width: 100%; object-fit: cover;"
+                                         onerror="this.onerror=null; this.src='img/default.jpg';">
+                                </a>
+                            </div>
+                            <div class="p-4 flex-grow-1 d-flex flex-column justify-content-between">
+                                <div>
+                                    <span class="badge bg-primary mb-2">${berita.nama_kategori || 'Umum'}</span>
+                                    <a href="${linkDetail}" class="text-dark text-decoration-none">
+                                        <h5 class="mb-3 text-hover-primary">${berita.judul}</h5>
+                                    </a>
+                                    <p class="text-muted small" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                        ${previewText}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="d-flex border-top mt-auto bg-white">
+                                <small class="flex-fill text-center border-end py-2 text-muted"><i class="fa fa-user-tie text-primary me-2"></i>${berita.nama_penulis || 'Admin'}</small>
+                                <small class="flex-fill text-center py-2 text-muted"><i class="fa fa-calendar text-primary me-2"></i>${tanggal}</small>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', htmlCard);
+            });
+        }
+
+        /**
+         * Eksekusi Pencarian / Filtering berita
+         */
+        function performSearch(keyword) {
+            const searchInfo = document.getElementById('search-info');
+            const searchKeywordText = document.getElementById('search-keyword-text');
+            const pageHeadingTitle = document.getElementById('page-heading-title');
+
+            const cleanKeyword = (keyword || '').trim().toLowerCase();
+
+            if (!cleanKeyword) {
+                resetSearch();
+                return;
+            }
+
+            console.log(`[DEBUG - Search] Melakukan filtering untuk keyword: "${cleanKeyword}"`);
+
+            // Memecah kata kunci menjadi token kata
+            const tokens = cleanKeyword.split(/\s+/).filter(k => k.length > 0);
+
+            // Filter judul & konten berita
+            const hasilFilter = masterBerita.filter(berita => {
+                const judul = (berita.judul || '').toLowerCase();
+                const konten = (berita.konten || '').toLowerCase();
+                const kategori = (berita.nama_kategori || '').toLowerCase();
+
+                return tokens.some(token => judul.includes(token) || konten.includes(token) || kategori.includes(token));
+            });
+
+            // Update Tampilan Banner Status Pencarian
+            if (searchKeywordText) searchKeywordText.innerText = `"${keyword}"`;
+            if (searchInfo) searchInfo.classList.remove('d-none');
+            if (pageHeadingTitle) pageHeadingTitle.innerText = `Hasil Pencarian (${hasilFilter.length})`;
+
+            renderBerita(hasilFilter);
+        }
+
+        /**
+         * Reset Pencarian dan kembalikan ke berita awal
+         */
+        function resetSearch() {
+            console.log("[DEBUG - Search] Reset pencarian.");
+            
+            const searchInput = document.getElementById('navbar-search-input');
+            const searchInfo = document.getElementById('search-info');
+            const pageHeadingTitle = document.getElementById('page-heading-title');
+
+            if (searchInput) searchInput.value = '';
+            if (searchInfo) searchInfo.classList.add('d-none');
+            if (pageHeadingTitle) pageHeadingTitle.innerText = "Daftar Berita Terbaru";
+
+            // Bersihkan query param di URL browser tanpa reload halaman
+            window.history.replaceState({}, document.title, window.location.pathname);
+
+            renderBerita(masterBerita);
+        }
+
+        /**
+         * Inisialisasi Event Listener Tombol Navbar Search
+         */
+        function initSearchHandler() {
+            const searchBtn = document.getElementById('navbar-search-btn');
+            const searchInput = document.getElementById('navbar-search-input');
+
+            function executeSearch() {
+                const keyword = searchInput ? searchInput.value.trim() : '';
+                performSearch(keyword);
+            }
+
+            if (searchBtn && searchInput) {
+                searchBtn.addEventListener('click', executeSearch);
+                searchInput.addEventListener('keyup', function(e) {
+                    if (e.key === 'Enter') executeSearch();
+                });
+            }
+        }
+
+        /**
+         * Load Halaman Kustom (Navigasi Header & Footer)
+         */
+        function loadHeaderPages() {
+            const endpoint = `${API_BASE_URL}/api/halaman?header_only=true`;
+            fetch(endpoint)
+                .then(res => res.json())
+                .then(resData => {
+                    const offcanvasContainer = document.getElementById('offcanvas-custom-pages');
+                    const footerCustomLinks = document.getElementById('footer-custom-links');
+                    const pages = resData.data || [];
+
+                    if (pages.length > 0) {
+                        if (offcanvasContainer) offcanvasContainer.innerHTML = '';
+
+                        pages.forEach(page => {
+                            if (offcanvasContainer) {
+                                const navItem = document.createElement('a');
+                                navItem.href = `page.html?slug=${page.slug}`;
+                                navItem.className = 'list-group-item list-group-item-action border-0 px-0 py-2 text-secondary fw-medium d-flex align-items-center';
+                                navItem.innerHTML = `<i class="fa fa-angle-right text-primary me-2 fs-6"></i><span>${page.judul}</span>`;
+                                offcanvasContainer.appendChild(navItem);
+                            }
+
+                            if (footerCustomLinks) {
+                                const footerItem = document.createElement('a');
+                                footerItem.href = `page.html?slug=${page.slug}`;
+                                footerItem.className = 'btn btn-link';
+                                footerItem.innerText = page.judul;
+                                footerCustomLinks.appendChild(footerItem);
+                            }
+                        });
+                    } else {
+                        if (offcanvasContainer) offcanvasContainer.innerHTML = '<span class="text-muted small">Belum ada halaman kustom.</span>';
+                    }
+                })
+                .catch(err => console.error("[DEBUG - HeaderPages] Error:", err));
+        }
+
+        /**
+         * Load Pengaturan Situs
+         */
+        function loadPengaturanHalaman() {
+            fetch(`${API_BASE_URL}/api/pengaturan`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && !data.error) {
+                        setElementSrc('site-logo', data.logo ? `${API_BASE_URL}/uploads/${data.logo}` : null);
+                        setElementText('footer-about-text', data.footer_about);
+                        setElementText('footer-address', data.footer_address);
+                        setElementText('footer-phone', data.footer_phone);
+                        setElementText('footer-email', data.footer_email);
+                        setElementText('footer-copyright-text', data.footer_copyright);
+                    }
+                })
+                .catch(err => console.error('[DEBUG - Pengaturan] Error:', err));
+        }
+
+        // Helper Functions
+        function setElementSrc(id, url) {
+            if (!url) return;
+            const el = document.getElementById(id);
+            if (el) el.src = url;
+        }
+
+        function setElementText(id, text) {
+            if (!text) return;
+            const el = document.getElementById(id);
+            if (el) el.innerText = text;
+        }
+    </script>
+</body>
+</html>

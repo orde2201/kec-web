@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const instansiController = require('../controllers/instansiController');
 
-router.post('/instansi', instansiController.addInstansi);
-router.get('/instansi', instansiController.getAllInstansi);
+router.get('/', instansiController.getInstansi);
+router.post('/', instansiController.createInstansi);
+router.delete('/:id', instansiController.deleteInstansi);
 
 module.exports = router;

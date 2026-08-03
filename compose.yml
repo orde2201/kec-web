@@ -26,7 +26,7 @@ services:
       - POSTGRES_PORT=5432
     depends_on:
       - database
-    command: node server.js
+    command: node app.js
   frontend:
     image: nginx
     ports:

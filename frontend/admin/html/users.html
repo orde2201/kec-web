@@ -223,7 +223,10 @@
                 <td><span class="text-muted fw-bold">${instansi}</span></td>
                 <td><small class="text-wrap d-inline-block text-truncate" style="max-width: 150px;">${user.notes || '-'}</small></td>
                 <td>
-                  <button class="btn btn-sm btn-outline-danger" onclick="alert('Fitur hapus ID: ${user.id}')"><i class="bi bi-trash"></i></button>
+                 
+                  <button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${user.id})" title="Hapus User">
+                    <i class="bi bi-trash"></i>
+                  </button>  
                 </td>
               </tr>
             `;
@@ -238,6 +241,36 @@
         tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">Gagal terhubung ke backend server (${error.message}).</td></tr>`;
       }
     }
+    async function deleteUser(userId) {
+  // Konfirmasi sebelum menghapus
+  if (!confirm(`Apakah Anda yakin ingin menghapus user ID #${userId}?`)) {
+    return;
+  }
+
+  const TARGET_API_URL = `http://localhost:3000/api/users/${userId}`;
+
+  try {
+    const response = await fetch(TARGET_API_URL, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const result = await response.json();
+
+    if (response.ok && result.success) {
+      alert(result.message || 'User berhasil dihapus!');
+      fetchUsers(); // Reload/refresh daftar user di tabel
+    } else {
+      alert(result.message || 'Gagal menghapus user.');
+    }
+  } catch (error) {
+    console.error('Error saat menghapus user:', error);
+    alert('Terjadi kesalahan koneksi ke backend server.');
+  }
+}
   </script>
+  
 </body>
 </html>
