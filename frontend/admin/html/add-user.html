@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="adminHMD professional admin dashboard template">
-  <title>Add User | adminHMD</title>
-
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/css/style.css">
@@ -18,10 +16,9 @@
     <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
       <div class="sidebar-header">
         <a class="brand-mark" href="index.html">
-          <span class="brand-icon"><i class="bi bi-grid-1x2-fill"></i></span>
           <span class="brand-copy">
             <span class="brand-title">admin</span>
-            <span class="brand-subtitle">Admin Portal</span>
+            <span class="brand-subtitle">Kecamatan Rumbia</span>
           </span>
         </a>
       </div>
@@ -55,6 +52,10 @@
           <span class="nav-icon"><i class="bi bi-gear"></i></span>
           <span class="nav-text">Settings</span>
         </a>
+        <a class="nav-link" href="waconfig.html">
+          <span class="nav-icon"><i class="bi bi-gear"></i></span>
+          <span class="nav-text">WhatsApp</span>
+        </a>
       </nav>
 
 
@@ -65,23 +66,24 @@
     </aside>
 
     <div class="admin-main">
-      
-<nav class="navbar admin-navbar navbar-expand bg-white">
+
+      <nav class="navbar admin-navbar navbar-expand bg-white">
         <div class="container-fluid px-3 px-lg-4">
-          <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar" aria-expanded="true" aria-label="Toggle sidebar">
+          <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar"
+            aria-expanded="true" aria-label="Toggle sidebar">
             <span></span>
             <span></span>
             <span></span>
           </button>
           <div class="navbar-actions ms-auto">
-           
-          <div class="dropdown">
+
+            <div class="dropdown">
               <div class="container-fluid px-3 px-lg-4">
-          <button type="button" id="btnSignOut" class="btn btn-outline-danger btn-sm">
-            <i class="bi bi-box-arrow-right"></i> Sign Out
-          </button>
-        </div>
-              
+                <button type="button" id="btnSignOut" class="btn btn-outline-danger btn-sm">
+                  <i class="bi bi-box-arrow-right"></i> Sign Out
+                </button>
+              </div>
+
             </div>
           </div>
         </div>
@@ -91,17 +93,19 @@
       <form id="addUserForm" class="panel needs-validation" novalidate>
         <div class="panel-header">
           <div>
-            <h2 class="h5 mb-1 section-title"><i class="bi bi-person-plus" aria-hidden="true"></i><span>User Information</span></h2>
+            <h2 class="h5 mb-1 section-title"><i class="bi bi-person-plus" aria-hidden="true"></i><span>User
+                Information</span></h2>
             <p class="text-muted mb-0">Create a user account with validated fields.</p>
           </div>
         </div>
         <div class="row g-3">
           <div class="col-md-6">
             <label class="form-label" for="firstName">Nama</label>
-            <input class="form-control" id="firstName" name="Nama" type="text" required placeholder="Masukan nama lengkap">
+            <input class="form-control" id="firstName" name="Nama" type="text" required
+              placeholder="Masukan nama lengkap">
             <div class="invalid-feedback">Masukan nama user.</div>
           </div>
-          
+
           <div class="col-md-6">
             <label class="form-label" for="email">Email</label>
             <input class="form-control" id="email" name="email" type="email" required placeholder="nama@email.com">
@@ -112,8 +116,10 @@
           <div class="col-md-6">
             <label class="form-label" for="password">Password</label>
             <div class="input-group has-validation">
-              <input class="form-control" id="password" name="password" type="password" minlength="6" required placeholder="••••••••">
-              <button class="btn btn-outline-secondary" type="button" id="togglePassword" title="Lihat/Sembunyikan Password">
+              <input class="form-control" id="password" name="password" type="password" minlength="6" required
+                placeholder="••••••••">
+              <button class="btn btn-outline-secondary" type="button" id="togglePassword"
+                title="Lihat/Sembunyikan Password">
                 <i class="bi bi-eye" id="iconPassword"></i>
               </button>
               <div class="invalid-feedback">Masukan password (minimal 6 karakter).</div>
@@ -124,20 +130,22 @@
           <div class="col-md-6">
             <label class="form-label" for="confirmPassword">Konfirmasi Password</label>
             <div class="input-group has-validation">
-              <input class="form-control" id="confirmPassword" type="password" minlength="6" required placeholder="••••••••">
-              <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword" title="Lihat/Sembunyikan Password">
+              <input class="form-control" id="confirmPassword" type="password" minlength="6" required
+                placeholder="••••••••">
+              <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword"
+                title="Lihat/Sembunyikan Password">
                 <i class="bi bi-eye" id="iconConfirmPassword"></i>
               </button>
               <div class="invalid-feedback" id="confirmPasswordError">Konfirmasi password tidak cocok!</div>
             </div>
           </div>
-          
+
           <div class="col-md-6">
             <label class="form-label" for="phone">Phone</label>
             <input class="form-control" id="phone" name="phone" type="tel" required placeholder="08123456789">
             <div class="invalid-feedback">Masukan nomor hp user.</div>
           </div>
-          
+
           <div class="col-md-6">
             <label class="form-label" for="role">Hak akses</label>
             <select class="form-select" id="role" name="hakAkses" required>
@@ -147,12 +155,13 @@
             </select>
             <div class="invalid-feedback">Pilih hak akses.</div>
           </div>
-          
+
           <!-- FIELD INSTANSI + TOMBOL TAMBAH INSTANSI -->
           <div class="col-md-6">
             <div class="d-flex justify-content-between align-items-center mb-1">
               <label class="form-label mb-0" for="team">Instansi</label>
-              <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalTambahInstansi">
+              <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none" data-bs-toggle="modal"
+                data-bs-target="#modalTambahInstansi">
                 <i class="bi bi-plus-circle"></i> Tambah Instansi
               </button>
             </div>
@@ -161,40 +170,45 @@
             </select>
             <div class="invalid-feedback">Pilih instansi.</div>
           </div>
-          
+
           <div class="col-12">
             <label class="form-label" for="notes">Notes</label>
-            <textarea class="form-control" id="notes" name="notes" rows="4" placeholder="Optional onboarding notes"></textarea>
+            <textarea class="form-control" id="notes" name="notes" rows="4"
+              placeholder="Optional onboarding notes"></textarea>
           </div>
         </div>
-        
+
         <div class="d-flex flex-wrap justify-content-end gap-2 mt-4">
           <a class="btn btn-outline-secondary" href="users.html">Cancel</a>
-          <button class="btn btn-primary" type="submit"><i class="bi bi-person-check" aria-hidden="true"></i> Create User</button>
+          <button class="btn btn-primary" type="submit"><i class="bi bi-person-check" aria-hidden="true"></i> Create
+            User</button>
         </div>
       </form>
 
       <footer class="admin-footer">
         <div class="container-fluid px-3 px-lg-4">
-          
+
         </div>
       </footer>
     </div>
   </div>
 
   <!-- MODAL TAMBAH INSTANSI -->
-  <div class="modal fade" id="modalTambahInstansi" tabindex="-1" aria-labelledby="modalTambahInstansiLabel" aria-hidden="true">
+  <div class="modal fade" id="modalTambahInstansi" tabindex="-1" aria-labelledby="modalTambahInstansiLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalTambahInstansiLabel"><i class="bi bi-building-add me-2"></i>Tambah Instansi Baru</h5>
+          <h5 class="modal-title" id="modalTambahInstansiLabel"><i class="bi bi-building-add me-2"></i>Tambah Instansi
+            Baru</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form id="formTambahInstansi">
           <div class="modal-body">
             <div class="mb-3">
               <label for="nama_instansi_input" class="form-label">Nama Instansi</label>
-              <input type="text" class="form-control" id="nama_instansi_input" placeholder="Contoh: Dinas Pendidikan" required>
+              <input type="text" class="form-control" id="nama_instansi_input" placeholder="Contoh: Dinas Pendidikan"
+                required>
             </div>
           </div>
           <div class="modal-footer">
@@ -210,193 +224,194 @@
   <script src="../assets/js/main.js"></script>
 
   <script>
-  const INSTANSI_API_URL = 'http://localhost:3000/api/instansi';
-  const ADD_USER_API_URL = 'http://localhost:3000/api/add-users';
+    const INSTANSI_API_URL = 'http://localhost:3000/api/instansi';
+    const ADD_USER_API_URL = 'http://localhost:3000/api/add-users';
 
-  // --- TOGGLE PASSWORD VISIBILITY ---
-  function setupPasswordToggle(inputId, buttonId, iconId) {
-    const input = document.getElementById(inputId);
-    const button = document.getElementById(buttonId);
-    const icon = document.getElementById(iconId);
+    // --- TOGGLE PASSWORD VISIBILITY ---
+    function setupPasswordToggle(inputId, buttonId, iconId) {
+      const input = document.getElementById(inputId);
+      const button = document.getElementById(buttonId);
+      const icon = document.getElementById(iconId);
 
-    button.addEventListener('click', () => {
-      const isPassword = input.type === 'password';
-      input.type = isPassword ? 'text' : 'password';
-      
-      // Ubah Ikon Mata
-      icon.classList.toggle('bi-eye', !isPassword);
-      icon.classList.toggle('bi-eye-slash', isPassword);
+      button.addEventListener('click', () => {
+        const isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+
+        // Ubah Ikon Mata
+        icon.classList.toggle('bi-eye', !isPassword);
+        icon.classList.toggle('bi-eye-slash', isPassword);
+      });
+    }
+
+    setupPasswordToggle('password', 'togglePassword', 'iconPassword');
+    setupPasswordToggle('confirmPassword', 'toggleConfirmPassword', 'iconConfirmPassword');
+
+    // --- VALIDASI REALTIME COCROKNYA PASSWORD ---
+    const passwordInput = document.getElementById('password');
+    const confirmInput = document.getElementById('confirmPassword');
+
+    function validatePasswordsMatch() {
+      if (confirmInput.value.length > 0 && confirmInput.value !== passwordInput.value) {
+        confirmInput.setCustomValidity('Password tidak cocok!');
+      } else {
+        confirmInput.setCustomValidity('');
+      }
+    }
+
+    passwordInput.addEventListener('input', validatePasswordsMatch);
+    confirmInput.addEventListener('input', validatePasswordsMatch);
+
+
+    // 1. Ambil data instansi dari database untuk dropdown
+    async function loadInstansiOptions(selectedId = null) {
+      const instansiSelect = document.getElementById('team');
+      try {
+        const response = await fetch(INSTANSI_API_URL);
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          instansiSelect.innerHTML = '<option value="">Pilih Instansi</option>';
+          result.data.forEach(instansi => {
+            const option = document.createElement('option');
+            option.value = instansi.id;
+            option.textContent = instansi.nama_instansi;
+
+            if (selectedId && instansi.id == selectedId) {
+              option.selected = true;
+            }
+            instansiSelect.appendChild(option);
+          });
+        } else {
+          instansiSelect.innerHTML = '<option value="">Gagal memuat daftar instansi</option>';
+        }
+      } catch (error) {
+        console.error('Error load instansi:', error);
+        instansiSelect.innerHTML = '<option value="">Gagal koneksi ke server</option>';
+      }
+    }
+
+    // Muat dropdown saat halaman siap
+    document.addEventListener('DOMContentLoaded', () => {
+      loadInstansiOptions();
     });
-  }
 
-  setupPasswordToggle('password', 'togglePassword', 'iconPassword');
-  setupPasswordToggle('confirmPassword', 'toggleConfirmPassword', 'iconConfirmPassword');
-
-  // --- VALIDASI REALTIME COCROKNYA PASSWORD ---
-  const passwordInput = document.getElementById('password');
-  const confirmInput = document.getElementById('confirmPassword');
-
-  function validatePasswordsMatch() {
-    if (confirmInput.value.length > 0 && confirmInput.value !== passwordInput.value) {
-      confirmInput.setCustomValidity('Password tidak cocok!');
-    } else {
-      confirmInput.setCustomValidity('');
-    }
-  }
-
-  passwordInput.addEventListener('input', validatePasswordsMatch);
-  confirmInput.addEventListener('input', validatePasswordsMatch);
-
-
-  // 1. Ambil data instansi dari database untuk dropdown
-  async function loadInstansiOptions(selectedId = null) {
-    const instansiSelect = document.getElementById('team');
-    try {
-      const response = await fetch(INSTANSI_API_URL);
-      const result = await response.json();
-      
-      if (response.ok && result.success) {
-        instansiSelect.innerHTML = '<option value="">Pilih Instansi</option>';
-        result.data.forEach(instansi => {
-          const option = document.createElement('option');
-          option.value = instansi.id;
-          option.textContent = instansi.nama_instansi;
-          
-          if (selectedId && instansi.id == selectedId) {
-            option.selected = true;
-          }
-          instansiSelect.appendChild(option);
-        });
-      } else {
-        instansiSelect.innerHTML = '<option value="">Gagal memuat daftar instansi</option>';
-      }
-    } catch (error) {
-      console.error('Error load instansi:', error);
-      instansiSelect.innerHTML = '<option value="">Gagal koneksi ke server</option>';
-    }
-  }
-
-  // Muat dropdown saat halaman siap
-  document.addEventListener('DOMContentLoaded', () => {
-    loadInstansiOptions();
-  });
-
-  // 2. Submit Instansi Baru dari Modal
-  document.getElementById('formTambahInstansi').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const inputField = document.getElementById('nama_instansi_input');
-    const namaInstansi = inputField.value.trim();
-
-    if (!namaInstansi) {
-      alert('Nama instansi tidak boleh kosong!');
-      return;
-    }
-
-    try {
-      const response = await fetch(INSTANSI_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nama_instansi: namaInstansi })
-      });
-
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        alert('Instansi berhasil ditambahkan!');
-        inputField.value = '';
-
-        // Tutup Modal via Bootstrap
-        const modalElement = document.getElementById('modalTambahInstansi');
-        const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-        modalInstance.hide();
-
-        // Refresh dropdown & pilih otomatis instansi yang baru saja dibuat
-        await loadInstansiOptions(result.data.id);
-      } else {
-        alert('Gagal: ' + (result.message || 'Gagal menyimpan instansi'));
-      }
-    } catch (error) {
-      console.error('Error POST instansi:', error);
-      alert('Terjadi kesalahan koneksi server!');
-    }
-  });
-
-  // 3. Submit User Baru
-  document.getElementById('addUserForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
-
-    // Verifikasi ulang password saat submit
-    validatePasswordsMatch();
-
-    if (!this.checkValidity()) {
-      event.stopPropagation();
-      this.classList.add('was-validated');
-      return; 
-    }
-    this.classList.add('was-validated');
-
-    const formData = new FormData(this);
-    const jsonObject = Object.fromEntries(formData.entries());
-
-    // Field konfirmasi password tidak perlu dikirim ke backend
-    delete jsonObject.confirmPassword;
-
-    if (jsonObject.instansi_id) {
-      jsonObject.instansi_id = parseInt(jsonObject.instansi_id);
-    }
-
-    try {
-      const response = await fetch(ADD_USER_API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(jsonObject)
-      });
-
-      const result = await response.json();
-
-      if (response.ok && result.success) {
-        alert('User baru berhasil ditambahkan!');
-        this.reset();
-        this.classList.remove('was-validated');
-        
-        // Reset ikon mata kembali ke tersembunyi
-        document.getElementById('password').type = 'password';
-        document.getElementById('confirmPassword').type = 'password';
-        document.getElementById('iconPassword').className = 'bi bi-eye';
-        document.getElementById('iconConfirmPassword').className = 'bi bi-eye';
-
-        loadInstansiOptions();
-      } else {
-        alert('Gagal membuat user: ' + (result.message || 'Terjadi kesalahan sistem.'));
-      }
-    } catch (error) {
-      console.error('Error POST user:', error);
-      alert('Terjadi kegagalan koneksi ke server database.');
-    }
-  });
-  document.addEventListener('DOMContentLoaded', function () {
-  const btnSignOut = document.getElementById('btnSignOut');
-
-  if (btnSignOut) {
-    btnSignOut.addEventListener('click', function (e) {
+    // 2. Submit Instansi Baru dari Modal
+    document.getElementById('formTambahInstansi').addEventListener('submit', async function (e) {
       e.preventDefault();
 
-      // 1. Konfirmasi opsional ke pengguna (opsional)
-      if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
-        
-        // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        localStorage.clear();
-        sessionStorage.clear();
+      const inputField = document.getElementById('nama_instansi_input');
+      const namaInstansi = inputField.value.trim();
 
-        // 3. Arahkan kembali pengguna ke halaman login
-        window.location.href = 'login.html';
+      if (!namaInstansi) {
+        alert('Nama instansi tidak boleh kosong!');
+        return;
+      }
+
+      try {
+        const response = await fetch(INSTANSI_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nama_instansi: namaInstansi })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          alert('Instansi berhasil ditambahkan!');
+          inputField.value = '';
+
+          // Tutup Modal via Bootstrap
+          const modalElement = document.getElementById('modalTambahInstansi');
+          const modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+          modalInstance.hide();
+
+          // Refresh dropdown & pilih otomatis instansi yang baru saja dibuat
+          await loadInstansiOptions(result.data.id);
+        } else {
+          alert('Gagal: ' + (result.message || 'Gagal menyimpan instansi'));
+        }
+      } catch (error) {
+        console.error('Error POST instansi:', error);
+        alert('Terjadi kesalahan koneksi server!');
       }
     });
-  }
-});
-</script>
+
+    // 3. Submit User Baru
+    document.getElementById('addUserForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      // Verifikasi ulang password saat submit
+      validatePasswordsMatch();
+
+      if (!this.checkValidity()) {
+        event.stopPropagation();
+        this.classList.add('was-validated');
+        return;
+      }
+      this.classList.add('was-validated');
+
+      const formData = new FormData(this);
+      const jsonObject = Object.fromEntries(formData.entries());
+
+      // Field konfirmasi password tidak perlu dikirim ke backend
+      delete jsonObject.confirmPassword;
+
+      if (jsonObject.instansi_id) {
+        jsonObject.instansi_id = parseInt(jsonObject.instansi_id);
+      }
+
+      try {
+        const response = await fetch(ADD_USER_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(jsonObject)
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          alert('User baru berhasil ditambahkan!');
+          this.reset();
+          this.classList.remove('was-validated');
+
+          // Reset ikon mata kembali ke tersembunyi
+          document.getElementById('password').type = 'password';
+          document.getElementById('confirmPassword').type = 'password';
+          document.getElementById('iconPassword').className = 'bi bi-eye';
+          document.getElementById('iconConfirmPassword').className = 'bi bi-eye';
+
+          loadInstansiOptions();
+        } else {
+          alert('Gagal membuat user: ' + (result.message || 'Terjadi kesalahan sistem.'));
+        }
+      } catch (error) {
+        console.error('Error POST user:', error);
+        alert('Terjadi kegagalan koneksi ke server database.');
+      }
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+      const btnSignOut = document.getElementById('btnSignOut');
+
+      if (btnSignOut) {
+        btnSignOut.addEventListener('click', function (e) {
+          e.preventDefault();
+
+          // 1. Konfirmasi opsional ke pengguna (opsional)
+          if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
+
+            // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // 3. Arahkan kembali pengguna ke halaman login
+            window.location.href = 'login.html';
+          }
+        });
+      }
+    });
+  </script>
 </body>
+
 </html>

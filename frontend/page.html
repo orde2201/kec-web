@@ -12,7 +12,9 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -25,7 +27,8 @@
 
 <body>
     <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Loading...</span>
         </div>
@@ -37,7 +40,8 @@
         <div class="container-fluid p-0">
             <!-- 1. LOGO & NAMA -->
             <a href="index.html" class="navbar-brand d-flex align-items-center me-auto">
-                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 130%; width: auto;" class="me-2" onerror="this.onerror=null; this.src='img/logo.png';"> 
+                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 130%; width: auto;" class="me-2"
+                    onerror="this.onerror=null; this.src='img/logo.png';">
                 <span id="site-name" class="fw-bold text-dark fs-5 d-none d-sm-inline">Web Kecamatan Rumbia</span>
                 <span class="fw-bold text-dark fs-6 d-inline d-sm-none">Kec. Rumbia</span>
             </a>
@@ -51,21 +55,21 @@
             <!-- 3. PENCARIAN -->
             <div class="me-2" style="max-width: 220px;">
                 <div class="input-group input-group-sm">
-                    <input type="text" id="navbar-search-input" class="form-control border-primary" placeholder="Cari berita...">
-                    <button class="btn btn-primary px-2 px-sm-3" type="button" id="navbar-search-btn" title="Cari Berita">
+                    <input type="text" id="navbar-search-input" class="form-control border-primary"
+                        placeholder="Cari berita...">
+                    <button class="btn btn-primary px-2 px-sm-3" type="button" id="navbar-search-btn"
+                        title="Cari Berita">
                         <i class="fa fa-search"></i>
                     </button>
                 </div>
             </div>
 
             <!-- 4. TOMBOL BURGER -->
-            <button class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0" 
-                    type="button" 
-                    data-bs-toggle="offcanvas" 
-                    data-bs-target="#offcanvasNavbar" 
-                    aria-controls="offcanvasNavbar"
-                    title="Menu Lainnya"
-                    style="width: 38px; height: 38px; min-width: 38px;">
+            <button
+                class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0"
+                type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar" title="Menu Lainnya"
+                style="width: 38px; height: 38px; min-width: 38px;">
                 <i class="fa fa-bars fs-5 text-primary"></i>
             </button>
         </div>
@@ -79,16 +83,18 @@
             </h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        
+
         <div class="offcanvas-body d-flex flex-column justify-content-between p-4">
             <div>
                 <div class="d-md-none mb-4">
                     <div class="text-muted small fw-bold mb-2">MENU UTAMA</div>
                     <div class="list-group list-group-flush">
-                        <a href="index.html" class="list-group-item list-group-item-action border-0 px-0 fw-semibold text-dark">
+                        <a href="index.html"
+                            class="list-group-item list-group-item-action border-0 px-0 fw-semibold text-dark">
                             <i class="fa fa-home me-2"></i> Beranda
                         </a>
-                        <a href="berita_acara.html" class="list-group-item list-group-item-action border-0 px-0 fw-semibold text-dark">
+                        <a href="berita_acara.html"
+                            class="list-group-item list-group-item-action border-0 px-0 fw-semibold text-dark">
                             <i class="fa fa-newspaper me-2"></i> Berita Acara
                         </a>
                     </div>
@@ -104,7 +110,8 @@
             </div>
 
             <div class="pt-4 border-top mt-4">
-                <a href="admin/html/index.html" class="btn btn-primary w-100 py-2 rounded-pill fw-bold d-flex align-items-center justify-content-center shadow-sm">
+                <a href="admin/html/index.html"
+                    class="btn btn-primary w-100 py-2 rounded-pill fw-bold d-flex align-items-center justify-content-center shadow-sm">
                     Login Sistem <i class="fa fa-arrow-right ms-2"></i>
                 </a>
             </div>
@@ -112,7 +119,8 @@
     </div>
 
     <!-- Header Banner Start -->
-    <div class="container-fluid bg-primary py-5 mb-5 page-header" style="background: linear-gradient(rgba(24, 29, 56, .7), rgba(24, 29, 56, .7)), url('img/image.png') center center no-repeat; background-size: cover;">
+    <div class="container-fluid bg-primary py-5 mb-5 page-header"
+        style="background: linear-gradient(rgba(24, 29, 56, .7), rgba(24, 29, 56, .7)), url('img/image.png') center center no-repeat; background-size: cover;">
         <div class="container py-5 text-center">
             <h1 class="display-4 text-white animated slideInDown" id="page-title">Memuat Halaman...</h1>
             <nav aria-label="breadcrumb">
@@ -130,7 +138,8 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div id="page-content" class="bg-light p-4 p-md-5 rounded shadow-sm lh-lg" style="white-space: pre-wrap; word-break: break-word;">
+                    <div id="page-content" class="bg-light p-4 p-md-5 rounded shadow-sm lh-lg"
+                        style="white-space: pre-wrap; word-break: break-word;">
                         <div class="text-center py-5">
                             <div class="spinner-border text-primary" role="status">
                                 <span class="visually-hidden">Loading...</span>
@@ -160,9 +169,12 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h4 class="text-white mb-3">Kontak Kami</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i><span id="footer-address">Jl. Raya Kecamatan Rumbia</span></p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i><span id="footer-phone">+62 812 3456 7890</span></p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i><span id="footer-email">info@rumbia.go.id</span></p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i><span id="footer-address">Jl. Raya
+                            Kecamatan Rumbia</span></p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i><span id="footer-phone">+62 812 3456 7890</span>
+                    </p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i><span id="footer-email">info@rumbia.go.id</span>
+                    </p>
                 </div>
             </div>
         </div>
@@ -201,50 +213,50 @@
 
             // 1. Fetch Isi Detail Halaman
             // 1. Fetch Isi Detail Halaman
-fetch(`${API_BASE}/halaman/${slug}`)
-    .then(res => res.json())
-    .then(resData => {
-        const page = resData.data || resData;
-        if (page && page.judul) {
-            document.title = `${page.judul} | Web Kecamatan Rumbia`;
-            document.getElementById('page-title').innerText = page.judul;
-            document.getElementById('breadcrumb-title').innerText = page.judul;
-            
-            // Menampilkan Gambar / Slide Galeri
-            let imgHtml = '';
-            let hasMultipleImages = false;
+            fetch(`${API_BASE}/halaman/${slug}`)
+                .then(res => res.json())
+                .then(resData => {
+                    const page = resData.data || resData;
+                    if (page && page.judul) {
+                        document.title = `${page.judul} | Web Kecamatan Rumbia`;
+                        document.getElementById('page-title').innerText = page.judul;
+                        document.getElementById('breadcrumb-title').innerText = page.judul;
 
-            if (page.gambar && typeof page.gambar === 'string' && page.gambar.trim() !== '') {
-                const gambarArray = page.gambar.split(',').map(g => g.trim()).filter(g => g !== '');
+                        // Menampilkan Gambar / Slide Galeri
+                        let imgHtml = '';
+                        let hasMultipleImages = false;
 
-                if (gambarArray.length === 1) {
-                    // TUNGGAL: Paksa lebar 100% kontainer, tinggi menyesuaikan aspek rasio foto asli
-                    imgHtml = `
+                        if (page.gambar && typeof page.gambar === 'string' && page.gambar.trim() !== '') {
+                            const gambarArray = page.gambar.split(',').map(g => g.trim()).filter(g => g !== '');
+
+                            if (gambarArray.length === 1) {
+                                // TUNGGAL: Paksa lebar 100% kontainer, tinggi menyesuaikan aspek rasio foto asli
+                                imgHtml = `
                         <div class="mb-4">
                             <img src="${API_BASE_URL}/uploads/${gambarArray[0]}" 
                                  class="w-75 h-auto rounded shadow-sm" 
                                  alt="${page.judul}"
                                  onerror="this.onerror=null; this.src='img/default.jpg';">
                         </div>`;
-                } else if (gambarArray.length > 1) {
-                    // MULTIPLE: Carousel/Slide (Lebar 100%, aspek rasio tetap mengikuti foto)
-                    hasMultipleImages = true;
-                    let indicators = '';
-                    let carouselInner = '';
+                            } else if (gambarArray.length > 1) {
+                                // MULTIPLE: Carousel/Slide (Lebar 100%, aspek rasio tetap mengikuti foto)
+                                hasMultipleImages = true;
+                                let indicators = '';
+                                let carouselInner = '';
 
-                    gambarArray.forEach((img, idx) => {
-                        const activeClass = idx === 0 ? 'active' : '';
-                        indicators += `<button type="button" data-bs-target="#sliderHalaman" data-bs-slide-to="${idx}" class="${activeClass}" aria-label="Slide ${idx + 1}"></button>`;
-                        carouselInner += `
+                                gambarArray.forEach((img, idx) => {
+                                    const activeClass = idx === 0 ? 'active' : '';
+                                    indicators += `<button type="button" data-bs-target="#sliderHalaman" data-bs-slide-to="${idx}" class="${activeClass}" aria-label="Slide ${idx + 1}"></button>`;
+                                    carouselInner += `
                             <div class="carousel-item ${activeClass}">
                                 <img src="${API_BASE_URL}/uploads/${img}" 
                                      class="d-block w-100 h-auto rounded" 
                                      alt="${page.judul} - Foto ${idx + 1}"
                                      onerror="this.onerror=null; this.src='img/default.jpg';">
                             </div>`;
-                    });
+                                });
 
-                    imgHtml = `
+                                imgHtml = `
                         <div id="sliderHalaman" class="carousel slide mb-4 shadow-sm rounded bg-white p-2" data-bs-ride="carousel">
                             <div class="carousel-indicators">${indicators}</div>
                             <div class="carousel-inner">${carouselInner}</div>
@@ -255,26 +267,26 @@ fetch(`${API_BASE}/halaman/${slug}`)
                                 <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
                             </button>
                         </div>`;
-                }
-            }
+                            }
+                        }
 
-            document.getElementById('page-content').innerHTML = imgHtml + (page.konten || '');
+                        document.getElementById('page-content').innerHTML = imgHtml + (page.konten || '');
 
-            // Inisialisasi Carousel jika ada multiple gambar
-            if (hasMultipleImages) {
-                const sliderElement = document.getElementById('sliderHalaman');
-                if (sliderElement && typeof bootstrap !== 'undefined') {
-                    new bootstrap.Carousel(sliderElement, { interval: 4000, wrap: true, touch: true });
-                }
-            }
-        } else {
-            renderNotFound("Halaman tidak ditemukan.");
-        }
-    })
-    .catch(err => {
-        console.error("Error fetching page content:", err);
-        renderNotFound("Gagal terhubung ke server backend API.");
-    });
+                        // Inisialisasi Carousel jika ada multiple gambar
+                        if (hasMultipleImages) {
+                            const sliderElement = document.getElementById('sliderHalaman');
+                            if (sliderElement && typeof bootstrap !== 'undefined') {
+                                new bootstrap.Carousel(sliderElement, { interval: 4000, wrap: true, touch: true });
+                            }
+                        }
+                    } else {
+                        renderNotFound("Halaman tidak ditemukan.");
+                    }
+                })
+                .catch(err => {
+                    console.error("Error fetching page content:", err);
+                    renderNotFound("Gagal terhubung ke server backend API.");
+                });
 
             // 2. Fetch Menu Navigasi Header Kustom (Offcanvas & Footer)
             fetch(`${API_BASE}/halaman?header_only=true`)

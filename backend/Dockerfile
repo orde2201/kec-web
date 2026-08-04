@@ -21,7 +21,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # 6. Install seluruh dependencies cukup 1x saja dari package.json
-RUN npm install express cors dotenv pg multer qrcode-terminal sanitize-html validator whatsapp-web.js
+RUN npm install express cors dotenv pg multer qrcode-terminal sanitize-html validator whatsapp-web.js qrcode
 
 
 # 7. Salin seluruh kode proyek ke dalam kontainer

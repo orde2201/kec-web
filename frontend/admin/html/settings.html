@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="adminHMD professional admin dashboard template">
-  <title>Dashboard & Management Storage | adminHMD</title>
-
+  
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/css/style.css">
-      
+
   <script>
     (function checkAuth() {
       try {
@@ -42,7 +41,6 @@
     <aside class="admin-sidebar" id="adminSidebar">
       <div class="sidebar-header">
         <a class="brand-mark" href="index.html">
-          <span class="brand-icon"><i class="bi bi-grid-1x2-fill"></i></span>
           <span class="brand-copy">
             <span class="brand-title">Admin</span>
             <span class="brand-subtitle">Kecamatan Rumbia</span>
@@ -79,6 +77,10 @@
           <span class="nav-icon"><i class="bi bi-gear"></i></span>
           <span class="nav-text">Settings</span>
         </a>
+        <a class="nav-link" href="waconfig.html">
+          <span class="nav-icon"><i class="bi bi-gear"></i></span>
+          <span class="nav-text">WhatsApp</span>
+        </a>
       </nav>
     </aside>
 
@@ -86,25 +88,26 @@
       <main class="dashboard-content">
         <div class="container-fluid px-3 px-lg-4 py-4">
           <nav class="navbar admin-navbar navbar-expand bg-white">
-        <div class="container-fluid px-3 px-lg-4">
-          <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar" aria-expanded="true" aria-label="Toggle sidebar">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-          <div class="navbar-actions ms-auto">
-           
-          <div class="dropdown">
-              <div class="container-fluid px-3 px-lg-4">
-          <button type="button" id="btnSignOut" class="btn btn-outline-danger btn-sm">
-            <i class="bi bi-box-arrow-right"></i> Sign Out
-          </button>
-        </div>
-              
+            <div class="container-fluid px-3 px-lg-4">
+              <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar"
+                aria-expanded="true" aria-label="Toggle sidebar">
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
+              <div class="navbar-actions ms-auto">
+
+                <div class="dropdown">
+                  <div class="container-fluid px-3 px-lg-4">
+                    <button type="button" id="btnSignOut" class="btn btn-outline-danger btn-sm">
+                      <i class="bi bi-box-arrow-right"></i> Sign Out
+                    </button>
+                  </div>
+
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </nav>
+          </nav>
 
           <form id="settingsForm" enctype="multipart/form-data">
             <div class="row g-4">
@@ -113,7 +116,8 @@
                 <div class="card p-3 shadow-sm">
                   <h5 class="card-title mb-3"><i class="bi bi-image me-2"></i>Logo Website</h5>
                   <div class="mb-3 text-center">
-                    <img id="logoPreview" src="../../img/logo.png" alt="Logo Preview" style="max-height: 120px; object-fit: contain;" class="border p-2 rounded mb-2">
+                    <img id="logoPreview" src="../../img/logo.png" alt="Logo Preview"
+                      style="max-height: 120px; object-fit: contain;" class="border p-2 rounded mb-2">
                   </div>
                   <div class="mb-3">
                     <label class="form-label fw-bold">Unggah Logo Baru</label>
@@ -127,32 +131,39 @@
               <div class="col-12 col-lg-7">
                 <div class="card p-3 shadow-sm">
                   <h5 class="card-title mb-3"><i class="bi bi-layout-bottom me-2"></i>Pengaturan Footer</h5>
-                  
+
                   <div class="mb-3">
                     <label class="form-label fw-bold">Tentang Singkat / Deskripsi Footer</label>
-                    <textarea class="form-control" id="footerAbout" name="footer_about" rows="3" placeholder="Deskripsi singkat kecamatan di footer..."></textarea>
+                    <textarea class="form-control" id="footerAbout" name="footer_about" rows="3"
+                      placeholder="Deskripsi singkat kecamatan di footer..."></textarea>
                   </div>
 
                   <div class="mb-3">
                     <label class="form-label fw-bold">Alamat Instansi</label>
-                    <input type="text" class="form-control" id="footerAddress" name="footer_address" placeholder="Jl. Raya Rumbia No. 1...">
+                    <input type="text" class="form-control" id="footerAddress" name="footer_address"
+                      placeholder="Jl. Raya Rumbia No. 1...">
                   </div>
 
                   <div class="row">
                     <div class="col-md-6 mb-3">
                       <label class="form-label fw-bold">Nomor Telepon</label>
-                      <input type="text" class="form-control" id="footerPhone" name="footer_phone" placeholder="+62 ...">
+                      <input type="text" class="form-control" id="footerPhone" name="footer_phone"
+                        placeholder="+62 ...">
                     </div>
                     <div class="col-md-6 mb-3">
                       <label class="form-label fw-bold">Email Instansi</label>
-                      <input type="email" class="form-control" id="footerEmail" name="footer_email" placeholder="info@rumbia.go.id">
+                      <input type="email" class="form-control" id="footerEmail" name="footer_email"
+                        placeholder="info@rumbia.go.id">
                     </div>
                   </div>
 
                   <div class="mb-3">
                     <label class="form-label fw-bold">Teks Copyright</label>
-                    <input type="text" class="form-control" id="footerCopyright" name="footer_copyright" placeholder="Kecamatan Rumbia">
+                    <input type="text" class="form-control" id="footerCopyright" name="footer_copyright"
+                      placeholder="Kecamatan Rumbia">
                   </div>
+
+
 
                   <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
                     <i class="bi bi-save me-1"></i> Simpan Pengaturan
@@ -172,70 +183,71 @@
 
   <!-- SCRIPT UTAMA DASHBOARD -->
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Load data pengaturan saat ini
-        fetch('http://localhost:3000/api/pengaturan')
-            .then(res => res.json())
-            .then(data => {
-                if(data && !data.error) {
-                    if(data.logo) {
-                        document.getElementById('logoPreview').src = `http://localhost:3000/uploads/${data.logo}`;
-                    }
-                    if(data.footer_about) document.getElementById('footerAbout').value = data.footer_about;
-                    if(data.footer_address) document.getElementById('footerAddress').value = data.footer_address;
-                    if(data.footer_phone) document.getElementById('footerPhone').value = data.footer_phone;
-                    if(data.footer_email) document.getElementById('footerEmail').value = data.footer_email;
-                    if(data.footer_copyright) document.getElementById('footerCopyright').value = data.footer_copyright;
-                }
-            })
-            .catch(err => console.error("Error loading settings:", err));
+    document.addEventListener("DOMContentLoaded", function () {
+      // Load data pengaturan saat ini
+      fetch('http://localhost:3000/api/pengaturan')
+        .then(res => res.json())
+        .then(data => {
+          if (data && !data.error) {
+            if (data.logo) {
+              document.getElementById('logoPreview').src = `http://localhost:3000/uploads/${data.logo}`;
+            }
+            if (data.footer_about) document.getElementById('footerAbout').value = data.footer_about;
+            if (data.footer_address) document.getElementById('footerAddress').value = data.footer_address;
+            if (data.footer_phone) document.getElementById('footerPhone').value = data.footer_phone;
+            if (data.footer_email) document.getElementById('footerEmail').value = data.footer_email;
+            if (data.footer_copyright) document.getElementById('footerCopyright').value = data.footer_copyright;
+          }
+        })
+        .catch(err => console.error("Error loading settings:", err));
 
-        // Form Submit
-        document.getElementById('settingsForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
+      // Form Submit
+      document.getElementById('settingsForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
 
-            fetch('http://localhost:3000/api/pengaturan/update', {
-                method: 'POST',
-                body: formData
-            })
-            .then(res => res.json())
-            .then(resData => {
-                if(resData.success) {
-                    alert('Pengaturan Logo & Footer berhasil disimpan!');
-                    location.reload();
-                } else {
-                    alert('Gagal menyimpan: ' + (resData.message || 'Error server'));
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                alert('Terjadi kesalahan koneksi ke server.');
-            });
-        });
+        fetch('http://localhost:3000/api/pengaturan/update', {
+          method: 'POST',
+          body: formData
+        })
+          .then(res => res.json())
+          .then(resData => {
+            if (resData.success) {
+              alert('Pengaturan Logo & Footer berhasil disimpan!');
+              location.reload();
+            } else {
+              alert('Gagal menyimpan: ' + (resData.message || 'Error server'));
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            alert('Terjadi kesalahan koneksi ke server.');
+          });
+      });
     });
     document.addEventListener('DOMContentLoaded', function () {
-  const btnSignOut = document.getElementById('btnSignOut');
+      const btnSignOut = document.getElementById('btnSignOut');
 
-  if (btnSignOut) {
-    btnSignOut.addEventListener('click', function (e) {
-      e.preventDefault();
+      if (btnSignOut) {
+        btnSignOut.addEventListener('click', function (e) {
+          e.preventDefault();
 
-      // 1. Konfirmasi opsional ke pengguna (opsional)
-      if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
-        
-        // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        localStorage.clear();
-        sessionStorage.clear();
+          // 1. Konfirmasi opsional ke pengguna (opsional)
+          if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
 
-        // 3. Arahkan kembali pengguna ke halaman login
-        window.location.href = 'login.html';
+            // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // 3. Arahkan kembali pengguna ke halaman login
+            window.location.href = 'login.html';
+          }
+        });
       }
     });
-  }
-});
   </script>
 </body>
+
 </html>

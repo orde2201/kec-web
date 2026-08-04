@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <script>
+        (function checkAuth() {
+            try {
+                const userRaw = localStorage.getItem('user');
+                const currentUser = userRaw ? JSON.parse(userRaw) : null;
+
+                if (!currentUser || typeof currentUser !== 'object') {
+                    window.location.href = './login.html';
+                    return;
+                }
+
+                const role = currentUser.hakAkses || currentUser.hak_akses;
+                if (role !== 'Admin') {
+                    alert('Akses ditolak! Halaman ini hanya untuk Admin.');
+                    window.location.href = 'pengumuman.html';
+                }
+            } catch (error) {
+                console.error('Data session rusak:', error);
+                localStorage.removeItem('user');
+                window.location.href = 'login.html';
+            }
+        })();
+    </script>
+</head>
+
+<body>
+    <div class="admin-shell">
+        <div class="sidebar-backdrop" data-sidebar-close></div>
+
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
+            <div class="sidebar-header">
+                <a class="brand-mark" href="index.html">
+                    <span class="brand-copy">
+                        <span class="brand-title">admin</span>
+                        <span class="brand-subtitle">Kecamatan Rumbia</span>
+                    </span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a class="nav-link active" href="index.html">
+                    <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a class="nav-link" href="users.html">
+                    <span class="nav-icon"><i class="bi bi-people"></i></span>
+                    <span class="nav-text">Users</span>
+                </a>
+                <a class="nav-link" href="add-user.html">
+                    <span class="nav-icon"><i class="bi bi-person-plus"></i></span>
+                    <span class="nav-text">Tambah User</span>
+                </a>
+                <a class="nav-link" href="berita-acara-pengumuman.html">
+                    <span class="nav-icon"><i class="bi bi-newspaper"></i></span>
+                    <span class="nav-text">Berita & Pengumuman</span>
+                </a>
+                <a class="nav-link" href="beranda.html">
+                    <span class="nav-icon"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
+                    <span class="nav-text">Edit Beranda</span>
+                </a>
+                <a class="nav-link" href="add-page.html">
+                    <span class="nav-icon"><i class="bi bi-file-earmark-plus"></i></span>
+                    <span class="nav-text">Halaman Header</span>
+                </a>
+                <a class="nav-link" href="settings.html">
+                    <span class="nav-icon"><i class="bi bi-gear"></i></span>
+                    <span class="nav-text">Settings</span>
+                </a>
+                <a class="nav-link" href="waconfig.html">
+                    <span class="nav-icon"><i class="bi bi-gear"></i></span>
+                    <span class="nav-text">WhatsApp</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <span class="status-dot"></span>
+                <span class="sidebar-footer-text">Database connected</span>
+            </div>
+        </aside>
+        <div class="admin-main">
+            <nav class="navbar admin-navbar navbar-expand bg-white">
+                <div class="container-fluid px-3 px-lg-4">
+                    <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar"
+                        aria-expanded="true" aria-label="Toggle sidebar">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <div class="navbar-actions ms-auto">
+
+                        <div class="dropdown">
+                            <div class="container-fluid px-3 px-lg-4">
+                                <button type="button" id="btnSignOut" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-box-arrow-right"></i> Sign Out
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+
+            <!-- MAIN CONTENT -->
+            <div class="card p-3 shadow-sm text-center" style="max-width: 400px; margin: auto;">
+                <h5>📱 Status WhatsApp Gateway</h5>
+                <hr>
+
+                <!-- Wadah Indikator Status -->
+                <div id="waStatusBadge" class="badge bg-secondary mb-3">Memeriksa Koneksi...</div>
+
+                <!-- Gambar QR Code -->
+                <div id="qrContainer" class="d-none">
+                    <p class="small text-muted mb-2">Pindai QR Code berikut dari WhatsApp HP Anda:</p>
+                    <img id="qrImage" src="" alt="WhatsApp QR Code" class="img-fluid border p-2 rounded"
+                        style="max-width: 250px;">
+                </div>
+
+                <!-- Tombol Logout WA -->
+                <div id="waLogoutContainer" class="d-none mt-3">
+                    <button id="btnLogoutWa" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-power"></i> Logout WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script src="../assets/js/bootstrap.bundle.min.js"></script>
+        <script src="../assets/js/main.js"></script>
+
+        <!-- SCRIPT UTAMA DASHBOARD -->
+        <script>
+            const API_URL = 'http://localhost:3000/api/wa'; // Sesuaikan URL backend Anda jika berbeda
+
+            async function checkWaStatus() {
+                try {
+                    const res = await fetch(`${API_URL}/status`);
+                    const result = await res.json();
+
+                    if (!result.success) return;
+
+                    const data = result.data;
+                    const badge = document.getElementById('waStatusBadge');
+                    const qrContainer = document.getElementById('qrContainer');
+                    const qrImage = document.getElementById('qrImage');
+                    const logoutContainer = document.getElementById('waLogoutContainer');
+
+                    if (data.isReady) {
+                        // 🟢 Terhubung
+                        badge.className = 'badge bg-success mb-3 p-2';
+                        badge.innerHTML = `✅ Terhubung (${data.phoneNumber || 'Aktif'})`;
+                        qrContainer.classList.add('d-none');
+                        logoutContainer.classList.remove('d-none');
+                    } else if (data.qrCode) {
+                        // 🟡 Menunggu Scan QR
+                        badge.className = 'badge bg-warning text-dark mb-3 p-2';
+                        badge.innerHTML = '📲 Silakan Scan QR Code';
+                        qrImage.src = data.qrCode;
+                        qrContainer.classList.remove('d-none');
+                        logoutContainer.classList.add('d-none');
+                    } else {
+                        // ⚪ Menyiapkan / Loading
+                        badge.className = 'badge bg-secondary mb-3 p-2';
+                        badge.innerHTML = '⏳ Menyiapkan WhatsApp...';
+                        qrContainer.classList.add('d-none');
+                        logoutContainer.classList.add('d-none');
+                    }
+                } catch (err) {
+                    console.error('Gagal mengambil status WA:', err);
+                }
+            }
+
+            // Handler Logout WA
+            document.getElementById('btnLogoutWa')?.addEventListener('click', async () => {
+                if (confirm('Apakah Anda yakin ingin mengeluarkan sesi WhatsApp dari server?')) {
+                    await fetch(`${API_URL}/logout`, { method: 'POST' });
+                    checkWaStatus();
+                }
+            });
+
+            // Jalankan polling setiap 3 detik
+            checkWaStatus();
+            setInterval(checkWaStatus, 3000);
+        </script>
+
+</body>
+
+</html>

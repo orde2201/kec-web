@@ -1,5 +1,6 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
-const qrcode = require('qrcode-terminal');
+const qrcodeTerminal = require('qrcode-terminal');
+const QRCode = require('qrcode'); // Library untuk konversi ke Base64 DataURL
 const fs = require('fs');
 const path = require('path');
 
@@ -20,7 +21,7 @@ function removeChromiumLocks(dir) {
       }
     }
   } catch (err) {
-    // Abaikan jika ada error permission saat pembacaan folder
+    // Abaikan jika ada error permission
   }
 }
 
@@ -52,20 +53,61 @@ const client = new Client({
       '--disable-dev-shm-usage',
       '--disable-gpu',
       '--no-zygote',
-      '--single-process' // 👈 Membantu mencegah dangling process di Docker
+      '--single-process'
     ]
   }
 });
 
-client.on('qr', (qr) => {
+// State Global untuk menyimpan status WhatsApp & Gambar QR Code
+client.waState = {
+  isReady: false,
+  qrCodeDataUrl: null,
+  authenticated: false,
+  phoneNumber: null
+};
+
+// Event QR Code Diterima
+client.on('qr', async (qr) => {
+  client.waState.isReady = false;
+  client.waState.authenticated = false;
+  
+  // Konversi QR Text ke Gambar Base64 (DataURL) untuk Frontend
+  try {
+    client.waState.qrCodeDataUrl = await QRCode.toDataURL(qr);
+  } catch (err) {
+    console.error('Gagal membuat QR DataURL:', err.message);
+  }
+
+  // Tetap tampilkan di terminal sebagai cadangan
   console.log('\n==================================================');
   console.log('📲 SCAN QR CODE INI MENGGUNAKAN WHATSAPP DI HP ANDA');
   console.log('==================================================');
-  qrcode.generate(qr, { small: true });
+  qrcodeTerminal.generate(qr, { small: true });
 });
 
+// Event Berhasil Terhubung
 client.on('ready', () => {
+  client.waState.isReady = true;
+  client.waState.authenticated = true;
+  client.waState.qrCodeDataUrl = null; // Hapus QR jika sudah terhubung
+  
+  if (client.info && client.info.wid) {
+    client.waState.phoneNumber = client.info.wid.user;
+  }
+
   console.log('✅ WhatsApp Gateway Berhasil Terhubung & Siap Digunakan!');
+});
+
+// Event Disconnected / Terputus
+client.on('disconnected', (reason) => {
+  console.log('⚠️ WhatsApp Terputus:', reason);
+  client.waState.isReady = false;
+  client.waState.authenticated = false;
+  client.waState.qrCodeDataUrl = null;
+  client.waState.phoneNumber = null;
+  
+  // Inisialisasi ulang agar QR baru bisa dibuat lagi
+  client.initialize();
 });
 
 client.initialize();

@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="adminHMD professional admin dashboard template">
-  <title>Dashboard & Management Storage | adminHMD</title>
-
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/css/style.css">
-      
+
   <script>
     (function checkAuth() {
       try {
@@ -36,14 +34,13 @@
 </head>
 
 <body>
-   <div class="admin-shell">
+  <div class="admin-shell">
     <div class="sidebar-backdrop" data-sidebar-close></div>
 
     <!-- Sidebar Admin -->
     <aside class="admin-sidebar" id="adminSidebar">
       <div class="sidebar-header">
         <a class="brand-mark" href="index.html">
-          <span class="brand-icon"><i class="bi bi-grid-1x2-fill"></i></span>
           <span class="brand-copy">
             <span class="brand-title">Admin</span>
             <span class="brand-subtitle">Kecamatan Rumbia</span>
@@ -80,6 +77,10 @@
           <span class="nav-icon"><i class="bi bi-gear"></i></span>
           <span class="nav-text">Settings</span>
         </a>
+        <a class="nav-link" href="waconfig.html">
+          <span class="nav-icon"><i class="bi bi-gear"></i></span>
+          <span class="nav-text">WhatsApp</span>
+        </a>
       </nav>
     </aside>
 
@@ -87,38 +88,41 @@
     <div class="admin-main">
       <main class="dashboard-content">
         <div class="container-fluid px-3 px-lg-4 py-4">
-          
+
           <nav class="navbar admin-navbar navbar-expand bg-white">
-        <div class="container-fluid px-3 px-lg-4">
-          <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar" aria-expanded="true" aria-label="Toggle sidebar">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-          <div class="navbar-actions ms-auto">
-           
-          <div class="dropdown">
-              <div class="container-fluid px-3 px-lg-4">
-          <button type="button" id="btnSignOut" class="btn btn-outline-danger btn-sm">
-            <i class="bi bi-box-arrow-right"></i> Sign Out
-          </button>
-        </div>
-              
+            <div class="container-fluid px-3 px-lg-4">
+              <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar"
+                aria-expanded="true" aria-label="Toggle sidebar">
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
+              <div class="navbar-actions ms-auto">
+
+                <div class="dropdown">
+                  <div class="container-fluid px-3 px-lg-4">
+                    <button type="button" id="btnSignOut" class="btn btn-outline-danger btn-sm">
+                      <i class="bi bi-box-arrow-right"></i> Sign Out
+                    </button>
+                  </div>
+
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </nav>
+          </nav>
 
           <div class="row g-4">
             <!-- FORM TAMBAH / EDIT -->
             <div class="col-12 col-lg-5">
               <div class="card p-3 shadow-sm">
-                <h5 class="card-title mb-3" id="formTitle"><i class="bi bi-pencil-square me-2"></i>Tambah Halaman Baru</h5>
+                <h5 class="card-title mb-3" id="formTitle"><i class="bi bi-pencil-square me-2"></i>Tambah Halaman Baru
+                </h5>
                 <form id="pageForm" enctype="multipart/form-data">
                   <input type="hidden" id="pageId" value="">
 
                   <div class="mb-3">
-                    <label class="form-label fw-bold">Judul Halaman / Nama Menu <span class="text-danger">*</span></label>
+                    <label class="form-label fw-bold">Judul Halaman / Nama Menu <span
+                        class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="judul" required placeholder="Contoh: Profil Kecamatan">
                   </div>
 
@@ -140,7 +144,8 @@
                     <small class="text-muted">Format: JPG, PNG, WEBP (Maks 2MB).</small>
                     <div id="previewWrapper" class="mt-2 d-none">
                       <p class="small text-muted mb-1">Pratinjau Gambar:</p>
-                      <img id="imgPreview" src="" alt="Preview Gambar" class="img-thumbnail" style="max-height: 160px; object-fit: cover;">
+                      <img id="imgPreview" src="" alt="Preview Gambar" class="img-thumbnail"
+                        style="max-height: 160px; object-fit: cover;">
                     </div>
                   </div>
 
@@ -152,11 +157,12 @@
                   <!-- KONTEN TEXTAREA DENGAN PERBAIKAN ENTER -->
                   <div class="mb-3">
                     <label class="form-label fw-bold">Konten Halaman <span class="text-danger">*</span></label>
-                    <textarea class="form-control" id="konten" rows="10" required 
-                              style="white-space: pre-wrap;" 
-                              placeholder="Masukkan isi penjelasan halaman di sini... Tekan Enter untuk membuat baris baru."></textarea>
+                    <textarea class="form-control" id="konten" rows="10" required style="white-space: pre-wrap;"
+                      placeholder="Masukkan isi penjelasan halaman di sini... Tekan Enter untuk membuat baris baru."></textarea>
                     <small class="text-muted d-block mt-1">
-                      <i class="bi bi-info-circle me-1"></i> Baris baru/Enter akan tersimpan otomatis. Anda juga dapat menggunakan tag HTML seperti <code>&lt;p&gt;</code>, <code>&lt;br&gt;</code>, atau <code>&lt;b&gt;</code>.
+                      <i class="bi bi-info-circle me-1"></i> Baris baru/Enter akan tersimpan otomatis. Anda juga dapat
+                      menggunakan tag HTML seperti <code>&lt;p&gt;</code>, <code>&lt;br&gt;</code>, atau
+                      <code>&lt;b&gt;</code>.
                     </small>
                   </div>
 
@@ -208,10 +214,10 @@
   <script>
     const API_URL = 'http://localhost:3000/api/halaman';
 
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
       loadPages();
 
-      document.getElementById('pageForm').addEventListener('submit', function(e) {
+      document.getElementById('pageForm').addEventListener('submit', function (e) {
         e.preventDefault();
         savePage();
       });
@@ -227,13 +233,13 @@
 
           const pages = resData.data || resData;
 
-          if(!Array.isArray(pages) || pages.length === 0) {
+          if (!Array.isArray(pages) || pages.length === 0) {
             tbody.innerHTML = '<tr><td colspan="5" class="text-center py-3 text-muted">Belum ada halaman kustom.</td></tr>';
             return;
           }
 
           pages.forEach(page => {
-            const imgHtml = page.gambar 
+            const imgHtml = page.gambar
               ? `<img src="http://localhost:3000/uploads/${page.gambar}" class="rounded" style="width: 45px; height: 35px; object-fit: cover;">`
               : `<span class="badge bg-light text-muted border">No Img</span>`;
 
@@ -246,9 +252,9 @@
                 <small class="text-muted fw-normal"><code>/page.html?slug=${page.slug}</code></small>
               </td>
               <td>
-                ${page.tampilkan_di_header 
-                  ? '<span class="badge bg-success">Aktif</span>' 
-                  : '<span class="badge bg-light text-dark border">Sembunyi</span>'}
+                ${page.tampilkan_di_header
+                ? '<span class="badge bg-success">Aktif</span>'
+                : '<span class="badge bg-light text-dark border">Sembunyi</span>'}
               </td>
               <td class="text-end">
                 <a href="../../page.html?slug=${page.slug}" target="_blank" class="btn btn-sm btn-outline-info me-1" title="Pratinjau"><i class="bi bi-eye"></i></a>
@@ -270,7 +276,7 @@
 
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
           imgPreview.src = e.target.result;
           previewWrapper.classList.remove('d-none');
         };
@@ -280,51 +286,51 @@
 
     // 3. FUNGSI SIMPAN & EDIT DATA (MENGGUNAKAN FORMDATA)
     function savePage() {
-  const id = document.getElementById('pageId').value;
-  const formData = new FormData();
+      const id = document.getElementById('pageId').value;
+      const formData = new FormData();
 
-  formData.append('judul', document.getElementById('judul').value);
-  formData.append('slug', document.getElementById('slug').value);
-  formData.append('urutan', document.getElementById('urutan').value);
-  
-  // PERBAIKAN: Gunakan 'true' / 'false' secara konsisten
-  formData.append('tampilkan_di_header', document.getElementById('tampilkanHeader').checked ? 'true' : 'false');
-  formData.append('konten', document.getElementById('konten').value);
+      formData.append('judul', document.getElementById('judul').value);
+      formData.append('slug', document.getElementById('slug').value);
+      formData.append('urutan', document.getElementById('urutan').value);
 
-  const fileInput = document.getElementById('gambar');
-  if (fileInput.files[0]) {
-    formData.append('gambar', fileInput.files[0]);
-  }
+      // PERBAIKAN: Gunakan 'true' / 'false' secara konsisten
+      formData.append('tampilkan_di_header', document.getElementById('tampilkanHeader').checked ? 'true' : 'false');
+      formData.append('konten', document.getElementById('konten').value);
 
-  const method = id ? 'PUT' : 'POST';
-  const url = id ? `${API_URL}/${id}` : API_URL;
+      const fileInput = document.getElementById('gambar');
+      if (fileInput.files[0]) {
+        formData.append('gambar', fileInput.files[0]);
+      }
 
-  fetch(url, {
-    method: method,
-    body: formData
-  })
-  .then(res => res.json())
-  .then(resData => {
-    if(resData.success || resData.id) {
-      alert(resData.message || 'Halaman berhasil disimpan!');
-      resetForm();
-      loadPages();
-    } else {
-      alert('Gagal menyimpan: ' + (resData.message || 'Terjadi kesalahan pada backend.'));
+      const method = id ? 'PUT' : 'POST';
+      const url = id ? `${API_URL}/${id}` : API_URL;
+
+      fetch(url, {
+        method: method,
+        body: formData
+      })
+        .then(res => res.json())
+        .then(resData => {
+          if (resData.success || resData.id) {
+            alert(resData.message || 'Halaman berhasil disimpan!');
+            resetForm();
+            loadPages();
+          } else {
+            alert('Gagal menyimpan: ' + (resData.message || 'Terjadi kesalahan pada backend.'));
+          }
+        })
+        .catch(err => {
+          console.error("Error saving page:", err);
+          alert('Terjadi kesalahan koneksi server');
+        });
     }
-  })
-  .catch(err => {
-    console.error("Error saving page:", err);
-    alert('Terjadi kesalahan koneksi server');
-  });
-}
     // 4. FUNGSI EDIT HALAMAN (LOAD DATA KE FORM)
     function editPage(id) {
       fetch(`${API_URL}/${id}`)
         .then(res => res.json())
         .then(resData => {
           const p = resData.data || resData;
-          if(p && p.id) {
+          if (p && p.id) {
             document.getElementById('pageId').value = p.id;
             document.getElementById('judul').value = p.judul || '';
             document.getElementById('slug').value = p.slug || '';
@@ -344,7 +350,7 @@
             }
 
             document.getElementById('formTitle').innerHTML = `<i class="bi bi-pencil-square me-2"></i>Edit Halaman (${p.judul})`;
-            
+
             // Scroll halus ke atas ke arah form
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }
@@ -354,7 +360,7 @@
 
     // 5. FUNGSI HAPUS HALAMAN
     function deletePage(id) {
-      if(confirm('Apakah Anda yakin ingin menghapus halaman ini?')) {
+      if (confirm('Apakah Anda yakin ingin menghapus halaman ini?')) {
         fetch(`${API_URL}/${id}`, { method: 'DELETE' })
           .then(res => res.json())
           .then(resData => {
@@ -375,27 +381,28 @@
       document.getElementById('formTitle').innerHTML = `<i class="bi bi-pencil-square me-2"></i>Tambah Halaman Baru`;
     }
     document.addEventListener('DOMContentLoaded', function () {
-  const btnSignOut = document.getElementById('btnSignOut');
+      const btnSignOut = document.getElementById('btnSignOut');
 
-  if (btnSignOut) {
-    btnSignOut.addEventListener('click', function (e) {
-      e.preventDefault();
+      if (btnSignOut) {
+        btnSignOut.addEventListener('click', function (e) {
+          e.preventDefault();
 
-      // 1. Konfirmasi opsional ke pengguna (opsional)
-      if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
-        
-        // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        localStorage.clear();
-        sessionStorage.clear();
+          // 1. Konfirmasi opsional ke pengguna (opsional)
+          if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
 
-        // 3. Arahkan kembali pengguna ke halaman login
-        window.location.href = 'login.html';
+            // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // 3. Arahkan kembali pengguna ke halaman login
+            window.location.href = 'login.html';
+          }
+        });
       }
     });
-  }
-});
   </script>
 </body>
+
 </html>

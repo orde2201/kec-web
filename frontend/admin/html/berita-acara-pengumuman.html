@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manajemen Berita & Pengumuman | adminHMD</title>
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/css/style.css">
@@ -16,10 +16,9 @@
     <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
       <div class="sidebar-header">
         <a class="brand-mark" href="index.html">
-          <span class="brand-icon"><i class="bi bi-grid-1x2-fill"></i></span>
           <span class="brand-copy">
             <span class="brand-title">admin</span>
-            <span class="brand-subtitle">Admin Portal</span>
+            <span class="brand-subtitle">Kecamatan Rumbia</span>
           </span>
         </a>
       </div>
@@ -53,6 +52,10 @@
           <span class="nav-icon"><i class="bi bi-gear"></i></span>
           <span class="nav-text">Settings</span>
         </a>
+        <a class="nav-link" href="waconfig.html">
+          <span class="nav-icon"><i class="bi bi-gear"></i></span>
+          <span class="nav-text">WhatsApp</span>
+        </a>
       </nav>
 
 
@@ -61,12 +64,14 @@
         <span class="sidebar-footer-text">Database connected</span>
       </div>
     </aside>
-    
+
     <div class="admin-main">
       <nav class="navbar admin-navbar navbar-expand bg-white">
         <div class="container-fluid px-3 px-lg-4">
-          <button class="sidebar-toggle" type="button" data-sidebar-toggle><span></span><span></span><span></span></button>
-          <div class="ms-auto"><a href="login.html" class="btn btn-outline-danger btn-sm"><i class="bi bi-box-arrow-right"></i> Sign Out</a></div>
+          <button class="sidebar-toggle" type="button"
+            data-sidebar-toggle><span></span><span></span><span></span></button>
+          <div class="ms-auto"><a href="login.html" class="btn btn-outline-danger btn-sm"><i
+                class="bi bi-box-arrow-right"></i> Sign Out</a></div>
         </div>
       </nav>
 
@@ -75,10 +80,13 @@
 
         <ul class="nav nav-tabs mb-4" id="contentTab" role="tablist">
           <li class="nav-item">
-            <button class="nav-link active fw-bold" id="pengumuman-tab" data-bs-toggle="tab" data-bs-target="#pengumuman-pane" type="button"><i class="bi bi-megaphone me-2"></i>Daftar Pengumuman Instansi</button>
+            <button class="nav-link active fw-bold" id="pengumuman-tab" data-bs-toggle="tab"
+              data-bs-target="#pengumuman-pane" type="button"><i class="bi bi-megaphone me-2"></i>Daftar Pengumuman
+              Instansi</button>
           </li>
           <li class="nav-item">
-            <button class="nav-link fw-bold" id="berita-tab" data-bs-toggle="tab" data-bs-target="#berita-pane" type="button"><i class="bi bi-newspaper me-2"></i>Daftar Berita</button>
+            <button class="nav-link fw-bold" id="berita-tab" data-bs-toggle="tab" data-bs-target="#berita-pane"
+              type="button"><i class="bi bi-newspaper me-2"></i>Daftar Berita</button>
           </li>
         </ul>
 
@@ -88,8 +96,10 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5 class="fw-bold mb-0 text-primary">Data Pengumuman Active</h5>
               <div>
-                <button class="btn btn-outline-secondary btn-sm me-2" onclick="bukaModalInstansi()"><i class="bi bi-building me-1"></i> Kelola Instansi</button>
-                <button class="btn btn-primary btn-sm" onclick="bukaModalPengumuman()"><i class="bi bi-plus-lg me-1"></i> Tambah Pengumuman</button>
+                <button class="btn btn-outline-secondary btn-sm me-2" onclick="bukaModalInstansi()"><i
+                    class="bi bi-building me-1"></i> Kelola Instansi</button>
+                <button class="btn btn-primary btn-sm" onclick="bukaModalPengumuman()"><i
+                    class="bi bi-plus-lg me-1"></i> Tambah Pengumuman</button>
               </div>
             </div>
             <div class="card border-0 shadow-sm">
@@ -107,7 +117,9 @@
                       </tr>
                     </thead>
                     <tbody id="tabelPengumumanBody">
-                      <tr><td colspan="6" class="text-center py-4">Memuat data pengumuman...</td></tr>
+                      <tr>
+                        <td colspan="6" class="text-center py-4">Memuat data pengumuman...</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -120,8 +132,10 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5 class="fw-bold mb-0 text-primary">Data Berita Active</h5>
               <div>
-                <button class="btn btn-outline-info btn-sm me-2" onclick="bukaModalKategori()"><i class="bi bi-tag me-1"></i> Kelola Kategori</button>
-                <button class="btn btn-success btn-sm" onclick="bukaModalBerita()"><i class="bi bi-plus-lg me-1"></i> Tambah Berita</button>
+                <button class="btn btn-outline-info btn-sm me-2" onclick="bukaModalKategori()"><i
+                    class="bi bi-tag me-1"></i> Kelola Kategori</button>
+                <button class="btn btn-success btn-sm" onclick="bukaModalBerita()"><i class="bi bi-plus-lg me-1"></i>
+                  Tambah Berita</button>
               </div>
             </div>
             <div class="card border-0 shadow-sm">
@@ -139,7 +153,9 @@
                       </tr>
                     </thead>
                     <tbody id="tabelBeritaBody">
-                      <tr><td colspan="6" class="text-center py-4">Memuat data berita...</td></tr>
+                      <tr>
+                        <td colspan="6" class="text-center py-4">Memuat data berita...</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -161,7 +177,8 @@
               <form id="formInstansi" class="mb-4">
                 <label class="form-label fw-semibold">Tambah Instansi Baru</label>
                 <div class="input-group">
-                  <input type="text" id="nama_instansi" name="nama_instansi" class="form-control" placeholder="Nama Instansi Baru" required>
+                  <input type="text" id="nama_instansi" name="nama_instansi" class="form-control"
+                    placeholder="Nama Instansi Baru" required>
                   <button type="submit" class="btn btn-secondary"><i class="bi bi-plus-lg"></i> Tambah</button>
                 </div>
               </form>
@@ -176,7 +193,9 @@
                     </tr>
                   </thead>
                   <tbody id="tabelInstansiBody">
-                    <tr><td colspan="3" class="text-center">Memuat instansi...</td></tr>
+                    <tr>
+                      <td colspan="3" class="text-center">Memuat instansi...</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -197,7 +216,8 @@
               <form id="formKategori" class="mb-4">
                 <label class="form-label fw-semibold">Tambah Kategori Baru</label>
                 <div class="input-group">
-                  <input type="text" id="nama_kategori" name="nama_kategori" class="form-control" placeholder="Olahraga, Wisata, dll." required>
+                  <input type="text" id="nama_kategori" name="nama_kategori" class="form-control"
+                    placeholder="Olahraga, Wisata, dll." required>
                   <button type="submit" class="btn btn-info"><i class="bi bi-plus-lg"></i> Tambah</button>
                 </div>
               </form>
@@ -212,7 +232,9 @@
                     </tr>
                   </thead>
                   <tbody id="tabelKategoriBody">
-                    <tr><td colspan="3" class="text-center">Memuat kategori...</td></tr>
+                    <tr>
+                      <td colspan="3" class="text-center">Memuat kategori...</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -228,13 +250,16 @@
             <form id="formPengumuman" enctype="multipart/form-data">
               <input type="hidden" id="edit_pengumuman_id" name="edit_id">
               <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="modalPengumumanTitle"><i class="bi bi-megaphone me-2"></i>Tambah Pengumuman Instansi</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" onclick="resetModalPengumuman()"></button>
+                <h5 class="modal-title" id="modalPengumumanTitle"><i class="bi bi-megaphone me-2"></i>Tambah Pengumuman
+                  Instansi</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                  onclick="resetModalPengumuman()"></button>
               </div>
               <div class="modal-body">
                 <div class="mb-3">
                   <label class="form-label fw-semibold">Judul Pengumuman</label>
-                  <input type="text" id="judul_pengumuman" name="judul" class="form-control" placeholder="Contoh: Pengisian Formulir Pegawai" required>
+                  <input type="text" id="judul_pengumuman" name="judul" class="form-control"
+                    placeholder="Contoh: Pengisian Formulir Pegawai" required>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
@@ -244,7 +269,8 @@
                   <div class="col-md-6 mb-3">
                     <label class="form-label fw-semibold">Gambar Surat / Lampiran</label>
                     <input type="file" name="gambar" class="form-control" accept="image/*">
-                    <small class="text-muted d-block mt-1">* Kosongkan jika tidak ingin mengubah gambar (saat edit)</small>
+                    <small class="text-muted d-block mt-1">* Kosongkan jika tidak ingin mengubah gambar (saat
+                      edit)</small>
                   </div>
                 </div>
                 <div class="mb-3">
@@ -255,7 +281,7 @@
                   <label class="form-label fw-semibold">Isi Pengumuman</label>
                   <textarea id="isi_pengumuman" name="isi" class="form-control" rows="4" required></textarea>
                 </div>
-                
+
                 <!-- CHECKBOX BROADCAST WHATSAPP -->
                 <div class="card bg-light border-0 p-3 mb-2">
                   <div class="form-check form-switch mb-0">
@@ -268,7 +294,8 @@
 
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetModalPengumuman()">Batal</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                  onclick="resetModalPengumuman()">Batal</button>
                 <button type="submit" id="btnSimpanPengumuman" class="btn btn-primary">Simpan Pengumuman</button>
               </div>
             </form>
@@ -284,7 +311,8 @@
               <input type="hidden" id="edit_id" name="edit_id">
               <div class="modal-header bg-success text-white">
                 <h5 class="modal-title" id="modalTitle"><i class="bi bi-journal-plus me-2"></i>Tambah Berita Baru</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" onclick="resetModalForm()"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                  onclick="resetModalForm()"></button>
               </div>
               <div class="modal-body">
                 <div class="mb-3">
@@ -307,7 +335,8 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetModalForm()">Batal</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                  onclick="resetModalForm()">Batal</button>
                 <button type="submit" id="btnSimpan" class="btn btn-success">Simpan Berita</button>
               </div>
             </form>
@@ -456,7 +485,7 @@
     }
 
     // Submit Instansi Baru
-    document.getElementById('formInstansi').addEventListener('submit', async function(e) {
+    document.getElementById('formInstansi').addEventListener('submit', async function (e) {
       e.preventDefault();
       const payload = { nama_instansi: document.getElementById('nama_instansi').value };
       try {
@@ -479,7 +508,7 @@
     });
 
     // Submit Kategori Baru
-    document.getElementById('formKategori').addEventListener('submit', async function(e) {
+    document.getElementById('formKategori').addEventListener('submit', async function (e) {
       e.preventDefault();
       const payload = { nama_kategori: document.getElementById('nama_kategori').value };
       try {
@@ -521,11 +550,11 @@
           const targetText = isEveryone ? 'Everyone (Publik)' : (item.nama_instansi || 'Internal');
           const tgl = item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID') : '-';
 
-          const imgPreview = item.gambar 
+          const imgPreview = item.gambar
             ? `<a href="http://localhost:3000/uploads/${item.gambar}" target="_blank" class="me-2"><img src="http://localhost:3000/uploads/${item.gambar}" width="40" height="40" class="rounded border object-fit-cover"></a>`
             : '';
 
-          const gformBtn = item.link_gform 
+          const gformBtn = item.link_gform
             ? `<a href="${item.link_gform}" target="_blank" class="btn btn-xs btn-outline-success me-1"><i class="bi bi-file-earmark-spreadsheet-fill"></i> Buka Form</a>`
             : '<span class="text-muted small">-</span>';
 
@@ -569,10 +598,10 @@
             firstImage = gambarArray[0].trim();
           }
 
-          const gambarHtml = firstImage 
-            ? `<img src="http://localhost:3000/uploads/${firstImage}" width="45" height="45" class="rounded object-fit-cover me-2">` 
+          const gambarHtml = firstImage
+            ? `<img src="http://localhost:3000/uploads/${firstImage}" width="45" height="45" class="rounded object-fit-cover me-2">`
             : '';
-            
+
           const tgl = item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID') : '-';
           const penulis = item.nama_penulis || 'Admin System';
           const kategori = item.nama_kategori || 'Umum';
@@ -639,7 +668,7 @@
     }
 
     // Submit Form Pengumuman (Termasuk Kirim WA Parameter)
-    document.getElementById('formPengumuman').addEventListener('submit', async function(e) {
+    document.getElementById('formPengumuman').addEventListener('submit', async function (e) {
       e.preventDefault();
       const editId = document.getElementById('edit_pengumuman_id').value;
       const isKirimWa = document.getElementById('kirimWaPengumuman').checked;
@@ -670,12 +699,12 @@
       }
     });
 
-    document.getElementById('formBerita').addEventListener('submit', async function(e) {
+    document.getElementById('formBerita').addEventListener('submit', async function (e) {
       e.preventDefault();
       const editId = document.getElementById('edit_id').value;
       const currentUser = JSON.parse(localStorage.getItem('user')) || {};
       const formData = new FormData(this);
-      
+
       if (!editId) {
         formData.append('penulis_id', currentUser.id || 1);
       }
@@ -721,7 +750,7 @@
       document.getElementById('konten').value = item.konten || '';
       document.getElementById('modalTitle').innerHTML = '<i class="bi bi-pencil-square me-2"></i>Edit Berita';
       document.getElementById('btnSimpan').innerText = 'Update Berita';
-      
+
       bootstrap.Modal.getOrCreateInstance(document.getElementById('modalBerita')).show();
     }
 
@@ -731,27 +760,28 @@
       fetchBerita();
     });
     document.addEventListener('DOMContentLoaded', function () {
-  const btnSignOut = document.getElementById('btnSignOut');
+      const btnSignOut = document.getElementById('btnSignOut');
 
-  if (btnSignOut) {
-    btnSignOut.addEventListener('click', function (e) {
-      e.preventDefault();
+      if (btnSignOut) {
+        btnSignOut.addEventListener('click', function (e) {
+          e.preventDefault();
 
-      // 1. Konfirmasi opsional ke pengguna (opsional)
-      if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
-        
-        // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        localStorage.clear();
-        sessionStorage.clear();
+          // 1. Konfirmasi opsional ke pengguna (opsional)
+          if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
 
-        // 3. Arahkan kembali pengguna ke halaman login
-        window.location.href = 'login.html';
+            // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // 3. Arahkan kembali pengguna ke halaman login
+            window.location.href = 'login.html';
+          }
+        });
       }
     });
-  }
-});
   </script>
 </body>
+
 </html>

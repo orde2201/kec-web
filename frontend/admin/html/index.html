@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="adminHMD professional admin dashboard template">
-  <title>Dashboard & Management Storage | adminHMD</title>
-
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/css/style.css">
-      
+
   <script>
     (function checkAuth() {
       try {
@@ -43,10 +41,9 @@
     <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
       <div class="sidebar-header">
         <a class="brand-mark" href="index.html">
-          <span class="brand-icon"><i class="bi bi-grid-1x2-fill"></i></span>
           <span class="brand-copy">
             <span class="brand-title">admin</span>
-            <span class="brand-subtitle">Admin Portal</span>
+            <span class="brand-subtitle">Kecamatan Rumbia</span>
           </span>
         </a>
       </div>
@@ -80,6 +77,10 @@
           <span class="nav-icon"><i class="bi bi-gear"></i></span>
           <span class="nav-text">Settings</span>
         </a>
+        <a class="nav-link" href="waconfig.html">
+          <span class="nav-icon"><i class="bi bi-gear"></i></span>
+          <span class="nav-text">WhatsApp</span>
+        </a>
       </nav>
 
       <div class="sidebar-footer">
@@ -104,14 +105,15 @@
 
       <main class="dashboard-content">
         <div class="container-fluid px-3 px-lg-4 py-4">
-          
+
           <div class="page-heading mb-4">
             <div class="page-heading-copy">
               <span class="page-icon"><i class="bi bi-speedometer2"></i></span>
               <div>
                 <p class="eyebrow mb-1">Overview & System Health</p>
                 <h1 class="h3 mb-1">Dashboard Konten & Penyimpanan</h1>
-                <p class="text-muted mb-0">Pantau statistik pengguna, konten aktif, dan manajemen kapasitas penyimpanan server.</p>
+                <p class="text-muted mb-0">Pantau statistik pengguna, konten aktif, dan manajemen kapasitas penyimpanan
+                  server.</p>
               </div>
             </div>
             <div class="heading-actions">
@@ -177,7 +179,8 @@
               <div class="panel border-0 shadow-sm">
                 <div class="panel-header">
                   <div>
-                    <h2 class="h5 mb-1 section-title"><i class="bi bi-pie-chart-fill text-primary me-2"></i>Status Storage Server</h2>
+                    <h2 class="h5 mb-1 section-title"><i class="bi bi-pie-chart-fill text-primary me-2"></i>Status
+                      Storage Server</h2>
                   </div>
                 </div>
 
@@ -189,7 +192,8 @@
                         <span class="small fw-bold text-primary" id="storagePercentText">0%</span>
                       </div>
                       <div class="progress" style="height: 12px;">
-                        <div id="storageProgressBar" class="progress-bar bg-primary" role="progressbar" style="width: 0%"></div>
+                        <div id="storageProgressBar" class="progress-bar bg-primary" role="progressbar"
+                          style="width: 0%"></div>
                       </div>
                       <small class="text-muted d-block mt-2" id="storageDetailNote">
                         <i class="bi bi-info-circle me-1"></i> Memuat detail kapasitas device...
@@ -202,7 +206,8 @@
                         <strong id="cntGambarBerita">0 file</strong>
                       </div>
                       <div class="d-flex align-items-center justify-content-between mb-2">
-                        <span class="text-secondary"><i class="bi bi-file-earmark-image me-2"></i>Gambar Surat / Lampiran</span>
+                        <span class="text-secondary"><i class="bi bi-file-earmark-image me-2"></i>Gambar Surat /
+                          Lampiran</span>
                         <strong id="cntGambarPengumuman">0 file</strong>
                       </div>
                       <div class="d-flex align-items-center justify-content-between mb-2">
@@ -210,7 +215,8 @@
                         <strong id="cntDeviceDisk">-</strong>
                       </div>
                       <div class="d-flex align-items-center justify-content-between">
-                        <span class="text-secondary"><i class="bi bi-clock-history me-2"></i>Konten Lawas (>30 Hari)</span>
+                        <span class="text-secondary"><i class="bi bi-clock-history me-2"></i>Konten Lawas (>30
+                          Hari)</span>
                         <span class="badge bg-warning text-dark" id="cntKontenLawas">0 Item</span>
                       </div>
                     </div>
@@ -224,7 +230,8 @@
           <section class="panel mt-4 border-0 shadow-sm">
             <div class="panel-header">
               <div>
-                <h2 class="h5 mb-1 section-title"><i class="bi bi-people-fill text-primary me-2"></i>Pengguna Terdaftar Dalam Sistem</h2>
+                <h2 class="h5 mb-1 section-title"><i class="bi bi-people-fill text-primary me-2"></i>Pengguna Terdaftar
+                  Dalam Sistem</h2>
                 <p class="text-muted mb-0">Daftar pengguna aktif yang tersimpan di PostgreSQL.</p>
               </div>
               <a class="btn btn-outline-secondary btn-sm" href="users.html">Kelola Users</a>
@@ -241,7 +248,9 @@
                   </tr>
                 </thead>
                 <tbody id="tabelUserBody">
-                  <tr><td colspan="5" class="text-center py-4 text-muted">Memuat data pengguna...</td></tr>
+                  <tr>
+                    <td colspan="5" class="text-center py-4 text-muted">Memuat data pengguna...</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -252,9 +261,7 @@
 
       <!-- FOOTER -->
       <footer class="admin-footer">
-        <div class="container-fluid px-3 px-lg-4">
-          <span>Copyright 2026 adminHMD. Integrated with PostgreSQL Backend.</span>
-        </div>
+
       </footer>
     </div>
   </div>
@@ -288,7 +295,7 @@
       const currentUser = JSON.parse(localStorage.getItem('user')) || {};
       const userName = currentUser.Nama || currentUser.nama || 'Admin System';
       const userRole = currentUser.hakAkses || currentUser.hak_akses || 'Administrator';
-      
+
       safeSetText('sidebarUserName', userName);
       safeSetText('sidebarUserRole', userRole);
 
@@ -416,28 +423,29 @@
 
     document.addEventListener('DOMContentLoaded', loadDashboardData);
     document.addEventListener('DOMContentLoaded', function () {
-  const btnSignOut = document.getElementById('btnSignOut');
+      const btnSignOut = document.getElementById('btnSignOut');
 
-  if (btnSignOut) {
-    btnSignOut.addEventListener('click', function (e) {
-      e.preventDefault();
+      if (btnSignOut) {
+        btnSignOut.addEventListener('click', function (e) {
+          e.preventDefault();
 
-      // 1. Konfirmasi opsional ke pengguna (opsional)
-      if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
-        
-        // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        localStorage.clear();
-        sessionStorage.clear();
+          // 1. Konfirmasi opsional ke pengguna (opsional)
+          if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
 
-        // 3. Arahkan kembali pengguna ke halaman login
-        window.location.href = 'login.html';
+            // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // 3. Arahkan kembali pengguna ke halaman login
+            window.location.href = 'login.html';
+          }
+        });
       }
     });
-  }
-});
   </script>
-  
+
 </body>
+
 </html>

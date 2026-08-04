@@ -8,6 +8,9 @@ const path = require('path');
 require('./config/db');
 // Tambahkan baris ini di file server.js utama Anda
 require('./config/waClient');
+const waRoutes = require('./routes/waRoutes');
+
+
 
 const {
   helmetMiddleware,
@@ -41,12 +44,16 @@ if (process.env.NODE_ENV === 'production') {
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+
+// ... middleware & route lainnya
+
 // ==========================================
 // 1. MIDDLEWARE GLOBAL
 // ==========================================
 app.use(helmetMiddleware);
 app.use(corsMiddleware);
 
+app.use('/api/wa', waRoutes);
 // Batasi ukuran body request agar server tidak mudah dibanjiri payload
 // raksasa (DoS sederhana). Upload gambar tetap lewat multer (jalur
 // terpisah, lihat middleware/upload.js).

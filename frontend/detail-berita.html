@@ -12,7 +12,9 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -48,7 +50,7 @@
             margin-bottom: 1.25rem;
         }
 
-        .berita-content > p:first-of-type {
+        .berita-content>p:first-of-type {
             font-size: 1.15rem;
             font-weight: 500;
         }
@@ -81,11 +83,26 @@
             text-decoration: none;
             transition: opacity 0.2s;
         }
-        .btn-share:hover { opacity: 0.85; }
-        .bg-wa { background-color: #25d366; }
-        .bg-fb { background-color: #1877f2; }
-        .bg-tw { background-color: #000000; }
-        .bg-cp { background-color: #64748b; }
+
+        .btn-share:hover {
+            opacity: 0.85;
+        }
+
+        .bg-wa {
+            background-color: #25d366;
+        }
+
+        .bg-fb {
+            background-color: #1877f2;
+        }
+
+        .bg-tw {
+            background-color: #000000;
+        }
+
+        .bg-cp {
+            background-color: #64748b;
+        }
 
         .sidebar-card {
             background: #ffffff;
@@ -116,7 +133,8 @@
 
 <body>
     <!-- ==================== SPINNER LOADING ==================== -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Loading...</span>
         </div>
@@ -127,7 +145,8 @@
         <div class="container-fluid p-0">
             <!-- 1. Logo & Nama Website -->
             <a href="index.html" class="navbar-brand d-flex align-items-center me-auto">
-                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 130%; width: auto;" class="me-2" onerror="this.src='img/logo.png';"> 
+                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 130%; width: auto;" class="me-2"
+                    onerror="this.src='img/logo.png';">
                 <span id="site-name" class="fw-bold text-dark fs-5 d-none d-sm-inline">Web Kecamatan Rumbia</span>
                 <span class="fw-bold text-dark fs-6 d-inline d-sm-none">Kec. Rumbia</span>
             </a>
@@ -141,21 +160,21 @@
             <!-- 3. Form Pencarian Quick Search -->
             <div class="me-2" style="max-width: 220px;">
                 <div class="input-group input-group-sm">
-                    <input type="text" id="navbar-search-input" class="form-control border-primary" placeholder="Cari berita...">
-                    <button class="btn btn-primary px-2 px-sm-3" type="button" id="navbar-search-btn" title="Cari Berita">
+                    <input type="text" id="navbar-search-input" class="form-control border-primary"
+                        placeholder="Cari berita...">
+                    <button class="btn btn-primary px-2 px-sm-3" type="button" id="navbar-search-btn"
+                        title="Cari Berita">
                         <i class="fa fa-search"></i>
                     </button>
                 </div>
             </div>
 
             <!-- 4. Tombol Menu Offcanvas Sidebar -->
-            <button class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0" 
-                    type="button" 
-                    data-bs-toggle="offcanvas" 
-                    data-bs-target="#offcanvasNavbar" 
-                    aria-controls="offcanvasNavbar"
-                    title="Menu Lainnya"
-                    style="width: 38px; height: 38px; min-width: 38px;">
+            <button
+                class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0"
+                type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar" title="Menu Lainnya"
+                style="width: 38px; height: 38px; min-width: 38px;">
                 <i class="fa fa-bars fs-5 text-primary"></i>
             </button>
         </div>
@@ -169,17 +188,19 @@
             </h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        
+
         <div class="offcanvas-body d-flex flex-column justify-content-between p-4">
             <div>
                 <!-- Menu Khusus Layar Mobile -->
                 <div class="d-md-none mb-4">
                     <div class="text-muted small fw-bold mb-2">MENU UTAMA</div>
                     <div class="list-group list-group-flush">
-                        <a href="index.html" class="list-group-item list-group-item-action border-0 px-0 fw-semibold text-dark">
+                        <a href="index.html"
+                            class="list-group-item list-group-item-action border-0 px-0 fw-semibold text-dark">
                             <i class="fa fa-home me-2"></i> Beranda
                         </a>
-                        <a href="berita_acara.html" class="list-group-item list-group-item-action border-0 px-0 fw-bold text-primary">
+                        <a href="berita_acara.html"
+                            class="list-group-item list-group-item-action border-0 px-0 fw-bold text-primary">
                             <i class="fa fa-newspaper me-2"></i> Berita Acara
                         </a>
                     </div>
@@ -197,7 +218,8 @@
 
             <!-- Tombol Portal Login -->
             <div class="pt-4 border-top mt-4">
-                <a href="admin/html/index.html" class="btn btn-primary w-100 py-2 rounded-pill fw-bold d-flex align-items-center justify-content-center shadow-sm">
+                <a href="admin/html/index.html"
+                    class="btn btn-primary w-100 py-2 rounded-pill fw-bold d-flex align-items-center justify-content-center shadow-sm">
                     Login Sistem <i class="fa fa-arrow-right ms-2"></i>
                 </a>
             </div>
@@ -211,7 +233,8 @@
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="index.html"><i class="fa fa-home me-1"></i>Beranda</a></li>
                 <li class="breadcrumb-item"><a href="berita_acara.html">Berita Acara</a></li>
-                <li class="breadcrumb-item active text-primary" id="breadcrumb-title" aria-current="page">Detail Berita</li>
+                <li class="breadcrumb-item active text-primary" id="breadcrumb-title" aria-current="page">Detail Berita
+                </li>
             </ol>
         </nav>
 
@@ -232,10 +255,14 @@
                         <h5 class="sidebar-title text-dark">Bagikan Berita</h5>
                         <p class="text-muted small">Bagikan informasi resmi ini kepada masyarakat:</p>
                         <div class="d-flex gap-2">
-                            <a href="#" id="share-wa" target="_blank" class="btn-share bg-wa" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                            <a href="#" id="share-fb" target="_blank" class="btn-share bg-fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" id="share-tw" target="_blank" class="btn-share bg-tw" title="X (Twitter)"><i class="fab fa-twitter"></i></a>
-                            <button onclick="copyLink()" class="btn-share bg-cp border-0" title="Salin Link"><i class="fa fa-link"></i></button>
+                            <a href="#" id="share-wa" target="_blank" class="btn-share bg-wa" title="WhatsApp"><i
+                                    class="fab fa-whatsapp"></i></a>
+                            <a href="#" id="share-fb" target="_blank" class="btn-share bg-fb" title="Facebook"><i
+                                    class="fab fa-facebook-f"></i></a>
+                            <a href="#" id="share-tw" target="_blank" class="btn-share bg-tw" title="X (Twitter)"><i
+                                    class="fab fa-twitter"></i></a>
+                            <button onclick="copyLink()" class="btn-share bg-cp border-0" title="Salin Link"><i
+                                    class="fa fa-link"></i></button>
                         </div>
                     </div>
                 </div>
@@ -259,9 +286,12 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h4 class="text-white mb-3">Kontak Kami</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i><span id="footer-address">Jl. Raya Kecamatan Rumbia</span></p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i><span id="footer-phone">+62 812 3456 7890</span></p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i><span id="footer-email">info@rumbia.go.id</span></p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i><span id="footer-address">Jl. Raya
+                            Kecamatan Rumbia</span></p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i><span id="footer-phone">+62 812 3456 7890</span>
+                    </p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i><span id="footer-email">info@rumbia.go.id</span>
+                    </p>
                 </div>
             </div>
         </div>
@@ -296,7 +326,7 @@
             alert("Link berita berhasil disalin ke clipboard!");
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             console.log("[DEBUG - Init] Halaman Detail Berita dimuat.");
 
             const urlParams = new URLSearchParams(window.location.search);
@@ -351,12 +381,12 @@
 
                     if (!container) return;
 
-                    const tanggal = berita.created_at 
+                    const tanggal = berita.created_at
                         ? new Date(berita.created_at).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
                         : '-';
 
                     document.title = `${berita.judul} - Kecamatan Rumbia`;
-                    
+
                     const breadcrumbTitle = document.getElementById('breadcrumb-title');
                     if (breadcrumbTitle) {
                         breadcrumbTitle.innerText = berita.judul.length > 30 ? berita.judul.substring(0, 30) + '...' : berita.judul;
@@ -532,7 +562,7 @@
 
             if (searchBtn && searchInput) {
                 searchBtn.addEventListener('click', executeSearch);
-                searchInput.addEventListener('keyup', function(e) {
+                searchInput.addEventListener('keyup', function (e) {
                     if (e.key === 'Enter') executeSearch();
                 });
             }
@@ -552,4 +582,5 @@
         }
     </script>
 </body>
+
 </html>
