@@ -1,40 +1,44 @@
 services:
   database:
     image: postgres:16
+    # Kunci port DB agar HANYA bisa diakses internal VPS (127.0.0.1)
     ports:
-      - "5433:5432"
+      - "127.0.0.1:5433:5432"
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=GANTI_PASSWORD_RAHASIA_ANDA # Jangan pakai password default 'postgres'!
       - POSTGRES_DB=postgres
     volumes:
       - ./database:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
   backend:
     build: ./backend
+    # Kunci port Backend agar HANYA NginxVPS yang bisa memanggilnya
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     volumes:
       - ./backend:/app
       - /app/node_modules
     working_dir: /app
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=GANTI_PASSWORD_RAHASIA_ANDA
       - POSTGRES_DB=postgres
       - POSTGRES_HOST=database
       - POSTGRES_PORT=5432
+      # Batasi CORS hanya untuk domain resmi Anda
+      - ALLOWED_ORIGINS=https://kec-rumbia.web.id,https://www.kec-rumbia.web.id
     depends_on:
       - database
     command: node app.js
+
   frontend:
     image: nginx
+    # Kunci port Frontend agar pengunjung wajib lewat Nginx HTTPS
     ports:
-      - "8080:80"
+      - "127.0.0.1:8080:80"
     volumes:
       - ./frontend:/usr/share/nginx/html
-    environment:
-      - Backend_api=http://localhost:8000
     depends_on:
       - backend
-    
