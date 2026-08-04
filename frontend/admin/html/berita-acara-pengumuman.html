@@ -351,10 +351,10 @@
   <script src="../assets/js/main.js"></script>
 
   <script>
-    const API_BERITA = 'http://localhost:3000/api/berita';
-    const API_PENGUMUMAN = 'http://localhost:3000/api/pengumuman';
-    const API_INSTANSI = 'http://localhost:3000/api/instansi';
-    const API_KATEGORI = 'http://localhost:3000/api/kategori';
+    const API_BERITA = 'https://kec-rumbia.web.id/api/berita';
+    const API_PENGUMUMAN = 'https://kec-rumbia.web.id/api/pengumuman';
+    const API_INSTANSI = 'https://kec-rumbia.web.id/api/instansi';
+    const API_KATEGORI = 'https://kec-rumbia.web.id/api/kategori';
 
     let listBerita = [];
     let listPengumuman = [];
@@ -551,7 +551,7 @@
           const tgl = item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID') : '-';
 
           const imgPreview = item.gambar
-            ? `<a href="http://localhost:3000/uploads/${item.gambar}" target="_blank" class="me-2"><img src="http://localhost:3000/uploads/${item.gambar}" width="40" height="40" class="rounded border object-fit-cover"></a>`
+            ? `<a href="https://kec-rumbia.web.id/uploads/${item.gambar}" target="_blank" class="me-2"><img src="https://kec-rumbia.web.id/uploads/${item.gambar}" width="40" height="40" class="rounded border object-fit-cover"></a>`
             : '';
 
           const gformBtn = item.link_gform
@@ -599,7 +599,7 @@
           }
 
           const gambarHtml = firstImage
-            ? `<img src="http://localhost:3000/uploads/${firstImage}" width="45" height="45" class="rounded object-fit-cover me-2">`
+            ? `<img src="https://kec-rumbia.web.id/uploads/${firstImage}" width="45" height="45" class="rounded object-fit-cover me-2">`
             : '';
 
           const tgl = item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID') : '-';
