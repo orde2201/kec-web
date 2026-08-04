@@ -36,7 +36,7 @@ async function kirimEmailPengumuman({ id, judul, isi, link_gform, targetInstansi
       }
     }
 
-    const frontendUrl = process.env.FRONTEND_URL || 'https://kec-rumbia.web.id';
+    const frontendUrl = 'https://kec-rumbia.web.id';
     const linkPengumumanPortal = `${frontendUrl}/detail-pengumuman.html?id=${encodeURIComponent(id)}`;
 
     // judul & namaTarget di-escape karena teks polos yang disisipkan
