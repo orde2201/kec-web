@@ -185,12 +185,12 @@
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       // Load data pengaturan saat ini
-      fetch('http://localhost:3000/api/pengaturan')
+      fetch('/api/pengaturan')
         .then(res => res.json())
         .then(data => {
           if (data && !data.error) {
             if (data.logo) {
-              document.getElementById('logoPreview').src = `http://localhost:3000/uploads/${data.logo}`;
+              document.getElementById('logoPreview').src = `/uploads/${data.logo}`;
             }
             if (data.footer_about) document.getElementById('footerAbout').value = data.footer_about;
             if (data.footer_address) document.getElementById('footerAddress').value = data.footer_address;
@@ -206,7 +206,7 @@
         e.preventDefault();
         const formData = new FormData(this);
 
-        fetch('http://localhost:3000/api/pengaturan/update', {
+        fetch('/api/pengaturan/update', {
           method: 'POST',
           body: formData
         })

@@ -212,7 +212,7 @@
 
   <!-- SCRIPT UTAMA DASHBOARD -->
   <script>
-    const API_URL = 'http://localhost:3000/api/halaman';
+    const API_URL = '/api/halaman';
 
     document.addEventListener("DOMContentLoaded", function () {
       loadPages();
@@ -240,7 +240,7 @@
 
           pages.forEach(page => {
             const imgHtml = page.gambar
-              ? `<img src="http://localhost:3000/uploads/${page.gambar}" class="rounded" style="width: 45px; height: 35px; object-fit: cover;">`
+              ? `<img src="/uploads/${page.gambar}" class="rounded" style="width: 45px; height: 35px; object-fit: cover;">`
               : `<span class="badge bg-light text-muted border">No Img</span>`;
 
             const tr = document.createElement('tr');
@@ -342,7 +342,7 @@
             const previewWrapper = document.getElementById('previewWrapper');
             const imgPreview = document.getElementById('imgPreview');
             if (p.gambar) {
-              imgPreview.src = `http://localhost:3000/uploads/${p.gambar}`;
+              imgPreview.src = `http://:3000/uploads/${p.gambar}`;
               previewWrapper.classList.remove('d-none');
             } else {
               imgPreview.src = '';

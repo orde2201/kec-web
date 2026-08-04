@@ -89,7 +89,7 @@
   <script src="../assets/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    const PENGUMUMAN_API_URL = 'https://kec-rumbia.web.id/api/pengumuman';
+    const PENGUMUMAN_API_URL = '/api/pengumuman';
 
     // Ambil data user dari localStorage jika sudah login
     const user = JSON.parse(localStorage.getItem('user'));
@@ -149,7 +149,7 @@
                 gambarHTML = `
                   <div class="overflow-hidden rounded mb-3">
                     <a href="${linkDetail}">
-                      <img src="https://kec-rumbia.web.id/uploads/${firstImage}" 
+                      <img src="/uploads/${firstImage}" 
                            alt="${item.judul}" 
                            class="img-fluid card-img-hover rounded w-100" 
                            style="height: 200px; object-fit: cover;">

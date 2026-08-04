@@ -152,7 +152,7 @@
     document.addEventListener('DOMContentLoaded', fetchUsers);
 
     async function fetchUsers() {
-      const TARGET_API_URL = 'http://localhost:3000/api/users';
+      const TARGET_API_URL = '/api/users';
       const tableBody = document.getElementById('userTableBody');
 
       try {
@@ -218,7 +218,7 @@
     return;
   }
 
-  const TARGET_API_URL = `http://localhost:3000/api/users/${userId}`;
+  const TARGET_API_URL = `/api/users/${userId}`;
 
   try {
     const response = await fetch(TARGET_API_URL, {

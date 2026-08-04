@@ -80,7 +80,7 @@
 
       try {
         // 2. Fetch Data Pengumuman dari Backend API
-        const response = await fetch(`http://localhost:3000/api/pengumuman/${id}`);
+        const response = await fetch(`/api/pengumuman/${id}`);
         const result = await response.json();
 
         let item = result.data ? result.data : result;
@@ -106,7 +106,7 @@
             // FOTO TUNGGAL
             gambarHTML = `
               <div class="mb-4 text-center bg-light p-2 rounded border">
-                <img src="http://localhost:3000/uploads/${gambarArray[0]}" 
+                <img src="/uploads/${gambarArray[0]}" 
                      alt="${item.judul}" 
                      class="img-fluid rounded shadow-sm mx-auto d-block" 
                      style="max-height: 520px; width: auto; object-fit: contain;">
@@ -122,7 +122,7 @@
               indicators += `<button type="button" data-bs-target="#carouselDetail" data-bs-slide-to="${idx}" class="${active}"></button>`;
               carouselItems += `
                 <div class="carousel-item ${active} bg-dark rounded text-center" style="min-height: 350px;">
-                  <img src="http://localhost:3000/uploads/${img}" 
+                  <img src="/uploads/${img}" 
                        class="d-block mx-auto img-fluid rounded" 
                        style="max-height: 520px; height: 520px; width: auto; object-fit: contain;" 
                        alt="Foto ${idx + 1}">

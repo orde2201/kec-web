@@ -145,7 +145,7 @@
       <script>
         // Fungsi untuk mengambil data saat ini dan mengisinya ke dalam form input
         document.addEventListener("DOMContentLoaded", function () {
-          fetch('http://localhost:3000/api/pengaturan')
+          fetch('/api/pengaturan')
             .then(res => res.json())
             .then(data => {
               if (data) {
@@ -170,7 +170,7 @@
           if (aboutImage) formData.append('about_image', aboutImage);
 
           // Pastikan API endpoint PUT / POST ini tersedia di Node.js Anda
-          fetch('http://localhost:3000/api/pengaturan/update', {
+          fetch('/api/pengaturan/update', {
             method: 'POST', // atau PUT tergantung backend Anda
             body: formData
           })
