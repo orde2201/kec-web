@@ -37,7 +37,7 @@ async function kirimWaPengumuman({ id, judul, isi, link_gform, targetInstansiId 
 
     // 🌐 Buat Tautan Halaman Detail Pengumuman
     // Diambil dari environment variable (fallback ke localhost jika belum di-set)
-    const baseUrl = process.env.FRONTEND_URL || 'https://kec-rumbia.web.id/detail-pengumuman.html';
+    const baseUrl = process.env.FRONTEND_URL || 'https://kec-rumbia.web.id/admin/html/detail-pengumuman.html';
     const linkDetail = `${baseUrl}?id=${id}`;
 
     // 💬 Format Pesan WhatsApp
