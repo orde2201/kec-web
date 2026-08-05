@@ -43,35 +43,42 @@
             }
         }
 
-        /* PERBAIKAN NAVBAR MOBILE / ANDROID */
+        /* PERBAIKAN NAVBAR MOBILE / ANDROID PAS & PROPORSIONAL */
         @media (max-width: 575.98px) {
             .navbar {
                 padding-left: 0.5rem !important;
                 padding-right: 0.5rem !important;
+                padding-top: 0.4rem !important;
+                padding-bottom: 0.4rem !important;
             }
+            /* Ukuran Logo Diatur Sedang (Pas) */
             #site-logo {
-                height: 28px !important;
+                height: 32px !important;
+                width: auto !important;
             }
+            /* Ukuran Teks Brand Kec. Rumbia Diatur Pas */
+            .brand-text-mobile {
+                font-size: 0.9rem !important;
+                line-height: 1.2 !important;
+                max-width: 125px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            /* Menyesuaikan Kotak Cari Agar Sisa Ruang Pas */
             .navbar-search-box {
-                max-width: 110px !important;
+                max-width: 105px !important;
             }
             .navbar-search-box input {
                 font-size: 0.75rem !important;
                 padding: 0.25rem 0.4rem !important;
             }
             .navbar-search-box button {
-                padding: 0.25rem 0.5rem !important;
-            }
-            .brand-text-mobile {
-                font-size: 0.8rem !important;
-                max-width: 90px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                padding: 0.25rem 0.45rem !important;
             }
         }
 
-        /* PERBAIKAN LAYANAN UNTUK LAYAR MOBILE & HOVER EFFECT */
+        /* PERBAIKAN LAYANAN UNTUK LAYAR MOBILE */
         @media (max-width: 575.98px) {
             .service-item .p-4 {
                 padding: 1rem 0.5rem !important;
