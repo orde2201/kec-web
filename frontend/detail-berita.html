@@ -35,6 +35,22 @@
             z-index: 10 !important;
         }
 
+        /* Optimization Navbar Mobile */
+        @media (max-width: 575.98px) {
+            .navbar {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+            }
+            #site-logo {
+                height: 40px !important;
+                padding-left: 5% !important;
+                padding-right: 5% !important;
+            }
+            .search-container-mobile {
+                max-width: 110px !important;
+            }
+        }
+
         /* Style Khusus Konten Berita */
         .berita-content {
             font-size: 1.05rem;
@@ -141,11 +157,11 @@
     </div>
 
     <!-- ==================== NAVBAR UTAMA ==================== -->
-    <nav class="navbar navbar-expand bg-white navbar-light shadow-sm sticky-top py-2 px-3 px-lg-4">
-        <div class="container-fluid p-0">
+    <nav class="navbar navbar-expand bg-white navbar-light shadow-sm sticky-top py-2 px-2 px-lg-4">
+        <div class="container-fluid p-0 d-flex align-items-center justify-content-between">
             <!-- 1. Logo & Nama Website -->
             <a href="index.html" class="navbar-brand d-flex align-items-center me-auto">
-                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 100%; width: auto;" class="me-2"
+                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 40px; width: auto;" class="me-2"
                     onerror="this.src='img/logo.png';">
                 <span id="site-name" class="fw-bold text-dark fs-5 d-none d-sm-inline">Web Kecamatan Rumbia</span>
                 <span class="fw-bold text-dark fs-6 d-inline d-sm-none">Kec. Rumbia</span>
@@ -158,12 +174,11 @@
             </div>
 
             <!-- 3. Form Pencarian Quick Search -->
-            <div class="me-2" style="max-width: 220px;">
+            <div class="me-2 search-container-mobile" style="max-width: 180px;">
                 <div class="input-group input-group-sm">
                     <input type="text" id="navbar-search-input" class="form-control border-primary"
-                        placeholder="Cari berita...">
-                    <button class="btn btn-primary px-2 px-sm-3" type="button" id="navbar-search-btn"
-                        title="Cari Berita">
+                        placeholder="Cari...">
+                    <button class="btn btn-primary px-2" type="button" id="navbar-search-btn" title="Cari Berita">
                         <i class="fa fa-search"></i>
                     </button>
                 </div>
@@ -171,11 +186,11 @@
 
             <!-- 4. Tombol Menu Offcanvas Sidebar -->
             <button
-                class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0"
+                class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0 me-1"
                 type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar" title="Menu Lainnya"
-                style="width: 38px; height: 38px; min-width: 38px;">
-                <i class="fa fa-bars fs-5 text-primary"></i>
+                style="width: 36px; height: 36px; min-width: 36px;">
+                <i class="fa fa-bars fs-6 text-primary"></i>
             </button>
         </div>
     </nav>

@@ -23,6 +23,35 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        /* Navbar Sticky Fix */
+        .navbar.sticky-top {
+            z-index: 1030 !important;
+        }
+
+        /* Optimization Navbar Mobile */
+        @media (max-width: 575.98px) {
+            .navbar {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+            }
+
+            #site-logo {
+                height: 32px !important;
+            }
+
+            .search-container-mobile {
+                max-width: 110px !important;
+            }
+        }
+
+        /* Styling Header Banner */
+        .page-header {
+            background: linear-gradient(rgba(24, 29, 56, .75), rgba(24, 29, 56, .75)), url('img/carousel-1.jpg') center center no-repeat;
+            background-size: cover;
+        }
+    </style>
 </head>
 
 <body>
@@ -35,47 +64,46 @@
     </div>
     <!-- Spinner End -->
 
-    <!-- NAVBAR UTAMA -->
-    <nav class="navbar navbar-expand bg-white navbar-light shadow-sm sticky-top py-2 px-3 px-lg-4">
-        <div class="container-fluid p-0">
-            <!-- 1. LOGO & NAMA -->
+    <!-- ==================== NAVBAR UTAMA ==================== -->
+    <nav class="navbar navbar-expand bg-white navbar-light shadow-sm sticky-top py-2 px-2 px-lg-4">
+        <div class="container-fluid p-0 d-flex align-items-center justify-content-between">
+            <!-- 1. Logo & Nama Website -->
             <a href="index.html" class="navbar-brand d-flex align-items-center me-auto">
-                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 100%; width: auto;" class="me-2"
+                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 40px; width: auto;" class="me-2"
                     onerror="this.onerror=null; this.src='img/logo.png';">
                 <span id="site-name" class="fw-bold text-dark fs-5 d-none d-sm-inline">Web Kecamatan Rumbia</span>
                 <span class="fw-bold text-dark fs-6 d-inline d-sm-none">Kec. Rumbia</span>
             </a>
 
-            <!-- 2. MENU INTI DESKTOP -->
+            <!-- 2. Menu Navigasi Utama (Desktop) -->
             <div class="navbar-nav d-none d-md-flex align-items-center me-3">
                 <a href="index.html" class="nav-link px-3 fw-semibold">Beranda</a>
                 <a href="berita_acara.html" class="nav-link px-3 fw-semibold">Berita Acara</a>
             </div>
 
-            <!-- 3. PENCARIAN -->
-            <div class="me-2" style="max-width: 220px;">
+            <!-- 3. Form Pencarian Quick Search -->
+            <div class="me-2 search-container-mobile" style="max-width: 180px;">
                 <div class="input-group input-group-sm">
                     <input type="text" id="navbar-search-input" class="form-control border-primary"
-                        placeholder="Cari berita...">
-                    <button class="btn btn-primary px-2 px-sm-3" type="button" id="navbar-search-btn"
-                        title="Cari Berita">
+                        placeholder="Cari...">
+                    <button class="btn btn-primary px-2" type="button" id="navbar-search-btn" title="Cari Berita">
                         <i class="fa fa-search"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- 4. TOMBOL BURGER -->
+            <!-- 4. Tombol Menu Offcanvas Sidebar -->
             <button
-                class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0"
+                class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0 me-1"
                 type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar" title="Menu Lainnya"
-                style="width: 38px; height: 38px; min-width: 38px;">
-                <i class="fa fa-bars fs-5 text-primary"></i>
+                style="width: 36px; height: 36px; min-width: 36px;">
+                <i class="fa fa-bars fs-6 text-primary"></i>
             </button>
         </div>
     </nav>
 
-    <!-- SIDEBAR BURGER MENU -->
+    <!-- ==================== OFFCANVAS SIDEBAR MENU ==================== -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
         <div class="offcanvas-header border-bottom bg-light">
             <h5 class="offcanvas-title fw-bold text-primary fs-6" id="offcanvasNavbarLabel">
@@ -86,6 +114,7 @@
 
         <div class="offcanvas-body d-flex flex-column justify-content-between p-4">
             <div>
+                <!-- Menu Khusus Layar Mobile -->
                 <div class="d-md-none mb-4">
                     <div class="text-muted small fw-bold mb-2">MENU UTAMA</div>
                     <div class="list-group list-group-flush">
@@ -101,6 +130,7 @@
                     <hr class="text-muted my-3">
                 </div>
 
+                <!-- Kontainer Halaman Kustom (Diinjeksi via API JS) -->
                 <div>
                     <div class="text-muted small fw-bold mb-2">HALAMAN & INFORMASI</div>
                     <div class="list-group list-group-flush" id="offcanvas-custom-pages">
@@ -109,6 +139,7 @@
                 </div>
             </div>
 
+            <!-- Tombol Portal Login -->
             <div class="pt-4 border-top mt-4">
                 <a href="admin/html/index.html"
                     class="btn btn-primary w-100 py-2 rounded-pill fw-bold d-flex align-items-center justify-content-center shadow-sm">
@@ -119,8 +150,7 @@
     </div>
 
     <!-- Header Banner Start -->
-    <div class="container-fluid bg-primary py-5 mb-5 page-header"
-        style="background: linear-gradient(rgba(24, 29, 56, .7), rgba(24, 29, 56, .7)), url('img/image.png') center center no-repeat; background-size: cover;">
+    <div class="container-fluid bg-primary py-5 mb-5 page-header" id="page-banner">
         <div class="container py-5 text-center">
             <h1 class="display-4 text-white animated slideInDown" id="page-title">Memuat Halaman...</h1>
             <nav aria-label="breadcrumb">
@@ -212,7 +242,6 @@
             }
 
             // 1. Fetch Isi Detail Halaman
-            // 1. Fetch Isi Detail Halaman
             fetch(`${API_BASE}/halaman/${slug}`)
                 .then(res => res.json())
                 .then(resData => {
@@ -230,16 +259,14 @@
                             const gambarArray = page.gambar.split(',').map(g => g.trim()).filter(g => g !== '');
 
                             if (gambarArray.length === 1) {
-                                // TUNGGAL: Paksa lebar 100% kontainer, tinggi menyesuaikan aspek rasio foto asli
                                 imgHtml = `
-                        <div class="mb-4">
-                            <img src="${API_BASE_URL}/uploads/${gambarArray[0]}" 
-                                 class="w-75 h-auto rounded shadow-sm" 
-                                 alt="${page.judul}"
-                                 onerror="this.onerror=null; this.src='img/default.jpg';">
-                        </div>`;
+                                    <div class="mb-4 text-center">
+                                        <img src="${API_BASE_URL}/uploads/${gambarArray[0]}" 
+                                             class="w-100 max-width-100 h-auto rounded shadow-sm" 
+                                             alt="${page.judul}"
+                                             onerror="this.onerror=null; this.src='img/carousel-1.jpg';">
+                                    </div>`;
                             } else if (gambarArray.length > 1) {
-                                // MULTIPLE: Carousel/Slide (Lebar 100%, aspek rasio tetap mengikuti foto)
                                 hasMultipleImages = true;
                                 let indicators = '';
                                 let carouselInner = '';
@@ -248,31 +275,30 @@
                                     const activeClass = idx === 0 ? 'active' : '';
                                     indicators += `<button type="button" data-bs-target="#sliderHalaman" data-bs-slide-to="${idx}" class="${activeClass}" aria-label="Slide ${idx + 1}"></button>`;
                                     carouselInner += `
-                            <div class="carousel-item ${activeClass}">
-                                <img src="${API_BASE_URL}/uploads/${img}" 
-                                     class="d-block w-100 h-auto rounded" 
-                                     alt="${page.judul} - Foto ${idx + 1}"
-                                     onerror="this.onerror=null; this.src='img/default.jpg';">
-                            </div>`;
+                                        <div class="carousel-item ${activeClass}">
+                                            <img src="${API_BASE_URL}/uploads/${img}" 
+                                                 class="d-block w-100 h-auto rounded" 
+                                                 alt="${page.judul} - Foto ${idx + 1}"
+                                                 onerror="this.onerror=null; this.src='img/carousel-1.jpg';">
+                                        </div>`;
                                 });
 
                                 imgHtml = `
-                        <div id="sliderHalaman" class="carousel slide mb-4 shadow-sm rounded bg-white p-2" data-bs-ride="carousel">
-                            <div class="carousel-indicators">${indicators}</div>
-                            <div class="carousel-inner">${carouselInner}</div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#sliderHalaman" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#sliderHalaman" data-bs-slide="next">
-                                <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
-                            </button>
-                        </div>`;
+                                    <div id="sliderHalaman" class="carousel slide mb-4 shadow-sm rounded bg-white p-2" data-bs-ride="carousel">
+                                        <div class="carousel-indicators">${indicators}</div>
+                                        <div class="carousel-inner">${carouselInner}</div>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#sliderHalaman" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#sliderHalaman" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+                                        </button>
+                                    </div>`;
                             }
                         }
 
                         document.getElementById('page-content').innerHTML = imgHtml + (page.konten || '');
 
-                        // Inisialisasi Carousel jika ada multiple gambar
                         if (hasMultipleImages) {
                             const sliderElement = document.getElementById('sliderHalaman');
                             if (sliderElement && typeof bootstrap !== 'undefined') {
@@ -303,7 +329,6 @@
                         pages.forEach(page => {
                             const isActive = page.slug === slug;
 
-                            // Injeksi ke Offcanvas Sidebar
                             if (offcanvasContainer) {
                                 const navItem = document.createElement('a');
                                 navItem.href = `page.html?slug=${page.slug}`;
@@ -312,7 +337,6 @@
                                 offcanvasContainer.appendChild(navItem);
                             }
 
-                            // Injeksi ke Footer
                             if (footerCustomLinks) {
                                 const footerItem = document.createElement('a');
                                 footerItem.href = `page.html?slug=${page.slug}`;
