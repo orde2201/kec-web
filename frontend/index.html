@@ -28,53 +28,93 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
-    <!-- Custom Style Optimization untuk Mobile -->
+    <!-- Custom Style Optimization untuk Mobile (2 Card per Baris) -->
     <style>
         @media (max-width: 575.98px) {
             /* Navbar Mobile Fix */
             .navbar {
-                padding-left: 0.75rem !important;
-                padding-right: 0.75rem !important;
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
             }
             #site-logo {
-                height: 35px !important;
+                height: 32px !important;
             }
             .search-container-mobile {
-                max-width: 130px !important;
+                max-width: 110px !important;
             }
 
             /* Hero Banner Mobile Fix */
             .header-carousel .owl-carousel-item {
-                min-height: 320px !important;
-                padding: 40px 0 !important;
+                min-height: 280px !important;
+                padding: 30px 0 !important;
             }
             .header-carousel .owl-carousel-item h5 {
-                font-size: 0.85rem !important;
-                margin-bottom: 0.5rem !important;
+                font-size: 0.8rem !important;
+                margin-bottom: 0.3rem !important;
             }
             .header-carousel .owl-carousel-item h1 {
-                font-size: 1.35rem !important;
-                line-height: 1.3;
-                margin-bottom: 1rem !important;
+                font-size: 1.2rem !important;
+                line-height: 1.25;
+                margin-bottom: 0.8rem !important;
             }
             .header-carousel .owl-carousel-item .btn {
-                padding: 0.4rem 1rem !important;
-                font-size: 0.85rem !important;
+                padding: 0.35rem 0.8rem !important;
+                font-size: 0.8rem !important;
             }
 
-            /* About & Section Spacing Fix */
-            .about-img-wrapper {
-                min-height: 250px !important;
+            /* 2 Card Layanan per Baris di Mobile */
+            .service-item .p-4 {
+                padding: 0.75rem 0.5rem !important;
             }
+            .service-item i {
+                font-size: 2rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            .service-item h5 {
+                font-size: 0.85rem !important;
+                margin-bottom: 0.4rem !important;
+            }
+            .service-item p {
+                font-size: 0.72rem !important;
+                line-height: 1.3;
+            }
+
+            /* 2 Card Berita per Baris di Mobile */
+            .course-item .p-4 {
+                padding: 0.6rem 0.5rem !important;
+            }
+            .course-item img {
+                height: 120px !important;
+            }
+            .course-item h5 {
+                font-size: 0.82rem !important;
+                line-height: 1.3;
+                margin-bottom: 0.4rem !important;
+            }
+            .course-item p {
+                font-size: 0.7rem !important;
+                margin-bottom: 0.4rem !important;
+            }
+            .course-item small {
+                font-size: 0.65rem !important;
+                padding-top: 0.3rem !important;
+                padding-bottom: 0.3rem !important;
+            }
+            .course-item .badge {
+                font-size: 0.65rem !important;
+                padding: 0.25em 0.5em !important;
+            }
+
+            /* Section Spacing Fix */
             .py-5 {
-                padding-top: 2rem !important;
-                padding-bottom: 2rem !important;
+                padding-top: 1.75rem !important;
+                padding-bottom: 1.75rem !important;
             }
             .mb-5 {
-                margin-bottom: 2rem !important;
+                margin-bottom: 1.5rem !important;
             }
             iframe {
-                height: 300px !important;
+                height: 280px !important;
             }
         }
     </style>
@@ -90,11 +130,11 @@
     </div>
 
     <!-- ==================== NAVBAR UTAMA ==================== -->
-    <nav class="navbar navbar-expand bg-white navbar-light shadow-sm sticky-top py-2 px-3 px-lg-4">
+    <nav class="navbar navbar-expand bg-white navbar-light shadow-sm sticky-top py-2 px-2 px-lg-4">
         <div class="container-fluid p-0 d-flex align-items-center justify-content-between">
             <!-- 1. Logo & Nama Website -->
             <a href="index.html" class="navbar-brand d-flex align-items-center me-auto">
-                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 42px; width: auto;" class="me-2"
+                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 40px; width: auto;" class="me-2"
                     onerror="this.src='img/logo.png';">
                 <span id="site-name" class="fw-bold text-dark fs-5 d-none d-sm-inline">Web Kecamatan Rumbia</span>
                 <span class="fw-bold text-dark fs-6 d-inline d-sm-none">Kec. Rumbia</span>
@@ -107,7 +147,7 @@
             </div>
 
             <!-- 3. Form Pencarian Quick Search -->
-            <div class="me-2 search-container-mobile" style="max-width: 200px;">
+            <div class="me-2 search-container-mobile" style="max-width: 180px;">
                 <div class="input-group input-group-sm">
                     <input type="text" id="navbar-search-input" class="form-control border-primary"
                         placeholder="Cari...">
@@ -155,7 +195,7 @@
                     <hr class="text-muted my-3">
                 </div>
 
-                <!-- Kontainer Halaman Kustom (Diinjeksi via API JS) -->
+                <!-- Kontainer Halaman Kustom -->
                 <div>
                     <div class="text-muted small fw-bold mb-2">HALAMAN & INFORMASI</div>
                     <div class="list-group list-group-flush" id="offcanvas-custom-pages">
@@ -199,45 +239,45 @@
         </div>
     </div>
 
-    <!-- ==================== LAYANAN / SERVICES ==================== -->
-    <div class="container-xxl py-4 py-md-5">
+    <!-- ==================== LAYANAN / SERVICES (2 Card per Baris di HP) ==================== -->
+    <div class="container-xxl py-3 py-md-5">
         <div class="container">
-            <div class="row g-3 g-md-4">
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item text-center pt-3 h-100 d-flex flex-column">
-                        <div class="p-4 d-flex flex-column flex-grow-1">
-                            <i class="fa fa-3x fa-graduation-cap text-primary mb-4"></i>
-                            <h5 class="mb-3">Pelayanan Administrasi Kependudukan</h5>
+            <div class="row g-2 g-md-4">
+                <div class="col-6 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="service-item text-center pt-2 pt-md-3 h-100 d-flex flex-column">
+                        <div class="p-2 p-md-4 d-flex flex-column flex-grow-1">
+                            <i class="fa fa-3x fa-graduation-cap text-primary mb-3 mb-md-4"></i>
+                            <h5 class="mb-2 mb-md-3">Pelayanan Administrasi Kependudukan</h5>
                             <p class="mb-0">Pengurusan KTP, KK, Surat Pindah, dan dokumen kependudukan lainnya.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item text-center pt-3 h-100 d-flex flex-column">
-                        <div class="p-4 d-flex flex-column flex-grow-1">
-                            <i class="fa fa-3x fa-globe text-primary mb-4"></i>
-                            <h5 class="mb-3">Pelayanan Perizinan Usaha</h5>
+                <div class="col-6 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="service-item text-center pt-2 pt-md-3 h-100 d-flex flex-column">
+                        <div class="p-2 p-md-4 d-flex flex-column flex-grow-1">
+                            <i class="fa fa-3x fa-globe text-primary mb-3 mb-md-4"></i>
+                            <h5 class="mb-2 mb-md-3">Pelayanan Perizinan Usaha</h5>
                             <p class="mb-0">Rekomendasi izin usaha mikro, UMKM, dan perizinan bangunan umum.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item text-center pt-3 h-100 d-flex flex-column">
-                        <div class="p-4 d-flex flex-column flex-grow-1">
-                            <i class="fa fa-3x fa-home text-primary mb-4"></i>
-                            <h5 class="mb-3">Pelayanan Surat Keterangan</h5>
+                <div class="col-6 col-lg-3 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="service-item text-center pt-2 pt-md-3 h-100 d-flex flex-column">
+                        <div class="p-2 p-md-4 d-flex flex-column flex-grow-1">
+                            <i class="fa fa-3x fa-home text-primary mb-3 mb-md-4"></i>
+                            <h5 class="mb-2 mb-md-3">Pelayanan Surat Keterangan</h5>
                             <p class="mb-0">Layanan surat keterangan tidak mampu, rekomendasi sosial, dan domisili.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="service-item text-center pt-3 h-100 d-flex flex-column">
-                        <div class="p-4 d-flex flex-column flex-grow-1">
-                            <i class="fa fa-3x fa-book-open text-primary mb-4"></i>
-                            <h5 class="mb-3">Pelayanan Umum & Legalisasi</h5>
+                <div class="col-6 col-lg-3 wow fadeInUp" data-wow-delay="0.7s">
+                    <div class="service-item text-center pt-2 pt-md-3 h-100 d-flex flex-column">
+                        <div class="p-2 p-md-4 d-flex flex-column flex-grow-1">
+                            <i class="fa fa-3x fa-book-open text-primary mb-3 mb-md-4"></i>
+                            <h5 class="mb-2 mb-md-3">Pelayanan Umum & Legalisasi</h5>
                             <p class="mb-0">Legalisasi dokumen resmi dan konsultasi layanan publik masyarakat.</p>
                         </div>
                     </div>
@@ -246,14 +286,16 @@
         </div>
     </div>
 
-    <!-- ==================== TENTANG / ABOUT ==================== -->
+    <!-- ==================== TENTANG / ABOUT (Foto Pak Camat Sesuai Rasio Asli) ==================== -->
     <div class="container-xxl py-4 py-md-5">
         <div class="container">
-            <div class="row g-4 g-lg-5">
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="position-relative h-100 about-img-wrapper" style="min-height: 350px;">
-                        <img id="about-img" class="img-fluid position-absolute w-100 h-100 rounded" src="img/about.jpg"
-                            alt="Tentang Kecamatan Rumbia" style="object-fit: cover;"
+            <div class="row g-4 g-lg-5 align-items-center">
+                <!-- Foto Pak Camat Tanpa Terpotong (Object-fit: contain & Rasio Asli) -->
+                <div class="col-lg-6 wow fadeInUp text-center" data-wow-delay="0.1s">
+                    <div class="d-flex align-items-center justify-content-center bg-light rounded p-2 p-md-3 shadow-sm">
+                        <img id="about-img" class="img-fluid rounded" src="img/about.jpg"
+                            alt="Tentang Kecamatan Rumbia" 
+                            style="max-height: 480px; width: 100%; object-fit: contain;"
                             onerror="this.src='img/about.jpg';">
                     </div>
                 </div>
@@ -269,7 +311,7 @@
         </div>
     </div>
 
-    <!-- ==================== BERITA TERBARU ==================== -->
+    <!-- ==================== BERITA TERBARU (2 Card per Baris di HP) ==================== -->
     <div class="container-xxl py-4 py-md-5 category">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
@@ -277,7 +319,8 @@
                 <h1 class="mb-4 mb-md-5 fs-2 fs-md-1">Berita Terbaru</h1>
             </div>
 
-            <div class="row g-4 justify-content-center" id="berita-container">
+            <!-- Tempat merender kartu berita (JS akan merender col-6 col-lg-4) -->
+            <div class="row g-2 g-md-4 justify-content-center" id="berita-container">
                 <div class="text-center text-muted">Memuat berita...</div>
             </div>
 
@@ -293,7 +336,7 @@
         <h6 class="section-title bg-white text-center text-primary px-3">Lokasi</h6>
         <h1 class="mb-4 mb-md-5 fs-2 fs-md-1">Lokasi Kantor Kecamatan</h1>
     </div>
-    <div class="text-center my-3 my-md-4 px-3">
+    <div class="text-center my-3 my-md-4 px-2 px-md-3">
         <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.608297968236!2d105.5416327!3d-4.7499621!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e3f65a9485de85b%3A0xfb4c4f76798665a5!2sKantor%20Kecamatan%20%7C%20Rumbia!5e1!3m2!1sen!2sid!4v1785726647262!5m2!1sen!2sid"
             width="100%" height="450" style="border:0; max-width: 1000px;" allowfullscreen="" loading="lazy"
@@ -403,6 +446,9 @@
                 });
         }
 
+        /**
+         * Render 6 Berita Terbaru (Class Bootstrap menggunakan 'col-6 col-lg-4' agar 2 card per baris di HP)
+         */
         function loadLatestBerita() {
             const endpoint = `${API_BASE_URL}/api/berita`;
             fetch(endpoint)
@@ -429,38 +475,39 @@
                         }
 
                         const tanggal = berita.created_at
-                            ? new Date(berita.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                            ? new Date(berita.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
                             : '-';
 
                         const linkDetail = `detail-berita.html?id=${berita.id}`;
                         const previewText = berita.konten ? berita.konten.replace(/<[^>]*>?/gm, '') : '';
 
+                        // Menggunakan 'col-6 col-lg-4' agar 2 kolom di HP & 3 kolom di desktop
                         const htmlCard = `
-                            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                                <div class="course-item bg-light h-100 d-flex flex-column">
+                            <div class="col-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
+                                <div class="course-item bg-light h-100 d-flex flex-column rounded overflow-hidden shadow-sm">
                                     <div class="position-relative overflow-hidden">
                                         <a href="${linkDetail}">
                                             <img class="img-fluid" 
                                                  src="${gambarUrl}" 
                                                  alt="${berita.judul}" 
-                                                 style="height: 220px; width: 100%; object-fit: cover;"
+                                                 style="height: 200px; width: 100%; object-fit: cover;"
                                                  onerror="this.onerror=null; this.src='img/default.jpg';">
                                         </a>
                                     </div>
-                                    <div class="text-center p-4 pb-0 flex-grow-1">
-                                        <div class="mb-3">
+                                    <div class="text-center p-3 p-md-4 pb-0 flex-grow-1">
+                                        <div class="mb-2">
                                             <span class="badge bg-primary">${berita.nama_kategori || 'Umum'}</span>
                                         </div>
                                         <a href="${linkDetail}" class="text-dark">
-                                            <h5 class="mb-3 text-hover-primary">${berita.judul}</h5>
+                                            <h5 class="mb-2 mb-md-3 text-hover-primary">${berita.judul}</h5>
                                         </a>
-                                        <p class="text-muted small" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                        <p class="text-muted small d-none d-sm-block" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                             ${previewText}
                                         </p>
                                     </div>
-                                    <div class="d-flex border-top mt-auto">
-                                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>${berita.nama_penulis || 'Admin'}</small>
-                                        <small class="flex-fill text-center py-2"><i class="fa fa-calendar text-primary me-2"></i>${tanggal}</small>
+                                    <div class="d-flex border-top mt-auto bg-white">
+                                        <small class="flex-fill text-center border-end py-2 px-1 text-truncate"><i class="fa fa-user-tie text-primary me-1"></i>${berita.nama_penulis || 'Admin'}</small>
+                                        <small class="flex-fill text-center py-2 px-1 text-truncate"><i class="fa fa-calendar text-primary me-1"></i>${tanggal}</small>
                                     </div>
                                 </div>
                             </div>
