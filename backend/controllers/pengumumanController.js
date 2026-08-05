@@ -1,8 +1,6 @@
 // ==========================================
 // CONTROLLER: PENGUMUMAN (whatsapp-web.js)
 // ==========================================
-const fs = require('fs');
-const path = require('path');
 const pool = require('../config/db');
 const waClient = require('../config/waClient'); // Import client WA lokal
 const { sanitizePlainText, sanitizeRichText, isValidHttpUrl } = require('../utils/sanitize');
@@ -37,15 +35,16 @@ async function kirimWaPengumuman({ id, judul, isi, link_gform, targetInstansiId 
       return;
     }
 
-    // Buat Tautan Halaman Detail Pengumuman
+    // 🌐 Buat Tautan Halaman Detail Pengumuman
+    // Diambil dari environment variable (fallback ke localhost jika belum di-set)
     const baseUrl = process.env.FRONTEND_URL || 'https://kec-rumbia.web.id/admin/html/detail-pengumuman.html';
     const linkDetail = `${baseUrl}?id=${id}`;
 
-    // Format Pesan WhatsApp
+    // 💬 Format Pesan WhatsApp
     let pesanWA = `📢 *PENGUMUMAN RESMI*\n\n*${judul}*\n\n${isi}\n\n🔗 *Baca Selengkapnya:* ${linkDetail}`;
 
     if (link_gform) {
-      pesanWA += `\n📝 *Link Form:* ${link_gform}`;
+      pesanWA += `\n📌 *Link Form:* ${link_gform}`;
     }
 
     // Kirim pesan langsung dari WhatsApp Client lokal
@@ -169,21 +168,7 @@ async function updatePengumuman(req, res) {
     }
 
     const oldData = oldRes.rows[0];
-    
-    // Jika ada upload gambar baru, pakai gambar baru. Jika tidak, tetap pakai gambar lama.
-    let gambar = oldData.gambar;
-    if (req.file) {
-      gambar = req.file.filename;
-      
-      // Hapus gambar lama jika diganti dengan gambar baru
-      if (oldData.gambar) {
-        const oldFilePath = path.join(__dirname, '../uploads', oldData.gambar);
-        if (fs.existsSync(oldFilePath)) {
-          fs.unlinkSync(oldFilePath);
-        }
-      }
-    }
-
+    const gambar = req.file ? req.file.filename : oldData.gambar;
     const targetInstansi = (instansi_id == '1' || !instansi_id) ? null : instansi_id;
 
     const updateQuery = `
@@ -213,43 +198,17 @@ async function updatePengumuman(req, res) {
   }
 }
 
-// DELETE Pengumuman (Termasuk Menghapus File Gambar di Storage)
+// DELETE Pengumuman
 async function deletePengumuman(req, res) {
-  const { id } = req.params;
   try {
-    // 1. Cari data pengumuman terlebih dahulu untuk mendapatkan nama file gambarnya
-    const searchResult = await pool.query('SELECT gambar FROM pengumuman WHERE id = $1', [id]);
-
-    if (searchResult.rows.length === 0) {
-      return res.status(404).json({ success: false, message: 'Pengumuman tidak ditemukan' });
-    }
-
-    const namaGambar = searchResult.rows[0].gambar;
-
-    // 2. Hapus record dari database
-    await pool.query('DELETE FROM pengumuman WHERE id = $1', [id]);
-
-    // 3. Hapus file fisik gambar jika nama file tersimpan di database
-    if (namaGambar) {
-      const filePath = path.join(__dirname, '../uploads', namaGambar); // Sesuaikan path lokasi folder uploads Anda
-
-      fs.unlink(filePath, (err) => {
-        if (err) {
-          // Tetap catat error jika file tidak ditemukan/gagal dihapus tanpa menghentikan respon ke user
-          console.error(`Gagal menghapus gambar ${namaGambar}:`, err.message);
-        } else {
-          console.log(`Berhasil menghapus gambar: ${namaGambar}`);
-        }
-      });
-    }
-
-    res.json({ success: true, message: 'Pengumuman dan file gambar berhasil dihapus' });
+    await pool.query('DELETE FROM pengumuman WHERE id = $1', [req.params.id]);
+    res.json({ success: true, message: 'Pengumuman berhasil dihapus' });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 }
 
-// Export modul
+// Pastikan semua method di-export agar routes tidak melempar error `undefined`
 module.exports = { 
   getPengumuman, 
   getPengumumanById, 

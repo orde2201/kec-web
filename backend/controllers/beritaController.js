@@ -1,37 +1,14 @@
 // ==========================================
 // CONTROLLER: BERITA
 // ==========================================
-const fs = require('fs');
-const path = require('path');
 const pool = require('../config/db');
 const { sanitizePlainText, sanitizeRichText } = require('../utils/sanitize');
-
-// Helper untuk menghapus file fisik dari folder uploads
-function hapusFileGambar(gambarString) {
-  if (!gambarString) return;
-
-  // Split string nama file jika ada banyak gambar (misal: "img1.jpg,img2.jpg")
-  const fileList = gambarString.split(',').map(f => f.trim()).filter(Boolean);
-
-  fileList.forEach(fileName => {
-    const filePath = path.join(__dirname, '../uploads', fileName);
-    if (fs.existsSync(filePath)) {
-      fs.unlink(filePath, (err) => {
-        if (err) {
-          console.error(`Gagal menghapus file ${fileName}:`, err.message);
-        } else {
-          console.log(`Berhasil menghapus file: ${fileName}`);
-        }
-      });
-    }
-  });
-}
 
 // GET Semua Berita (Mendukung Pencarian ?q= / ?search= dan Filter Kategori)
 async function getBerita(req, res) {
   try {
     const { q, search, kategori_id } = req.query;
-    const keyword = q || search;
+    const keyword = q || search; // Menerima parameter ?q= atau ?search=
 
     let query = `
       SELECT b.*, k.nama_kategori, u."Nama" AS nama_penulis 
@@ -43,11 +20,14 @@ async function getBerita(req, res) {
     let conditions = [];
     let params = [];
 
+    // Filter Kata Kunci (Judul / Konten)
+    // Query parameterized $1 -> aman dari SQL Injection meski keyword bebas
     if (keyword && keyword.trim() !== '') {
       params.push(`%${keyword.trim()}%`);
       conditions.push(`(b.judul ILIKE $${params.length} OR b.konten ILIKE $${params.length})`);
     }
 
+    // Filter Kategori (Jika ada)
     if (kategori_id && kategori_id !== 'all' && kategori_id !== '') {
       params.push(kategori_id);
       conditions.push(`b.kategori_id = $${params.length}`);
@@ -88,6 +68,8 @@ async function getBeritaById(req, res) {
 // POST Tambah Berita
 async function createBerita(req, res) {
   const { kategori_id, penulis_id } = req.body;
+  // judul: teks polos saja. konten: rich-text yang disaring dari
+  // tag/atribut berbahaya (script, onerror, iframe, dst).
   const judul = sanitizePlainText(req.body.judul);
   const konten = sanitizeRichText(req.body.konten);
   const gambarString = (req.files && req.files.length > 0) ? req.files.map(f => f.filename).join(',') : null;
@@ -118,13 +100,7 @@ async function updateBerita(req, res) {
     if (oldRes.rows.length === 0) return res.status(404).json({ error: "Berita tidak ditemukan" });
 
     const oldBerita = oldRes.rows[0];
-    let gambarString = oldBerita.gambar;
-
-    // Jika ada unggahan gambar baru, hapus gambar-gambar lama dan ganti dengan yang baru
-    if (req.files && req.files.length > 0) {
-      gambarString = req.files.map(f => f.filename).join(',');
-      hapusFileGambar(oldBerita.gambar);
-    }
+    const gambarString = (req.files && req.files.length > 0) ? req.files.map(f => f.filename).join(',') : oldBerita.gambar;
 
     const updateQuery = `UPDATE berita SET judul = $1, konten = $2, kategori_id = $3, gambar = $4 WHERE id = $5 RETURNING *`;
     const values = [judul || oldBerita.judul, konten || oldBerita.konten, kategori_id || oldBerita.kategori_id, gambarString, id];
@@ -136,25 +112,11 @@ async function updateBerita(req, res) {
   }
 }
 
-// DELETE Berita (Termasuk Menghapus Semua File Gambar Terkait)
+// DELETE Berita
 async function deleteBerita(req, res) {
-  const { id } = req.params;
   try {
-    // 1. Ambil data gambar berita sebelum dihapus
-    const oldRes = await pool.query('SELECT gambar FROM berita WHERE id = $1', [id]);
-    if (oldRes.rows.length === 0) {
-      return res.status(404).json({ error: "Berita tidak ditemukan" });
-    }
-
-    const gambarString = oldRes.rows[0].gambar;
-
-    // 2. Hapus data berita dari database
-    await pool.query('DELETE FROM berita WHERE id = $1', [id]);
-
-    // 3. Hapus semua file fisik gambar di folder uploads
-    hapusFileGambar(gambarString);
-
-    res.json({ message: 'Berita dan file gambar terkait berhasil dihapus' });
+    await pool.query('DELETE FROM berita WHERE id = $1', [req.params.id]);
+    res.json({ message: 'Berita berhasil dihapus' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
