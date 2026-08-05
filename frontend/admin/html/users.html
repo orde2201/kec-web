@@ -8,6 +8,30 @@
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/css/style.css">
+
+    <script>
+    (function checkAuth() {
+      try {
+        const userRaw = localStorage.getItem('user');
+        const currentUser = userRaw ? JSON.parse(userRaw) : null;
+
+        if (!currentUser || typeof currentUser !== 'object') {
+          window.location.href = './login.html';
+          return;
+        }
+
+        const role = currentUser.hakAkses || currentUser.hak_akses;
+        if (role !== 'Admin') {
+          alert('Akses ditolak! Halaman ini hanya untuk Admin.');
+          window.location.href = 'pengumuman.html';
+        }
+      } catch (error) {
+        console.error('Data session rusak:', error);
+        localStorage.removeItem('user');
+        window.location.href = 'login.html';
+      }
+    })();
+  </script>
 </head>
 
 <body>
