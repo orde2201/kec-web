@@ -27,6 +27,134 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+
+    <style>
+        /* CSS Penyesuaian Responsif Kartu Berita */
+        .text-truncate-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        @media (min-width: 576px) {
+            .news-card-img {
+                height: 200px !important;
+            }
+        }
+
+        /* NAVBAR SLIM & DESAIN SEARCH BOX (BACKBOX) BARU */
+        .navbar {
+            padding-top: 0.35rem !important;
+            padding-bottom: 0.35rem !important;
+            min-height: 48px;
+        }
+
+        #site-logo {
+            height: 30px !important;
+        }
+
+        .navbar .nav-link {
+            padding-top: 0.25rem !important;
+            padding-bottom: 0.25rem !important;
+        }
+
+        .navbar-search-box {
+            max-width: 170px;
+        }
+
+        .navbar-search-box .input-group {
+            height: 32px;
+        }
+
+        .navbar-search-box .form-control {
+            height: 32px;
+            font-size: 0.8rem;
+            padding: 0.2rem 0.6rem;
+            background-color: #f8f9fa;
+            border-color: #ced4da;
+        }
+
+        .navbar-search-box .form-control:focus {
+            background-color: #ffffff;
+            box-shadow: none;
+            border-color: #06BBCC;
+        }
+
+        .navbar-search-box .btn {
+            height: 32px;
+            padding: 0 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-offcanvas-toggle {
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+        }
+
+        /* PERBAIKAN NAVBAR MOBILE / ANDROID */
+        @media (max-width: 575.98px) {
+            .navbar {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+                padding-top: 0.25rem !important;
+                padding-bottom: 0.25rem !important;
+            }
+            #site-logo {
+                height: 24px !important;
+            }
+            .navbar-search-box {
+                max-width: 110px !important;
+            }
+            .navbar-search-box .input-group {
+                height: 28px;
+            }
+            .navbar-search-box .form-control {
+                height: 28px;
+                font-size: 0.725rem !important;
+                padding: 0.15rem 0.4rem !important;
+            }
+            .navbar-search-box .btn {
+                height: 28px;
+                padding: 0 0.45rem !important;
+            }
+            .btn-offcanvas-toggle {
+                width: 28px !important;
+                height: 28px !important;
+                min-width: 28px !important;
+            }
+            .brand-text-mobile {
+                font-size: 0.775rem !important;
+                max-width: 85px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        /* PERBAIKAN LAYANAN UNTUK LAYAR MOBILE & HOVER EFFECT */
+        @media (max-width: 575.98px) {
+            .service-item .p-4 {
+                padding: 1rem 0.5rem !important;
+            }
+            .service-item i {
+                font-size: 2rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            .service-item h5 {
+                font-size: 0.85rem !important;
+                line-height: 1.25 !important;
+                margin-bottom: 0.35rem !important;
+            }
+            .service-item p {
+                font-size: 0.725rem !important;
+                line-height: 1.3 !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -39,14 +167,14 @@
     </div>
 
     <!-- ==================== NAVBAR UTAMA ==================== -->
-    <nav class="navbar navbar-expand bg-white navbar-light shadow-sm sticky-top py-2 px-3 px-lg-4">
-        <div class="container-fluid p-0">
+    <nav class="navbar navbar-expand bg-white navbar-light shadow-sm sticky-top px-2 px-lg-4">
+        <div class="container-fluid p-0 d-flex align-items-center justify-content-between flex-nowrap">
             <!-- 1. Logo & Nama Website -->
-            <a href="index.html" class="navbar-brand d-flex align-items-center me-auto">
-                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 100%; width: auto;" class="me-2"
+            <a href="index.html" class="navbar-brand d-flex align-items-center me-1 me-sm-auto overflow-hidden my-0">
+                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 30px; width: auto;" class="me-1 me-sm-2"
                     onerror="this.src='img/logo.png';">
-                <span id="site-name" class="fw-bold text-dark fs-5 d-none d-sm-inline">Web Kecamatan Rumbia</span>
-                <span class="fw-bold text-dark fs-6 d-inline d-sm-none">Kec. Rumbia</span>
+                <span id="site-name" class="fw-bold text-dark fs-6 d-none d-sm-inline">Web Kecamatan Rumbia</span>
+                <span class="fw-bold text-dark brand-text-mobile d-inline d-sm-none">Kec. Rumbia</span>
             </a>
 
             <!-- 2. Menu Navigasi Utama (Desktop) -->
@@ -55,26 +183,27 @@
                 <a href="berita_acara.html" class="nav-link px-3 fw-semibold">Berita Acara</a>
             </div>
 
-            <!-- 3. Form Pencarian Quick Search -->
-            <div class="me-2" style="max-width: 220px;">
-                <div class="input-group input-group-sm">
-                    <input type="text" id="navbar-search-input" class="form-control border-primary"
-                        placeholder="Cari berita...">
-                    <button class="btn btn-primary px-2 px-sm-3" type="button" id="navbar-search-btn"
-                        title="Cari Berita">
-                        <i class="fa fa-search"></i>
-                    </button>
+            <div class="d-flex align-items-center">
+                <!-- 3. Form Pencarian Quick Search / Backbox -->
+                <div class="me-1 me-sm-2 navbar-search-box">
+                    <div class="input-group">
+                        <input type="text" id="navbar-search-input" class="form-control"
+                            placeholder="Cari...">
+                        <button class="btn btn-primary" type="button" id="navbar-search-btn"
+                            title="Cari Berita">
+                            <i class="fa fa-search fs-7"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-            <!-- 4. Tombol Menu Offcanvas Sidebar -->
-            <button
-                class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0"
-                type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar" title="Menu Lainnya"
-                style="width: 38px; height: 38px; min-width: 38px;">
-                <i class="fa fa-bars fs-5 text-primary"></i>
-            </button>
+                <!-- 4. Tombol Menu Offcanvas Sidebar -->
+                <button
+                    class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0 flex-shrink-0 btn-offcanvas-toggle"
+                    type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                    aria-controls="offcanvasNavbar" title="Menu Lainnya">
+                    <i class="fa fa-bars text-primary" style="font-size: 0.85rem;"></i>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -125,11 +254,10 @@
     </div>
 
     <!-- ==================== HERO / CAROUSEL ==================== -->
-    <div class="container-fluid p-0 mb-5">
+    <div class="container-fluid p-0 mb-4 mb-sm-5">
         <div class="owl-carousel header-carousel position-relative">
             <div class="owl-carousel-item position-relative d-flex align-items-center"
-                style="min-height: 500px; padding: 60px 0;">
-                <!-- ID 'hero-img' ditambahkan untuk sinkronisasi dengan API Pengaturan -->
+                style="min-height: 380px; padding: 40px 0;">
                 <img id="hero-img" class="position-absolute top-0 start-0 w-100 h-100" src="img/image.png"
                     style="object-fit: cover; z-index: 1;" alt="Hero Image" onerror="this.src='img/image.png';">
 
@@ -139,12 +267,15 @@
                 <div class="container position-relative" style="z-index: 3;">
                     <div class="row justify-content-start">
                         <div class="col-sm-10 col-lg-8">
-                            <h5 class="text-white text-uppercase mb-3 animated slideInDown">Website Kecamatan Rumbia
+                            <h5 class="text-white text-uppercase mb-2 mb-sm-3 animated slideInDown fs-6 fs-sm-5">
+                                Website Kecamatan Rumbia
                             </h5>
-                            <h1 class="display-5 text-white mb-3 animated slideInDown">Memberikan Pelayanan terbaik
-                                untuk masyarakat rumbia</h1>
+                            <h1 class="display-6 display-sm-5 text-white mb-3 animated slideInDown fw-bold"
+                                style="font-size: calc(1.2rem + 1.2vw);">
+                                Memberikan Pelayanan terbaik untuk masyarakat rumbia
+                            </h1>
                             <a href="berita_acara.html"
-                                class="btn btn-light py-md-3 px-md-5 animated slideInRight">Berita Acara</a>
+                                class="btn btn-light py-2 px-4 py-md-3 px-md-5 animated slideInRight">Berita Acara</a>
                         </div>
                     </div>
                 </div>
@@ -153,10 +284,10 @@
     </div>
 
     <!-- ==================== LAYANAN / SERVICES ==================== -->
-    <div class="container-xxl py-5">
+    <div class="container-xxl py-3 py-sm-5">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+            <div class="row g-2 g-sm-4">
+                <div class="col-6 col-sm-6 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="service-item text-center pt-3 h-100 d-flex flex-column">
                         <div class="p-4 d-flex flex-column flex-grow-1">
                             <i class="fa fa-3x fa-graduation-cap text-primary mb-4"></i>
@@ -166,7 +297,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="col-6 col-sm-6 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="service-item text-center pt-3 h-100 d-flex flex-column">
                         <div class="p-4 d-flex flex-column flex-grow-1">
                             <i class="fa fa-3x fa-globe text-primary mb-4"></i>
@@ -176,7 +307,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="col-6 col-sm-6 col-lg-3 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="service-item text-center pt-3 h-100 d-flex flex-column">
                         <div class="p-4 d-flex flex-column flex-grow-1">
                             <i class="fa fa-3x fa-home text-primary mb-4"></i>
@@ -186,7 +317,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
+                <div class="col-6 col-sm-6 col-lg-3 wow fadeInUp" data-wow-delay="0.7s">
                     <div class="service-item text-center pt-3 h-100 d-flex flex-column">
                         <div class="p-4 d-flex flex-column flex-grow-1">
                             <i class="fa fa-3x fa-book-open text-primary mb-4"></i>
@@ -200,19 +331,19 @@
     </div>
 
     <!-- ==================== TENTANG / ABOUT ==================== -->
-    <div class="container-xxl py-5">
+    <div class="container-xxl py-4 py-sm-5">
         <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 400px;">
+            <div class="row g-4 g-lg-5">
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 250px;">
                     <div class="position-relative h-100">
-                        <img id="about-img" class="img-fluid position-absolute w-100 h-100" src="img/about.jpg"
+                        <img id="about-img" class="img-fluid position-absolute w-100 h-100 rounded" src="img/about.jpg"
                             alt="Tentang Kecamatan Rumbia" style="object-fit: cover;"
                             onerror="this.src='img/about.jpg';">
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
                     <h6 class="section-title bg-white text-start text-primary pe-3">Tentang Kecamatan Rumbia</h6>
-                    <h1 id="about-title" class="mb-4">Selamat Datang di Website Kecamatan Rumbia</h1>
+                    <h1 id="about-title" class="mb-3 mb-sm-4 fs-3 fs-sm-2">Selamat Datang di Website Kecamatan Rumbia</h1>
                     <div id="about-desc-container" class="text-break"
                         style="word-break: break-word; overflow-wrap: break-word;">
                         <p class="mb-4">Memuat deskripsi...</p>
@@ -223,20 +354,20 @@
     </div>
 
     <!-- ==================== BERITA TERBARU ==================== -->
-    <div class="container-xxl py-5 category">
+    <div class="container-xxl py-4 py-sm-5 category">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h6 class="section-title bg-white text-center text-primary px-3">Berita dan Pengumuman</h6>
-                <h1 class="mb-5">Berita Terbaru</h1>
+                <h1 class="mb-4 mb-sm-5 fs-3 fs-sm-2">Berita Terbaru</h1>
             </div>
 
             <!-- Tempat merender kartu berita -->
-            <div class="row g-4 justify-content-center" id="berita-container">
+            <div class="row g-2 g-sm-4 justify-content-center" id="berita-container">
                 <div class="text-center text-muted">Memuat berita...</div>
             </div>
 
-            <div class="text-center mt-5">
-                <a href="berita_acara.html" class="btn btn-primary py-3 px-5 rounded-pill">Lihat Semua Berita <i
+            <div class="text-center mt-4 mt-sm-5">
+                <a href="berita_acara.html" class="btn btn-primary py-2 py-sm-3 px-4 px-sm-5 rounded-pill">Lihat Semua Berita <i
                         class="fa fa-arrow-right ms-2"></i></a>
             </div>
         </div>
@@ -245,19 +376,19 @@
     <!-- ==================== LOKASI GOOGLE MAPS ==================== -->
     <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
         <h6 class="section-title bg-white text-center text-primary px-3">Lokasi</h6>
-        <h1 class="mb-5">Lokasi Kantor Kecamatan</h1>
+        <h1 class="mb-4 mb-sm-5 fs-3 fs-sm-2">Lokasi Kantor Kecamatan</h1>
     </div>
-    <div class="text-center my-4">
+    <div class="text-center my-4 px-2">
         <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.608297968236!2d105.5416327!3d-4.7499621!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e3f65a9485de85b%3A0xfb4c4f76798665a5!2sKantor%20Kecamatan%20%7C%20Rumbia!5e1!3m2!1sen!2sid!4v1785726647262!5m2!1sen!2sid"
-            width="100%" height="450" style="border:0; max-width: 1000px;" allowfullscreen="" loading="lazy"
+            width="100%" height="350" style="border:0; max-width: 1000px;" allowfullscreen="" loading="lazy"
             referrerpolicy="strict-origin-when-cross-origin"></iframe>
     </div>
 
     <!-- ==================== FOOTER ==================== -->
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
-            <div class="row g-5">
+            <div class="row g-4 g-sm-5">
                 <div class="col-lg-4 col-md-6">
                     <h4 class="text-white mb-3">Kecamatan Rumbia</h4>
                     <p id="footer-about-text">Portal Layanan Publik & Informasi Resmi Kecamatan Rumbia.</p>
@@ -304,34 +435,19 @@
 
     <!-- ==================== CORE API & DYNAMIC LOGIC SCRIPT ==================== -->
     <script>
-        /**
-         * CONFIGURATION
-         * Sesuaikan API_BASE_URL jika domain/port server backend berubah.
-         */
-        const API_BASE_URL = 'https://kec-rumbia.web.id'; // Ganti dengan domain backend Anda
+        const API_BASE_URL = 'https://kec-rumbia.web.id';
 
         document.addEventListener("DOMContentLoaded", function () {
             console.log("[DEBUG - Init] DOM loaded. Menjalankan fetching data...");
 
-            // 1. LOAD HALAMAN KUSTOM HEADER/MENU
             loadHeaderPages();
-
-            // 2. LOAD 6 BERITA TERBARU
             loadLatestBerita();
-
-            // 3. LOAD PENGATURAN HALAMAN (LOGO, FOOTER, HERO, DLL)
             loadPengaturanHalaman();
-
-            // 4. INISIALISASI PEMINDAI / PENCARIAN
             initSearchHandler();
         });
 
-        /**
-         * Fetch dan Render Halaman Kustom ke Navbar Offcanvas & Footer
-         */
         function loadHeaderPages() {
             const endpoint = `${API_BASE_URL}/api/halaman?header_only=true`;
-            console.log(`[DEBUG - Halaman] Fetching: ${endpoint}`);
 
             fetch(endpoint)
                 .then(res => {
@@ -339,8 +455,6 @@
                     return res.json();
                 })
                 .then(resData => {
-                    console.log("[DEBUG - Halaman] Response Diterima:", resData);
-
                     const offcanvasContainer = document.getElementById('offcanvas-custom-pages');
                     const footerCustomLinks = document.getElementById('footer-custom-links');
                     const pages = resData.data || [];
@@ -349,7 +463,6 @@
                         if (offcanvasContainer) offcanvasContainer.innerHTML = '';
 
                         pages.forEach(page => {
-                            // Injeksi ke Offcanvas Sidebar
                             if (offcanvasContainer) {
                                 const navItem = document.createElement('a');
                                 navItem.href = `page.html?slug=${page.slug}`;
@@ -358,7 +471,6 @@
                                 offcanvasContainer.appendChild(navItem);
                             }
 
-                            // Injeksi ke Link Footer
                             if (footerCustomLinks) {
                                 const footerItem = document.createElement('a');
                                 footerItem.href = `page.html?slug=${page.slug}`;
@@ -380,12 +492,8 @@
                 });
         }
 
-        /**
-         * Fetch dan Render 6 Berita Terbaru ke Beranda
-         */
         function loadLatestBerita() {
             const endpoint = `${API_BASE_URL}/api/berita`;
-            console.log(`[DEBUG - Berita] Fetching: ${endpoint}`);
 
             fetch(endpoint)
                 .then(response => {
@@ -393,12 +501,9 @@
                     return response.json();
                 })
                 .then(resData => {
-                    console.log("[DEBUG - Berita] Response Diterima:", resData);
-
                     const container = document.getElementById('berita-container');
                     if (!container) return;
 
-                    // Mengakomodasi jika backend merespon Array langsung atau Object { data: [...] }
                     const listBerita = Array.isArray(resData) ? resData : (resData.data || []);
 
                     container.innerHTML = '';
@@ -408,53 +513,48 @@
                         return;
                     }
 
-                    // Ambil maksimal 6 berita terbaru
                     const beritaTerbatas = listBerita.slice(0, 6);
 
                     beritaTerbatas.forEach(berita => {
-                        // Penanganan parsing nama gambar (Memilih gambar pertama jika dipisahkan koma)
                         let gambarUrl = 'img/default.jpg';
                         if (berita.gambar && typeof berita.gambar === 'string' && berita.gambar.trim() !== '') {
                             const firstImage = berita.gambar.split(',')[0].trim();
                             if (firstImage) gambarUrl = `${API_BASE_URL}/uploads/${firstImage}`;
                         }
 
-                        // Format Tanggal
                         const tanggal = berita.created_at
-                            ? new Date(berita.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })
+                            ? new Date(berita.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
                             : '-';
 
                         const linkDetail = `detail-berita.html?id=${berita.id}`;
-
-                        // Bersihkan tag HTML dari preview konten
                         const previewText = berita.konten ? berita.konten.replace(/<[^>]*>?/gm, '') : '';
 
                         const htmlCard = `
-                            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                                <div class="course-item bg-light h-100 d-flex flex-column">
+                            <div class="col-6 col-md-6 col-lg-4 wow fadeInUp px-1 px-sm-3" data-wow-delay="0.1s">
+                                <div class="course-item bg-light h-100 d-flex flex-column rounded overflow-hidden shadow-sm">
                                     <div class="position-relative overflow-hidden">
                                         <a href="${linkDetail}">
-                                            <img class="img-fluid" 
+                                            <img class="img-fluid w-100 news-card-img" 
                                                  src="${gambarUrl}" 
                                                  alt="${berita.judul}" 
-                                                 style="height: 250px; width: 100%; object-fit: cover;"
+                                                 style="height: 130px; object-fit: cover;"
                                                  onerror="this.onerror=null; this.src='img/default.jpg';">
                                         </a>
                                     </div>
-                                    <div class="text-center p-4 pb-0 flex-grow-1">
-                                        <div class="mb-3">
-                                            <span class="badge bg-primary">${berita.nama_kategori || 'Umum'}</span>
+                                    <div class="text-center p-2 p-sm-3 pb-0 flex-grow-1">
+                                        <div class="mb-2">
+                                            <span class="badge bg-primary" style="font-size: 0.7rem;">${berita.nama_kategori || 'Umum'}</span>
                                         </div>
                                         <a href="${linkDetail}" class="text-dark">
-                                            <h5 class="mb-4 text-hover-primary">${berita.judul}</h5>
+                                            <h6 class="mb-2 text-hover-primary fw-bold text-truncate-2" style="font-size: 0.85rem; line-height: 1.2;">${berita.judul}</h6>
                                         </a>
-                                        <p class="text-muted" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                        <p class="text-muted d-none d-sm-block" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 0.8rem;">
                                             ${previewText}
                                         </p>
                                     </div>
-                                    <div class="d-flex border-top mt-auto">
-                                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>${berita.nama_penulis || 'Admin'}</small>
-                                        <small class="flex-fill text-center py-2"><i class="fa fa-calendar text-primary me-2"></i>${tanggal}</small>
+                                    <div class="d-flex border-top mt-auto bg-white" style="font-size: 0.7rem;">
+                                        <small class="flex-fill text-center border-end py-1 text-truncate px-1"><i class="fa fa-user-tie text-primary me-1"></i>${berita.nama_penulis || 'Admin'}</small>
+                                        <small class="flex-fill text-center py-1 text-truncate px-1"><i class="fa fa-calendar text-primary me-1"></i>${tanggal}</small>
                                     </div>
                                 </div>
                             </div>
@@ -471,12 +571,8 @@
                 });
         }
 
-        /**
-         * Fetch dan Aplikasikan Pengaturan Situs (Logo, Hero, About, Footer)
-         */
         function loadPengaturanHalaman() {
             const endpoint = `${API_BASE_URL}/api/pengaturan`;
-            console.log(`[DEBUG - Pengaturan] Fetching: ${endpoint}`);
 
             fetch(endpoint)
                 .then(response => {
@@ -484,10 +580,7 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log("[DEBUG - Pengaturan] Data Diterima:", data);
-
                     if (data && !data.error) {
-                        // Safe Update Elements dengan Null Checking
                         setElementSrc('site-logo', data.logo ? `${API_BASE_URL}/uploads/${data.logo}` : null);
                         setElementSrc('hero-img', data.hero_image ? `${API_BASE_URL}/uploads/${data.hero_image}` : null);
                         setElementSrc('about-img', data.about_image ? `${API_BASE_URL}/uploads/${data.about_image}` : null);
@@ -499,7 +592,6 @@
                         setElementText('footer-email', data.footer_email);
                         setElementText('footer-copyright-text', data.footer_copyright);
 
-                        // Render Deskripsi About
                         const aboutDescContainer = document.getElementById('about-desc-container');
                         if (aboutDescContainer && data.about_desc) {
                             aboutDescContainer.innerHTML = `<p class="mb-4">${data.about_desc.replace(/\n/g, '<br>')}</p>`;
@@ -509,16 +601,12 @@
                 .catch(error => console.error('[DEBUG - Pengaturan] Error fetching pengaturan:', error));
         }
 
-        /**
-         * Handler Pencarian Berita pada Navbar
-         */
         function initSearchHandler() {
             const searchBtn = document.getElementById('navbar-search-btn');
             const searchInput = document.getElementById('navbar-search-input');
 
             function executeSearch() {
                 const keyword = searchInput ? searchInput.value.trim() : '';
-                console.log(`[DEBUG - Search] Melakukan pencarian keyword: "${keyword}"`);
 
                 if (keyword) {
                     window.location.href = `berita_acara.html?q=${encodeURIComponent(keyword)}`;
@@ -535,7 +623,6 @@
             }
         }
 
-        // Helper Functions untuk Menghindari Runtime Error jika ID elemen tidak ditemukan
         function setElementSrc(id, url) {
             if (!url) return;
             const el = document.getElementById(id);
