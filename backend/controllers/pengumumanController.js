@@ -1,6 +1,9 @@
 // ==========================================
 // CONTROLLER: PENGUMUMAN (whatsapp-web.js)
 // ==========================================
+const fs = require('fs');
+const path = require('path');
+const { MessageMedia } = require('whatsapp-web.js'); // Import MessageMedia untuk mengirim media/gambar
 const pool = require('../config/db');
 const waClient = require('../config/waClient'); // Import client WA lokal
 const { sanitizePlainText, sanitizeRichText, isValidHttpUrl } = require('../utils/sanitize');
@@ -16,7 +19,7 @@ function formatNomorWA(noHp) {
 }
 
 // Helper Service Broadcast WhatsApp (Gratis via whatsapp-web.js)
-async function kirimWaPengumuman({ id, judul, isi, link_gform, targetInstansiId }) {
+async function kirimWaPengumuman({ id, judul, isi, link_gform, gambar, targetInstansiId }) {
   try {
     // Query menggunakan kolom 'phone' sesuai skema PostgreSQL
     let queryUser = `SELECT phone FROM users WHERE phone IS NOT NULL AND TRIM(phone) != ''`;
@@ -35,16 +38,27 @@ async function kirimWaPengumuman({ id, judul, isi, link_gform, targetInstansiId 
       return;
     }
 
-    // 🌐 Buat Tautan Halaman Detail Pengumuman
-    // Diambil dari environment variable (fallback ke localhost jika belum di-set)
+    // Buat Tautan Halaman Detail Pengumuman
     const baseUrl = process.env.FRONTEND_URL || 'https://kec-rumbia.web.id/admin/html/detail-pengumuman.html';
     const linkDetail = `${baseUrl}?id=${id}`;
 
-    // 💬 Format Pesan WhatsApp
+    // Format Pesan WhatsApp
     let pesanWA = `📢 *PENGUMUMAN RESMI*\n\n*${judul}*\n\n${isi}\n\n🔗 *Baca Selengkapnya:* ${linkDetail}`;
 
     if (link_gform) {
-      pesanWA += `\n📌 *Link Form:* ${link_gform}`;
+      pesanWA += `\n📝 *Link Form:* ${link_gform}`;
+    }
+
+    // Penyiapan Media Gambar jika ada
+    let media = null;
+    if (gambar) {
+      const imagePath = path.join(__dirname, '../uploads', gambar);
+      if (fs.existsSync(imagePath)) {
+        // Konversi file gambar lokal ke objek MessageMedia whatsapp-web.js
+        media = MessageMedia.fromFilePath(imagePath);
+      } else {
+        console.warn(`[WA BROADCAST WARNING] Gambar tidak ditemukan pada lokasi: ${imagePath}`);
+      }
     }
 
     // Kirim pesan langsung dari WhatsApp Client lokal
@@ -52,7 +66,13 @@ async function kirimWaPengumuman({ id, judul, isi, link_gform, targetInstansiId 
       const chatId = formatNomorWA(u.phone);
       if (chatId) {
         try {
-          await waClient.sendMessage(chatId, pesanWA);
+          if (media) {
+            // Kirim gambar dengan caption teks pengumuman
+            await waClient.sendMessage(chatId, media, { caption: pesanWA });
+          } else {
+            // Jika tidak ada gambar, kirim pesan teks saja
+            await waClient.sendMessage(chatId, pesanWA);
+          }
           console.log(`[WA BROADCAST] Pesan berhasil dikirim ke: ${u.phone}`);
         } catch (errWA) {
           console.error(`[WA BROADCAST ERROR] Gagal kirim ke ${u.phone}:`, errWA.message);
@@ -139,6 +159,7 @@ async function createPengumuman(req, res) {
         judul: newPengumuman.judul,
         isi: newPengumuman.isi,
         link_gform: newPengumuman.link_gform,
+        gambar: newPengumuman.gambar, // Mengirim parameter gambar
         targetInstansiId: newPengumuman.instansi_id
       });
     }
@@ -168,7 +189,19 @@ async function updatePengumuman(req, res) {
     }
 
     const oldData = oldRes.rows[0];
-    const gambar = req.file ? req.file.filename : oldData.gambar;
+    let gambar = oldData.gambar;
+
+    // Hapus gambar lama jika diunggah gambar baru saat edit
+    if (req.file) {
+      gambar = req.file.filename;
+      if (oldData.gambar) {
+        const oldFilePath = path.join(__dirname, '../uploads', oldData.gambar);
+        if (fs.existsSync(oldFilePath)) {
+          fs.unlinkSync(oldFilePath);
+        }
+      }
+    }
+
     const targetInstansi = (instansi_id == '1' || !instansi_id) ? null : instansi_id;
 
     const updateQuery = `
@@ -188,6 +221,7 @@ async function updatePengumuman(req, res) {
         judul: updatedPengumuman.judul,
         isi: updatedPengumuman.isi,
         link_gform: updatedPengumuman.link_gform,
+        gambar: updatedPengumuman.gambar, // Mengirim parameter gambar
         targetInstansiId: updatedPengumuman.instansi_id
       });
     }
@@ -198,17 +232,39 @@ async function updatePengumuman(req, res) {
   }
 }
 
-// DELETE Pengumuman
+// DELETE Pengumuman (Termasuk Menghapus Gambar Fisik di Storage)
 async function deletePengumuman(req, res) {
+  const { id } = req.params;
   try {
-    await pool.query('DELETE FROM pengumuman WHERE id = $1', [req.params.id]);
-    res.json({ success: true, message: 'Pengumuman berhasil dihapus' });
+    const searchResult = await pool.query('SELECT gambar FROM pengumuman WHERE id = $1', [id]);
+
+    if (searchResult.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Pengumuman tidak ditemukan' });
+    }
+
+    const namaGambar = searchResult.rows[0].gambar;
+
+    await pool.query('DELETE FROM pengumuman WHERE id = $1', [id]);
+
+    if (namaGambar) {
+      const filePath = path.join(__dirname, '../uploads', namaGambar);
+      if (fs.existsSync(filePath)) {
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            console.error(`Gagal menghapus gambar ${namaGambar}:`, err.message);
+          } else {
+            console.log(`Berhasil menghapus gambar: ${namaGambar}`);
+          }
+        });
+      }
+    }
+
+    res.json({ success: true, message: 'Pengumuman dan gambar berhasil dihapus' });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 }
 
-// Pastikan semua method di-export agar routes tidak melempar error `undefined`
 module.exports = { 
   getPengumuman, 
   getPengumumanById, 
