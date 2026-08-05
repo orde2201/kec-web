@@ -29,7 +29,7 @@
     <link href="css/style.css" rel="stylesheet">
 
     <style>
-        /* CSS Penyesuaian Responsif Kartu Berita */
+        /* CSS Penyesuaian Responsif Kartu Berita & Layanan (Android/Mobile) */
         .text-truncate-2 {
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -43,56 +43,23 @@
             }
         }
 
-        /* PERBAIKAN NAVBAR MOBILE / ANDROID PAS & PROPORSIONAL */
+        /* Penyesuaian khusus Sektor Layanan di Layar Mobile / Android (< 576px) */
         @media (max-width: 575.98px) {
-            .navbar {
-                padding-left: 0.5rem !important;
-                padding-right: 0.5rem !important;
-                padding-top: 0.4rem !important;
-                padding-bottom: 0.4rem !important;
+            .service-item {
+                padding-top: 0.5rem !important;
             }
-            /* Ukuran Logo Diatur Sedang (Pas) */
-            #site-logo {
-                height: 40px !important;
-                width: auto !important;
-                padding-left: 3vw !important;
-                padding-right: 3vw !important;
-            }
-            /* Ukuran Teks Brand Kec. Rumbia Diatur Pas */
-            .brand-text-mobile {
-                font-size: 0.9rem !important;
-                line-height: 1.2 !important;
-                max-width: 125px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-            /* Menyesuaikan Kotak Cari Agar Sisa Ruang Pas */
-            .navbar-search-box {
-                max-width: 105px !important;
-            }
-            .navbar-search-box input {
-                font-size: 0.75rem !important;
-                padding: 0.25rem 0.4rem !important;
-            }
-            .navbar-search-box button {
-                padding: 0.25rem 0.45rem !important;
-            }
-        }
-
-        /* PERBAIKAN LAYANAN UNTUK LAYAR MOBILE */
-        @media (max-width: 575.98px) {
-            .service-item .p-4 {
-                padding: 1rem 0.5rem !important;
+            .service-item .service-box {
+                padding: 0.75rem 0.5rem !important;
             }
             .service-item i {
-                font-size: 2rem !important;
+                font-size: 1.8rem !important;
                 margin-bottom: 0.5rem !important;
             }
             .service-item h5 {
                 font-size: 0.85rem !important;
                 line-height: 1.25 !important;
                 margin-bottom: 0.35rem !important;
+                font-weight: 700;
             }
             .service-item p {
                 font-size: 0.725rem !important;
@@ -112,14 +79,14 @@
     </div>
 
     <!-- ==================== NAVBAR UTAMA ==================== -->
-    <nav class="navbar navbar-expand bg-white navbar-light shadow-sm sticky-top py-2 px-2 px-lg-4">
-        <div class="container-fluid p-0 d-flex align-items-center justify-content-between flex-nowrap">
+    <nav class="navbar navbar-expand bg-white navbar-light shadow-sm sticky-top py-2 px-3 px-lg-4">
+        <div class="container-fluid p-0">
             <!-- 1. Logo & Nama Website -->
-            <a href="index.html" class="navbar-brand d-flex align-items-center me-1 me-sm-auto overflow-hidden">
-                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 36px; width: auto;" class="me-1 me-sm-2"
+            <a href="index.html" class="navbar-brand d-flex align-items-center me-auto">
+                <img id="site-logo" src="img/logo.png" alt="Logo" style="height: 100%; width: auto;" class="me-2"
                     onerror="this.src='img/logo.png';">
                 <span id="site-name" class="fw-bold text-dark fs-5 d-none d-sm-inline">Web Kecamatan Rumbia</span>
-                <span class="fw-bold text-dark brand-text-mobile d-inline d-sm-none">Kec. Rumbia</span>
+                <span class="fw-bold text-dark fs-6 d-inline d-sm-none">Kec. Rumbia</span>
             </a>
 
             <!-- 2. Menu Navigasi Utama (Desktop) -->
@@ -128,28 +95,26 @@
                 <a href="berita_acara.html" class="nav-link px-3 fw-semibold">Berita Acara</a>
             </div>
 
-            <div class="d-flex align-items-center">
-                <!-- 3. Form Pencarian Quick Search -->
-                <div class="me-1 me-sm-2 navbar-search-box" style="max-width: 200px;">
-                    <div class="input-group input-group-sm">
-                        <input type="text" id="navbar-search-input" class="form-control border-primary"
-                            placeholder="Cari...">
-                        <button class="btn btn-primary px-2" type="button" id="navbar-search-btn"
-                            title="Cari Berita">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
+            <!-- 3. Form Pencarian Quick Search -->
+            <div class="me-2" style="max-width: 220px;">
+                <div class="input-group input-group-sm">
+                    <input type="text" id="navbar-search-input" class="form-control border-primary"
+                        placeholder="Cari berita...">
+                    <button class="btn btn-primary px-2 px-sm-3" type="button" id="navbar-search-btn"
+                        title="Cari Berita">
+                        <i class="fa fa-search"></i>
+                    </button>
                 </div>
-
-                <!-- 4. Tombol Menu Offcanvas Sidebar -->
-                <button
-                    class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0 flex-shrink-0"
-                    type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-                    aria-controls="offcanvasNavbar" title="Menu Lainnya"
-                    style="width: 36px; height: 36px; min-width: 36px;">
-                    <i class="fa fa-bars fs-6 text-primary"></i>
-                </button>
             </div>
+
+            <!-- 4. Tombol Menu Offcanvas Sidebar -->
+            <button
+                class="btn btn-light border shadow-sm rounded-circle d-flex align-items-center justify-content-center p-0"
+                type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+                aria-controls="offcanvasNavbar" title="Menu Lainnya"
+                style="width: 38px; height: 38px; min-width: 38px;">
+                <i class="fa fa-bars fs-5 text-primary"></i>
+            </button>
         </div>
     </nav>
 
@@ -203,7 +168,7 @@
     <div class="container-fluid p-0 mb-4 mb-sm-5">
         <div class="owl-carousel header-carousel position-relative">
             <div class="owl-carousel-item position-relative d-flex align-items-center"
-                style="min-height: 380px; padding: 40px 0;">
+                style="min-height: 400px; padding: 40px 0;">
                 <img id="hero-img" class="position-absolute top-0 start-0 w-100 h-100" src="img/image.png"
                     style="object-fit: cover; z-index: 1;" alt="Hero Image" onerror="this.src='img/image.png';">
 
@@ -217,7 +182,7 @@
                                 Website Kecamatan Rumbia
                             </h5>
                             <h1 class="display-6 display-sm-5 text-white mb-3 animated slideInDown fw-bold"
-                                style="font-size: calc(1.2rem + 1.2vw);">
+                                style="font-size: calc(1.3rem + 1.2vw);">
                                 Memberikan Pelayanan terbaik untuk masyarakat rumbia
                             </h1>
                             <a href="berita_acara.html"
@@ -234,41 +199,41 @@
         <div class="container">
             <div class="row g-2 g-sm-4">
                 <div class="col-6 col-sm-6 col-lg-3 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item text-center pt-3 h-100 d-flex flex-column">
-                        <div class="p-4 d-flex flex-column flex-grow-1">
-                            <i class="fa fa-3x fa-graduation-cap text-primary mb-4"></i>
-                            <h5 class="mb-3">Pelayanan Administrasi Kependudukan</h5>
-                            <p class="mb-0">Pengurusan KTP, KK, Surat Pindah, dan dokumen kependudukan lainnya.</p>
+                    <div class="service-item text-center pt-3 h-100 d-flex flex-column rounded shadow-sm bg-white">
+                        <div class="p-3 p-sm-4 service-box d-flex flex-column flex-grow-1">
+                            <i class="fa fa-3x fa-graduation-cap text-primary mb-3"></i>
+                            <h5 class="mb-2">Pelayanan Administrasi Kependudukan</h5>
+                            <p class="mb-0 text-muted">Pengurusan KTP, KK, Surat Pindah, dan dokumen kependudukan lainnya.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-6 col-sm-6 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item text-center pt-3 h-100 d-flex flex-column">
-                        <div class="p-4 d-flex flex-column flex-grow-1">
-                            <i class="fa fa-3x fa-globe text-primary mb-4"></i>
-                            <h5 class="mb-3">Pelayanan Perizinan Usaha</h5>
-                            <p class="mb-0">Rekomendasi izin usaha mikro, UMKM, dan perizinan bangunan umum.</p>
+                    <div class="service-item text-center pt-3 h-100 d-flex flex-column rounded shadow-sm bg-white">
+                        <div class="p-3 p-sm-4 service-box d-flex flex-column flex-grow-1">
+                            <i class="fa fa-3x fa-globe text-primary mb-3"></i>
+                            <h5 class="mb-2">Pelayanan Perizinan Usaha</h5>
+                            <p class="mb-0 text-muted">Rekomendasi izin usaha mikro, UMKM, dan perizinan bangunan umum.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-6 col-sm-6 col-lg-3 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item text-center pt-3 h-100 d-flex flex-column">
-                        <div class="p-4 d-flex flex-column flex-grow-1">
-                            <i class="fa fa-3x fa-home text-primary mb-4"></i>
-                            <h5 class="mb-3">Pelayanan Surat Keterangan</h5>
-                            <p class="mb-0">Layanan surat keterangan tidak mampu, rekomendasi sosial, dan domisili.</p>
+                    <div class="service-item text-center pt-3 h-100 d-flex flex-column rounded shadow-sm bg-white">
+                        <div class="p-3 p-sm-4 service-box d-flex flex-column flex-grow-1">
+                            <i class="fa fa-3x fa-home text-primary mb-3"></i>
+                            <h5 class="mb-2">Pelayanan Surat Keterangan</h5>
+                            <p class="mb-0 text-muted">Layanan surat keterangan tidak mampu, rekomendasi sosial, dan domisili.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-6 col-sm-6 col-lg-3 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="service-item text-center pt-3 h-100 d-flex flex-column">
-                        <div class="p-4 d-flex flex-column flex-grow-1">
-                            <i class="fa fa-3x fa-book-open text-primary mb-4"></i>
-                            <h5 class="mb-3">Pelayanan Umum & Legalisasi</h5>
-                            <p class="mb-0">Legalisasi dokumen resmi dan konsultasi layanan publik masyarakat.</p>
+                    <div class="service-item text-center pt-3 h-100 d-flex flex-column rounded shadow-sm bg-white">
+                        <div class="p-3 p-sm-4 service-box d-flex flex-column flex-grow-1">
+                            <i class="fa fa-3x fa-book-open text-primary mb-3"></i>
+                            <h5 class="mb-2">Pelayanan Umum & Legalisasi</h5>
+                            <p class="mb-0 text-muted">Legalisasi dokumen resmi dan konsultasi layanan publik masyarakat.</p>
                         </div>
                     </div>
                 </div>
