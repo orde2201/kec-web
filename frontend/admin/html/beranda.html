@@ -143,70 +143,71 @@
 
       <!-- Tambahkan script ini sebelum </body> di halaman Admin -->
       <script>
-        // Fungsi untuk mengambil data saat ini dan mengisinya ke dalam form input
-        document.addEventListener("DOMContentLoaded", function () {
-          fetch('/api/pengaturan')
-            .then(res => res.json())
-            .then(data => {
-              if (data) {
-                document.getElementById('about_title').value = data.about_title || '';
-                document.getElementById('about_desc').value = data.about_desc || '';
-              }
-            });
-        });
+  // Tentukan Base URL APIBackend
+  const API_BASE_URL = 'https://kec-rumbia.web.id';
 
-        // Fungsi untuk mensubmit form ke backend
-        document.getElementById('formPengaturan').addEventListener('submit', function (e) {
-          e.preventDefault();
+  // Load data awal saat halaman admin dibuka
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch(`${API_BASE_URL}/api/pengaturan`)
+      .then(res => res.json())
+      .then(resData => {
+        const data = resData.data || resData;
+        if (data) {
+          if (document.getElementById('about_title')) document.getElementById('about_title').value = data.about_title || '';
+          if (document.getElementById('about_desc')) document.getElementById('about_desc').value = data.about_desc || '';
+        }
+      })
+      .catch(err => console.error('Gagal memuat data pengaturan:', err));
+  });
 
-          let formData = new FormData();
-          formData.append('about_title', document.getElementById('about_title').value);
-          formData.append('about_desc', document.getElementById('about_desc').value);
+  // Submit Form Pengaturan Beranda
+  document.getElementById('formPengaturan').addEventListener('submit', function (e) {
+    e.preventDefault();
 
-          const heroImage = document.getElementById('hero_image').files[0];
-          const aboutImage = document.getElementById('about_image').files[0];
+    let formData = new FormData();
+    formData.append('about_title', document.getElementById('about_title').value);
+    formData.append('about_desc', document.getElementById('about_desc').value);
 
-          if (heroImage) formData.append('hero_image', heroImage);
-          if (aboutImage) formData.append('about_image', aboutImage);
+    const heroImage = document.getElementById('hero_image').files[0];
+    const aboutImage = document.getElementById('about_image').files[0];
 
-          // Pastikan API endpoint PUT / POST ini tersedia di Node.js Anda
-          fetch('/api/pengaturan/update', {
-            method: 'POST', // atau PUT tergantung backend Anda
-            body: formData
-          })
-            .then(response => response.json())
-            .then(result => {
-              alert('Berhasil mengupdate halaman beranda!');
-              window.location.reload();
-            })
-            .catch(error => {
-              console.error('Error:', error);
-              alert('Gagal mengupdate.');
-            });
-        });
-        document.addEventListener('DOMContentLoaded', function () {
-          const btnSignOut = document.getElementById('btnSignOut');
+    if (heroImage) formData.append('hero_image', heroImage);
+    if (aboutImage) formData.append('about_image', aboutImage);
 
-          if (btnSignOut) {
-            btnSignOut.addEventListener('click', function (e) {
-              e.preventDefault();
+    // Kirim request ke endpoint API dengan Full Base URL
+    fetch(`${API_BASE_URL}/api/pengaturan/update`, {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
+        return response.json();
+      })
+      .then(result => {
+        alert('Berhasil mengupdate halaman beranda!');
+        window.location.reload();
+      })
+      .catch(error => {
+        console.error('Error update:', error);
+        alert('Gagal mengupdate beranda. Cek koneksi backend atau periksa format file.');
+      });
+  });
 
-              // 1. Konfirmasi opsional ke pengguna (opsional)
-              if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
-
-                // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                localStorage.clear();
-                sessionStorage.clear();
-
-                // 3. Arahkan kembali pengguna ke halaman login
-                window.location.href = 'login.html';
-              }
-            });
-          }
-        });
-      </script>
+  // Handler Sign Out
+  document.addEventListener('DOMContentLoaded', function () {
+    const btnSignOut = document.getElementById('btnSignOut');
+    if (btnSignOut) {
+      btnSignOut.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
+          localStorage.clear();
+          sessionStorage.clear();
+          window.location.href = 'login.html';
+        }
+      });
+    }
+  });
+</script>
 
       <footer class="admin-footer">
 

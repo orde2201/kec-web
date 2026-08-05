@@ -483,14 +483,30 @@
                     if (!response.ok) throw new Error(`HTTP Error Status: ${response.status}`);
                     return response.json();
                 })
-                .then(data => {
-                    console.log("[DEBUG - Pengaturan] Data Diterima:", data);
+                .then(resData => {
+                    console.log("[DEBUG - Pengaturan] Data Diterima:", resData);
+
+                    // Mengakomodasi jika backend merespon langsung objek atau { data: ... }
+                    const data = resData.data || resData;
 
                     if (data && !data.error) {
-                        // Safe Update Elements dengan Null Checking
-                        setElementSrc('site-logo', data.logo ? `${API_BASE_URL}/uploads/${data.logo}` : null);
-                        setElementSrc('hero-img', data.hero_image ? `${API_BASE_URL}/uploads/${data.hero_image}` : null);
-                        setElementSrc('about-img', data.about_image ? `${API_BASE_URL}/uploads/${data.about_image}` : null);
+                        // Generasi Cache Buster Timestamp
+                        const timestamp = new Date().getTime();
+
+                        // Safe Update Hero Image (Banner)
+                        if (data.hero_image) {
+                            const heroUrl = `${API_BASE_URL}/uploads/${data.hero_image}?v=${timestamp}`;
+                            setElementSrc('hero-img', heroUrl);
+
+                            // Update semua elemen gambar di dalam carousel (mencegah bug kloning Owl Carousel)
+                            document.querySelectorAll('.header-carousel img').forEach(img => {
+                                img.src = heroUrl;
+                            });
+                        }
+
+                        // Safe Update Logo & About Image dengan Cache Buster
+                        if (data.logo) setElementSrc('site-logo', `${API_BASE_URL}/uploads/${data.logo}?v=${timestamp}`);
+                        if (data.about_image) setElementSrc('about-img', `${API_BASE_URL}/uploads/${data.about_image}?v=${timestamp}`);
 
                         setElementText('about-title', data.about_title);
                         setElementText('footer-about-text', data.footer_about);
@@ -509,6 +525,11 @@
                 .catch(error => console.error('[DEBUG - Pengaturan] Error fetching pengaturan:', error));
         }
 
+        function setElementSrc(id, url) {
+            if (!url) return;
+            const el = document.getElementById(id);
+            if (el) el.src = url;
+        }
         /**
          * Handler Pencarian Berita pada Navbar
          */
