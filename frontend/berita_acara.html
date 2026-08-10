@@ -189,20 +189,38 @@
                 <h1 class="mb-4 mb-md-5 fs-2 fs-md-1" id="page-heading-title">Daftar Berita Terbaru</h1>
             </div>
 
-            <!-- Panel Indicator Pencarian -->
+            <!-- Filter Kategori & Pencarian Inline -->
+            <div class="row mb-4 justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="input-group">
+                        <select class="form-select border-primary" id="kategori-filter" style="max-width: 160px;">
+                            <option value="">Semua Kategori</option>
+                        </select>
+                        <input type="text" id="inline-search-input" class="form-control border-primary" placeholder="Cari berita...">
+                        <button class="btn btn-primary px-3" type="button" id="inline-search-btn">
+                            <i class="fa fa-search me-1"></i> Cari
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel Indicator Pencarian / Filter -->
             <div id="search-info" class="text-center mb-4 d-none">
-                <span class="badge bg-primary fs-6 px-3 py-2">
-                    Hasil pencarian untuk kata kunci: <strong id="search-keyword-text"></strong>
+                <span class="badge bg-primary fs-6 px-3 py-2" id="search-info-text">
+                    Filter Aktif
                 </span>
                 <button class="btn btn-sm btn-outline-danger ms-2" onclick="resetSearch()">
-                    <i class="fa fa-times me-1"></i>Reset / Tampilkan Semua
+                    <i class="fa fa-times me-1"></i>Reset Filter
                 </button>
             </div>
 
-            <!-- Kontainer Hasil Rendering Kartu Berita (g-2 di mobile agar tidak sempit) -->
+            <!-- Kontainer Hasil Rendering Kartu Berita -->
             <div class="row g-2 g-md-4 justify-content-center" id="berita-container">
                 <div class="text-center text-muted">Memuat berita...</div>
             </div>
+
+            <!-- Control Pagination -->
+            <div class="d-flex justify-content-center mt-4" id="pagination-container"></div>
         </div>
     </div>
 
@@ -258,28 +276,48 @@
 
     <!-- ==================== CORE API & SEARCH LOGIC ==================== -->
     <script>
-        /**
-         * CONFIGURATION
-         */
         const API_BASE_URL = 'https://kec-rumbia.web.id';
-        let masterBerita = []; // Menyimpan cache data berita untuk pencarian interaktif di frontend
+        let masterBerita = [];
+        let currentPage = 1;
+        const itemsPerPage = 6;
+        let filteredBerita = [];
 
         document.addEventListener("DOMContentLoaded", function () {
             console.log("[DEBUG - Init] Halaman Berita Acara dimuat.");
 
             loadHeaderPages();
             loadPengaturanHalaman();
+            loadKategoriOptions();
             initBeritaPage();
             initSearchHandler();
         });
+
+        function loadKategoriOptions() {
+            fetch(`${API_BASE_URL}/api/kategori`)
+                .then(res => res.json())
+                .then(resData => {
+                    const kategoriSelect = document.getElementById('kategori-filter');
+                    if (!kategoriSelect) return;
+                    const categories = Array.isArray(resData) ? resData : (resData.data || []);
+                    categories.forEach(cat => {
+                        const opt = document.createElement('option');
+                        opt.value = cat.nama_kategori || cat.nama || cat.id;
+                        opt.textContent = cat.nama_kategori || cat.nama;
+                        kategoriSelect.appendChild(opt);
+                    });
+                })
+                .catch(err => console.error('[DEBUG - Kategori] Error fetching kategori:', err));
+        }
 
         function initBeritaPage() {
             const urlParams = new URLSearchParams(window.location.search);
             const searchKeyword = urlParams.get('q') || urlParams.get('search') || '';
 
             const searchInput = document.getElementById('navbar-search-input');
-            if (searchInput && searchKeyword) {
-                searchInput.value = searchKeyword;
+            const inlineSearchInput = document.getElementById('inline-search-input');
+            if (searchKeyword) {
+                if (searchInput) searchInput.value = searchKeyword;
+                if (inlineSearchInput) inlineSearchInput.value = searchKeyword;
             }
 
             const endpoint = `${API_BASE_URL}/api/berita`;
@@ -291,14 +329,13 @@
                     return response.json();
                 })
                 .then(resData => {
-                    console.log("[DEBUG - Berita] Response Diterima:", resData);
-
                     masterBerita = Array.isArray(resData) ? resData : (resData.data || []);
 
                     if (searchKeyword) {
                         performSearch(searchKeyword);
                     } else {
-                        renderBerita(masterBerita);
+                        filteredBerita = masterBerita;
+                        renderBeritaWithPagination();
                     }
                 })
                 .catch(error => {
@@ -308,16 +345,70 @@
                         container.innerHTML = `
                             <div class="col-12 text-center py-5">
                                 <p class="text-danger fw-bold mb-1"><i class="fa fa-exclamation-triangle me-2"></i>Gagal memuat berita dari server.</p>
-                                <small class="text-muted">Pastikan server backend di port 3000 berjalan dengan baik.</small>
+                                <small class="text-muted">Pastikan server backend berjalan dengan baik.</small>
                             </div>
                         `;
                     }
                 });
         }
 
-        /**
-         * Render HTML Kartu Berita (Menggunakan 'col-6 col-lg-4' agar 2 card per baris di HP)
-         */
+        function renderBeritaWithPagination() {
+            const totalPages = Math.ceil(filteredBerita.length / itemsPerPage);
+            if (currentPage > totalPages) currentPage = totalPages || 1;
+
+            const startIdx = (currentPage - 1) * itemsPerPage;
+            const endIdx = startIdx + itemsPerPage;
+            const pageItems = filteredBerita.slice(startIdx, endIdx);
+
+            renderBerita(pageItems);
+            renderPaginationControls(totalPages);
+        }
+
+        function renderPaginationControls(totalPages) {
+            const container = document.getElementById('pagination-container');
+            if (!container) return;
+
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = `<nav aria-label="Page navigation"><ul class="pagination mb-0">`;
+            
+            html += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <button class="page-link" onclick="changePage(${currentPage - 1})" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </button>
+                </li>
+            `;
+
+            for (let i = 1; i <= totalPages; i++) {
+                html += `
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <button class="page-link" onclick="changePage(${i})">${i}</button>
+                    </li>
+                `;
+            }
+
+            html += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <button class="page-link" onclick="changePage(${currentPage + 1})" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </button>
+                </li>
+            `;
+
+            html += `</ul></nav>`;
+            container.innerHTML = html;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            renderBeritaWithPagination();
+            document.getElementById('berita-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
         function renderBerita(listBerita) {
             const container = document.getElementById('berita-container');
             if (!container) return;
@@ -348,7 +439,6 @@
                 const linkDetail = `detail-berita.html?id=${berita.id}`;
                 const previewText = berita.konten ? berita.konten.replace(/<[^>]*>?/gm, '') : '';
 
-                // Penggunaan class col-6 untuk HP dan col-lg-4 untuk layar desktop
                 const htmlCard = `
                     <div class="col-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
                         <div class="course-item bg-light h-100 d-flex flex-column rounded overflow-hidden shadow-sm">
@@ -383,66 +473,103 @@
             });
         }
 
-        function performSearch(keyword) {
+        function performSearch(keyword, selectedCategory = '') {
             const searchInfo = document.getElementById('search-info');
-            const searchKeywordText = document.getElementById('search-keyword-text');
+            const searchInfoText = document.getElementById('search-info-text');
             const pageHeadingTitle = document.getElementById('page-heading-title');
 
             const cleanKeyword = (keyword || '').trim().toLowerCase();
+            const cleanCategory = (selectedCategory || '').trim().toLowerCase();
 
-            if (!cleanKeyword) {
+            if (!cleanKeyword && !cleanCategory) {
                 resetSearch();
                 return;
             }
 
-            console.log(`[DEBUG - Search] Melakukan filtering untuk keyword: "${cleanKeyword}"`);
+            const tokens = cleanKeyword ? cleanKeyword.split(/\s+/).filter(k => k.length > 0) : [];
 
-            const tokens = cleanKeyword.split(/\s+/).filter(k => k.length > 0);
-
-            const hasilFilter = masterBerita.filter(berita => {
+            filteredBerita = masterBerita.filter(berita => {
                 const judul = (berita.judul || '').toLowerCase();
                 const konten = (berita.konten || '').toLowerCase();
                 const kategori = (berita.nama_kategori || '').toLowerCase();
 
-                return tokens.some(token => judul.includes(token) || konten.includes(token) || kategori.includes(token));
+                const matchKeyword = tokens.length === 0 || tokens.some(token => judul.includes(token) || konten.includes(token) || kategori.includes(token));
+                const matchCategory = !cleanCategory || kategori === cleanCategory;
+
+                return matchKeyword && matchCategory;
             });
 
-            if (searchKeywordText) searchKeywordText.innerText = `"${keyword}"`;
-            if (searchInfo) searchInfo.classList.remove('d-none');
-            if (pageHeadingTitle) pageHeadingTitle.innerText = `Hasil Pencarian (${hasilFilter.length})`;
+            let infoParts = [];
+            if (keyword) infoParts.push(`Kata kunci: "<strong>${keyword}</strong>"`);
+            if (selectedCategory) infoParts.push(`Kategori: "<strong>${selectedCategory}</strong>"`);
 
-            renderBerita(hasilFilter);
+            if (searchInfoText) searchInfoText.innerHTML = `Hasil Filter &mdash; ${infoParts.join(' | ')}`;
+            if (searchInfo) searchInfo.classList.remove('d-none');
+            if (pageHeadingTitle) pageHeadingTitle.innerText = `Hasil Pencarian (${filteredBerita.length})`;
+
+            currentPage = 1;
+            renderBeritaWithPagination();
         }
 
         function resetSearch() {
-            console.log("[DEBUG - Search] Reset pencarian.");
-
             const searchInput = document.getElementById('navbar-search-input');
+            const inlineSearchInput = document.getElementById('inline-search-input');
+            const kategoriSelect = document.getElementById('kategori-filter');
             const searchInfo = document.getElementById('search-info');
             const pageHeadingTitle = document.getElementById('page-heading-title');
 
             if (searchInput) searchInput.value = '';
+            if (inlineSearchInput) inlineSearchInput.value = '';
+            if (kategoriSelect) kategoriSelect.value = '';
             if (searchInfo) searchInfo.classList.add('d-none');
             if (pageHeadingTitle) pageHeadingTitle.innerText = "Daftar Berita Terbaru";
 
             window.history.replaceState({}, document.title, window.location.pathname);
 
-            renderBerita(masterBerita);
+            filteredBerita = masterBerita;
+            currentPage = 1;
+            renderBeritaWithPagination();
         }
 
         function initSearchHandler() {
             const searchBtn = document.getElementById('navbar-search-btn');
             const searchInput = document.getElementById('navbar-search-input');
+            const inlineSearchBtn = document.getElementById('inline-search-btn');
+            const inlineSearchInput = document.getElementById('inline-search-input');
+            const kategoriSelect = document.getElementById('kategori-filter');
 
-            function executeSearch() {
+            function executeSearchFromNavbar() {
                 const keyword = searchInput ? searchInput.value.trim() : '';
-                performSearch(keyword);
+                const selectedCat = kategoriSelect ? kategoriSelect.value : '';
+                if (inlineSearchInput) inlineSearchInput.value = keyword;
+                performSearch(keyword, selectedCat);
+            }
+
+            function executeSearchFromInline() {
+                const keyword = inlineSearchInput ? inlineSearchInput.value.trim() : '';
+                const selectedCat = kategoriSelect ? kategoriSelect.value : '';
+                if (searchInput) searchInput.value = keyword;
+                performSearch(keyword, selectedCat);
             }
 
             if (searchBtn && searchInput) {
-                searchBtn.addEventListener('click', executeSearch);
+                searchBtn.addEventListener('click', executeSearchFromNavbar);
                 searchInput.addEventListener('keyup', function (e) {
-                    if (e.key === 'Enter') executeSearch();
+                    if (e.key === 'Enter') executeSearchFromNavbar();
+                });
+            }
+
+            if (inlineSearchBtn && inlineSearchInput) {
+                inlineSearchBtn.addEventListener('click', executeSearchFromInline);
+                inlineSearchInput.addEventListener('keyup', function (e) {
+                    if (e.key === 'Enter') executeSearchFromInline();
+                });
+            }
+
+            if (kategoriSelect) {
+                kategoriSelect.addEventListener('change', function () {
+                    const keyword = inlineSearchInput ? inlineSearchInput.value.trim() : (searchInput ? searchInput.value.trim() : '');
+                    performSearch(keyword, this.value);
                 });
             }
         }

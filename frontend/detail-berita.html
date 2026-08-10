@@ -80,11 +80,13 @@
             margin: 1.5rem 0;
         }
 
+        /* Menjaga rasio asli gambar pada isi berita */
         .berita-content img {
             max-width: 100% !important;
             height: auto !important;
             border-radius: 8px;
             margin: 1rem 0;
+            object-fit: contain !important;
         }
 
         /* Share Button */
@@ -416,11 +418,11 @@
 
                         if (gambarArray.length === 1) {
                             galeriHTML = `
-                                <div class="mb-4">
-                                    <img class="img-fluid w-100 rounded" 
+                                <div class="mb-4 text-center">
+                                    <img class="img-fluid rounded" 
                                          src="${API_BASE_URL}/uploads/${gambarArray[0]}" 
                                          alt="${berita.judul}" 
-                                         style="max-height: 480px; object-fit: cover;"
+                                         style="max-width: 100%; height: auto; object-fit: contain;"
                                          onerror="this.onerror=null; this.src='img/default.jpg';">
                                 </div>`;
                         } else if (gambarArray.length > 1) {
@@ -432,8 +434,8 @@
                                 const activeClass = idx === 0 ? 'active' : '';
                                 indicators += `<button type="button" data-bs-target="#sliderBerita" data-bs-slide-to="${idx}" class="${activeClass}" aria-label="Slide ${idx + 1}"></button>`;
                                 carouselInner += `
-                                    <div class="carousel-item ${activeClass}">
-                                        <img src="${API_BASE_URL}/uploads/${img}" class="d-block w-100" style="max-height: 480px; object-fit: cover;" alt="Foto ${idx + 1}" onerror="this.onerror=null; this.src='img/default.jpg';">
+                                    <div class="carousel-item ${activeClass} text-center bg-light">
+                                        <img src="${API_BASE_URL}/uploads/${img}" class="img-fluid rounded" style="max-width: 100%; height: auto; object-fit: contain;" alt="Foto ${idx + 1}" onerror="this.onerror=null; this.src='img/default.jpg';">
                                     </div>`;
                             });
 
@@ -450,7 +452,10 @@
                                 </div>`;
                         }
                     } else {
-                        galeriHTML = `<img class="img-fluid w-100 rounded mb-4" src="img/default.jpg" style="max-height: 400px; object-fit: cover;">`;
+                        galeriHTML = `
+                            <div class="mb-4 text-center">
+                                <img class="img-fluid rounded" src="img/default.jpg" style="max-width: 100%; height: auto; object-fit: contain;">
+                            </div>`;
                     }
 
                     // Estimasi Waktu Baca
