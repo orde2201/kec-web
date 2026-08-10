@@ -122,10 +122,17 @@
                     <input type="email" class="form-control" id="email" required placeholder="contoh@domain.com">
                   </div>
 
+                  <!-- FIELD PASSWORD 1 -->
                   <div class="mb-3">
                     <label class="form-label fw-bold" id="labelPassword">Password <span class="text-danger" id="reqPassword">*</span></label>
-                    <input type="password" class="form-control" id="password" placeholder="Minimal 8 karakter">
+                    <input type="password" class="form-control" id="password" required placeholder="Minimal 8 karakter">
                     <small class="text-muted d-block mt-1" id="passHelpText">Kosongkan/abaikan jika tidak ingin mengubah password saat edit.</small>
+                  </div>
+
+                  <!-- FIELD PASSWORD 2 (KONFIRMASI) -->
+                  <div class="mb-3">
+                    <label class="form-label fw-bold" id="labelConfirmPassword">Konfirmasi Password <span class="text-danger" id="reqConfirmPassword">*</span></label>
+                    <input type="password" class="form-control" id="confirmPassword" required placeholder="Ulangi password di atas">
                   </div>
 
                   <div class="mb-3">
@@ -309,14 +316,20 @@
       document.getElementById('userId').value = u.id;
       document.getElementById('nama').value = u.Nama || '';
       document.getElementById('email').value = u.email || '';
-      document.getElementById('password').value = ''; // Kosongkan password saat edit
+      
+      // Kosongkan password & konfirmasi password saat edit
+      document.getElementById('password').value = '';
+      document.getElementById('confirmPassword').value = '';
       document.getElementById('password').removeAttribute('required');
+      document.getElementById('confirmPassword').removeAttribute('required');
+
       document.getElementById('phone').value = u.phone || '';
       document.getElementById('hakAkses').value = u.hakAkses || 'User';
       document.getElementById('instansiId').value = u.instansi_id || '';
       document.getElementById('notes').value = u.notes || '';
 
       document.getElementById('reqPassword').style.display = 'none';
+      document.getElementById('reqConfirmPassword').style.display = 'none';
       document.getElementById('formTitle').innerHTML = `<i class="bi bi-pencil-square me-2"></i>Edit User (#${u.id})`;
       document.getElementById('btnSubmit').className = 'btn btn-warning flex-grow-1';
       document.getElementById('btnSubmit').innerHTML = `<i class="bi bi-check-circle me-1"></i> Update User`;
@@ -328,17 +341,30 @@
     function saveUser() {
       const id = document.getElementById('userId').value;
       const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
 
-      // Validasi password khusus saat Tambah User Baru
-      if (!id && (!password || password.length < 8)) {
-        alert('Password wajib diisi minimal 8 karakter untuk user baru!');
-        return;
+      // Validasi khusus saat Tambah User Baru
+      if (!id) {
+        if (!password || password.length < 8) {
+          alert('Password wajib diisi minimal 8 karakter!');
+          return;
+        }
+        if (password !== confirmPassword) {
+          alert('Konfirmasi password tidak cocok! Silakan periksa kembali.');
+          return;
+        }
       }
 
-      // Validasi password jika diisi saat Edit User
-      if (id && password && password.length < 8) {
-        alert('Password baru minimal 8 karakter!');
-        return;
+      // Validasi khusus saat Edit User (Jika password diisi)
+      if (id && (password || confirmPassword)) {
+        if (password.length < 8) {
+          alert('Password baru minimal 8 karakter!');
+          return;
+        }
+        if (password !== confirmPassword) {
+          alert('Konfirmasi password tidak cocok! Silakan periksa kembali.');
+          return;
+        }
       }
 
       const payload = {
@@ -400,8 +426,13 @@
     function resetForm() {
       document.getElementById('userId').value = '';
       document.getElementById('userForm').reset();
+      
+      // Kembalikan atribut required untuk tambah user
       document.getElementById('password').setAttribute('required', 'required');
+      document.getElementById('confirmPassword').setAttribute('required', 'required');
       document.getElementById('reqPassword').style.display = 'inline';
+      document.getElementById('reqConfirmPassword').style.display = 'inline';
+      
       document.getElementById('formTitle').innerHTML = `<i class="bi bi-person-plus me-2"></i>Tambah User Baru`;
       document.getElementById('btnSubmit').className = 'btn btn-primary flex-grow-1';
       document.getElementById('btnSubmit').innerHTML = `<i class="bi bi-check-circle me-1"></i> Simpan User`;
