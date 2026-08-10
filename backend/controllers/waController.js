@@ -18,16 +18,26 @@ async function getWaStatus(req, res) {
 }
 
 // POST: Logout WhatsApp dari Dashboard Admin
+// POST: Logout WhatsApp dari Dashboard Admin
 async function logoutWa(req, res) {
   try {
     if (waClient.waState.isReady || waClient.waState.authenticated) {
-      await waClient.logout();
+      await waClient.logout(); // Panggil logout bawaan
+
+      // Reset state
       waClient.waState.isReady = false;
       waClient.waState.authenticated = false;
       waClient.waState.qrCodeDataUrl = null;
       waClient.waState.phoneNumber = null;
-      
-      return res.json({ success: true, message: 'WhatsApp berhasil dikeluarkan. QR Code baru akan dibuat.' });
+
+      // PENTING: Panggil inisialisasi ulang agar library mendeteksi ulang status & menghasilkan QR Code baru
+      if (typeof waClient.initialize === 'function') {
+        waClient.initialize();
+      } else if (waClient.client && typeof waClient.client.initialize === 'function') {
+        await waClient.client.initialize();
+      }
+
+      return res.json({ success: true, message: 'WhatsApp berhasil dikeluarkan. QR Code baru sedang dibuat.' });
     }
     res.status(400).json({ success: false, message: 'WhatsApp belum terhubung.' });
   } catch (error) {
