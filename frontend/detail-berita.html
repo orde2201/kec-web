@@ -6,6 +6,25 @@
     <title>Detail Berita - Web Kecamatan Rumbia</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
+    <!-- Primary Meta Tags -->
+    <meta id="meta-description" name="description" content="Portal Resmi Informasi dan Berita Kecamatan Rumbia">
+
+    <!-- Open Graph / Facebook / WhatsApp Meta Tags -->
+    <meta property="og:type" content="article">
+    <meta id="og-url" property="og:url" content="">
+    <meta id="og-title" property="og:title" content="Detail Berita - Web Kecamatan Rumbia">
+    <meta id="og-description" property="og:description" content="Portal Resmi Informasi dan Berita Kecamatan Rumbia">
+    <meta id="og-image" property="og:image" content="https://kec-rumbia.web.id/img/logo.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter / X Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta id="twitter-url" property="twitter:url" content="">
+    <meta id="twitter-title" name="twitter:title" content="Detail Berita - Web Kecamatan Rumbia">
+    <meta id="twitter-description" name="twitter:description" content="Portal Resmi Informasi dan Berita Kecamatan Rumbia">
+    <meta id="twitter-image" name="twitter:image" content="https://kec-rumbia.web.id/img/logo.png">
+
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
 
@@ -333,14 +352,19 @@
 
     <!-- ==================== CORE API & DETAIL BERITA LOGIC ==================== -->
     <script>
-        /**
-         * CONFIGURATION
-         */
         const API_BASE_URL = 'https://kec-rumbia.web.id';
 
         function copyLink() {
             navigator.clipboard.writeText(window.location.href);
             alert("Link berita berhasil disalin ke clipboard!");
+        }
+
+        // Helper untuk memotong isi berita menjadi teks singkat
+        function getExcerpt(htmlText, limit = 120) {
+            if (!htmlText) return '';
+            const plainText = htmlText.replace(/<[^>]*>?/gm, '').replace(/\s+/g, ' ').trim();
+            if (plainText.length <= limit) return plainText;
+            return plainText.substring(0, limit) + '...';
         }
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -349,33 +373,28 @@
             const urlParams = new URLSearchParams(window.location.search);
             const beritaId = urlParams.get('id');
 
-            // 1. SET LINK SHARE SOCIAL MEDIA
-            const currentUrl = encodeURIComponent(window.location.href);
-            document.getElementById('share-wa').href = `https://api.whatsapp.com/send?text=${currentUrl}`;
-            document.getElementById('share-fb').href = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
-            document.getElementById('share-tw').href = `https://twitter.com/intent/tweet?url=${currentUrl}`;
+            // Set URL meta awal
+            const pageUrl = window.location.href;
+            document.getElementById('og-url').setAttribute('content', pageUrl);
+            document.getElementById('twitter-url').setAttribute('content', pageUrl);
 
-            // 2. FETCH DETAIL BERITA
+            // FETCH DETAIL BERITA
             loadDetailBerita(beritaId);
 
-            // 3. FETCH PENGATURAN SITUS
+            // FETCH PENGATURAN SITUS
             loadPengaturanHalaman();
 
-            // 4. FETCH HALAMAN KUSTOM
+            // FETCH HALAMAN KUSTOM
             loadHeaderPages();
 
-            // 5. HANDLER PENCARIAN NAVBAR
+            // HANDLER PENCARIAN NAVBAR
             initSearchHandler();
         });
 
-        /**
-         * Fetch dan Render Konten Berita Berdasarkan ID
-         */
         function loadDetailBerita(beritaId) {
             const container = document.getElementById('detail-container');
 
             if (!beritaId) {
-                console.error("[DEBUG - Detail] ID Berita tidak ditemukan pada parameter URL.");
                 if (container) {
                     container.innerHTML = `
                         <div class="alert alert-danger border-0 shadow-sm p-4">
@@ -386,7 +405,6 @@
             }
 
             const endpoint = `${API_BASE_URL}/api/berita/${beritaId}`;
-            console.log(`[DEBUG - Detail] Fetching: ${endpoint}`);
 
             fetch(endpoint)
                 .then(res => {
@@ -394,8 +412,6 @@
                     return res.json();
                 })
                 .then(berita => {
-                    console.log("[DEBUG - Detail] Data Berita Diterima:", berita);
-
                     if (!container) return;
 
                     const tanggal = berita.created_at
@@ -403,6 +419,36 @@
                         : '-';
 
                     document.title = `${berita.judul} - Kecamatan Rumbia`;
+
+                    // Potong teks untuk excerpt ringkas
+                    const excerpt = getExcerpt(berita.konten, 150);
+
+                    // Ambil Gambar Pertama untuk Pratinjau
+                    let imageUrl = `${API_BASE_URL}/img/logo.png`;
+                    if (berita.gambar && typeof berita.gambar === 'string' && berita.gambar.trim() !== '') {
+                        const firstImage = berita.gambar.split(',')[0].trim();
+                        if (firstImage) imageUrl = `${API_BASE_URL}/uploads/${firstImage}`;
+                    }
+
+                    // 1. UPDATE META TAG DENGAN DATA DARI API (Dynamic Injection)
+                    document.getElementById('meta-description').setAttribute('content', excerpt);
+                    document.getElementById('og-title').setAttribute('content', berita.judul);
+                    document.getElementById('og-description').setAttribute('content', excerpt);
+                    document.getElementById('og-image').setAttribute('content', imageUrl);
+
+                    document.getElementById('twitter-title').setAttribute('content', berita.judul);
+                    document.getElementById('twitter-description').setAttribute('content', excerpt);
+                    document.getElementById('twitter-image').setAttribute('content', imageUrl);
+
+                    // 2. SET LINK SHARE CUSTOM (Termasuk Teks Judul & Isi Ringkas untuk WhatsApp)
+                    const currentUrl = encodeURIComponent(window.location.href);
+                    
+                    // WhatsApp share text dengan Format: *Judul*\n\nRingkasan...\n\nLink
+                    const waText = encodeURIComponent(`*${berita.judul}*\n\n${excerpt}\n\nBaca selengkapnya: `) + currentUrl;
+                    document.getElementById('share-wa').href = `https://api.whatsapp.com/send?text=${waText}`;
+                    
+                    document.getElementById('share-fb').href = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
+                    document.getElementById('share-tw').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(berita.judul)}&url=${currentUrl}`;
 
                     const breadcrumbTitle = document.getElementById('breadcrumb-title');
                     if (breadcrumbTitle) {
@@ -511,9 +557,6 @@
                 });
         }
 
-        /**
-         * Load Pengaturan Situs
-         */
         function loadPengaturanHalaman() {
             fetch(`${API_BASE_URL}/api/pengaturan`)
                 .then(res => res.json())
@@ -530,9 +573,6 @@
                 .catch(err => console.error('[DEBUG - Pengaturan] Error:', err));
         }
 
-        /**
-         * Load Halaman Kustom (Navigasi Header & Footer)
-         */
         function loadHeaderPages() {
             fetch(`${API_BASE_URL}/api/halaman?header_only=true`)
                 .then(res => res.json())
@@ -568,9 +608,6 @@
                 .catch(err => console.error("[DEBUG - HeaderPages] Error:", err));
         }
 
-        /**
-         * Handler Pencarian Berita pada Navbar
-         */
         function initSearchHandler() {
             const searchBtn = document.getElementById('navbar-search-btn');
             const searchInput = document.getElementById('navbar-search-input');
@@ -588,7 +625,6 @@
             }
         }
 
-        // Helper Functions
         function setElementSrc(id, url) {
             if (!url) return;
             const el = document.getElementById(id);
