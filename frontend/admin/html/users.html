@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-
+  <title>Manajemen User - Kecamatan Rumbia</title>
   <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="../assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="../assets/css/style.css">
 
-    <script>
+  <script>
     (function checkAuth() {
       try {
         const userRaw = localStorage.getItem('user');
@@ -38,35 +38,32 @@
   <div class="admin-shell">
     <div class="sidebar-backdrop" data-sidebar-close></div>
 
-    <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
+    <!-- Sidebar Admin -->
+    <aside class="admin-sidebar" id="adminSidebar">
       <div class="sidebar-header">
         <a class="brand-mark" href="index.html">
           <span class="brand-copy">
-            <span class="brand-title">admin</span>
+            <span class="brand-title">Admin</span>
             <span class="brand-subtitle">Kecamatan Rumbia</span>
           </span>
         </a>
       </div>
 
       <nav class="sidebar-nav">
-        <a class="nav-link active" href="index.html">
+        <a class="nav-link" href="index.html">
           <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
           <span class="nav-text">Dashboard</span>
         </a>
-        <a class="nav-link" href="users.html">
+        <a class="nav-link active" href="users.html">
           <span class="nav-icon"><i class="bi bi-people"></i></span>
           <span class="nav-text">Users</span>
-        </a>
-        <a class="nav-link" href="add-user.html">
-          <span class="nav-icon"><i class="bi bi-person-plus"></i></span>
-          <span class="nav-text">Tambah User</span>
         </a>
         <a class="nav-link" href="berita-acara-pengumuman.html">
           <span class="nav-icon"><i class="bi bi-newspaper"></i></span>
           <span class="nav-text">Berita & Pengumuman</span>
         </a>
         <a class="nav-link" href="beranda.html">
-          <span class="nav-icon"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
+          <span class="nav-icon"><i class="bi bi-grid-3x3-gap"></i></span>
           <span class="nav-text">Edit Beranda</span>
         </a>
         <a class="nav-link" href="add-page.html">
@@ -82,90 +79,125 @@
           <span class="nav-text">WhatsApp</span>
         </a>
       </nav>
-
-      
-      <div class="sidebar-footer">
-        <span class="status-dot"></span>
-        <span class="sidebar-footer-text">Database connected</span>
-      </div>
     </aside>
 
+    <!-- Content Utama -->
     <div class="admin-main">
-      <nav class="navbar admin-navbar navbar-expand bg-white">
-        <div class="container-fluid px-3 px-lg-4">
-          <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar" aria-expanded="true" aria-label="Toggle sidebar">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-          <div class="navbar-actions ms-auto">
-           
-          <div class="dropdown">
-              <div class="container-fluid px-3 px-lg-4">
-          <button type="button" id="btnSignOut" class="btn btn-outline-danger btn-sm">
-            <i class="bi bi-box-arrow-right"></i> Sign Out
-          </button>
-        </div>
-              
-            </div>
-          </div>
-        </div>
-      </nav>
-
       <main class="dashboard-content">
         <div class="container-fluid px-3 px-lg-4 py-4">
-          <div class="page-heading">
-            <div class="page-heading-copy">
-              <span class="page-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
-              <div>
-                <p class="eyebrow mb-1">Management</p>
-                <h1 class="h3 mb-1">Users</h1>
+
+          <nav class="navbar admin-navbar navbar-expand bg-white mb-4 rounded shadow-sm">
+            <div class="container-fluid px-3 px-lg-4">
+              <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar"
+                aria-expanded="true" aria-label="Toggle sidebar">
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
+              <div class="navbar-actions ms-auto">
+                <button type="button" id="btnSignOut" class="btn btn-outline-danger btn-sm">
+                  <i class="bi bi-box-arrow-right"></i> Sign Out
+                </button>
+              </div>
+            </div>
+          </nav>
+
+          <div class="row g-4">
+            <!-- FORM TAMBAH / EDIT USER -->
+            <div class="col-12 col-lg-4">
+              <div class="card p-3 shadow-sm">
+                <h5 class="card-title mb-3" id="formTitle">
+                  <i class="bi bi-person-plus me-2"></i>Tambah User Baru
+                </h5>
+                <form id="userForm">
+                  <input type="hidden" id="userId" value="">
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Nama Lengkap <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="nama" required placeholder="Contoh: Ahmad Subagja">
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Email <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" id="email" required placeholder="contoh@domain.com">
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold" id="labelPassword">Password <span class="text-danger" id="reqPassword">*</span></label>
+                    <input type="password" class="form-control" id="password" placeholder="Minimal 8 karakter">
+                    <small class="text-muted d-block mt-1" id="passHelpText">Kosongkan/abaikan jika tidak ingin mengubah password saat edit.</small>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">No. WhatsApp / HP</label>
+                    <input type="text" class="form-control" id="phone" placeholder="Contoh: 081234567890">
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Hak Akses <span class="text-danger">*</span></label>
+                    <select class="form-select" id="hakAkses" required>
+                      <option value="User">User</option>
+                      <option value="Admin">Admin</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Instansi</label>
+                    <select class="form-select" id="instansiId">
+                      <option value="">-- Pilih Instansi (Opsional) --</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label fw-bold">Catatan / Keterangan</label>
+                    <textarea class="form-control" id="notes" rows="3" placeholder="Catatan tambahan user..."></textarea>
+                  </div>
+
+                  <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary flex-grow-1" id="btnSubmit">
+                      <i class="bi bi-check-circle me-1"></i> Simpan User
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">Batal</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- TABEL DAFTAR USER -->
+            <div class="col-12 col-lg-8">
+              <div class="card p-3 shadow-sm">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="card-title mb-0"><i class="bi bi-people me-2"></i>Daftar User</h5>
+                  <button class="btn btn-sm btn-outline-primary" onclick="resetForm()">
+                    <i class="bi bi-plus-lg me-1"></i> User Baru
+                  </button>
+                </div>
+                
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th>ID</th>
+                        <th>Nama & Email</th>
+                        <th>No HP</th>
+                        <th>Hak Akses</th>
+                        <th>Instansi</th>
+                        <th class="text-end">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                      <tr>
+                        <td colspan="6" class="text-center py-3">Memuat data user...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
 
-          <section class="panel mt-3">
-            <div class="panel-header">
-              <div>
-                <h2 class="h5 mb-1 section-title"><i class="bi bi-table" aria-hidden="true"></i><span>User List</span></h2>
-              </div>
-            </div>
-
-            <div class="card border-0 shadow-sm mt-3">
-              <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                  <thead class="table-light">
-                    <tr>
-                      <th>ID</th>
-                      <th>Nama</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Hak Akses</th>
-                      <th>Instansi</th>
-                      <th>Notes</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody id="userTableBody">
-                    <tr>
-                      <td colspan="8" class="text-center text-muted py-4">
-                        <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
-                        Memuat data user...
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </section>
         </div>
       </main>
-
-      <footer class="admin-footer">
-        <div class="container-fluid px-3 px-lg-4">
-          <span>User management dashboard.</span>
-        </div>
-      </footer>
     </div>
   </div>
 
@@ -173,121 +205,208 @@
   <script src="../assets/js/main.js"></script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', fetchUsers);
+    const API_USERS = '/api/users';
+    const API_INSTANSI = '/api/instansi';
+    let userListCache = [];
 
-    async function fetchUsers() {
-      const TARGET_API_URL = '/api/users';
-      const tableBody = document.getElementById('userTableBody');
+    document.addEventListener("DOMContentLoaded", function () {
+      loadInstansi();
+      loadUsers();
 
-      try {
-        const response = await fetch(TARGET_API_URL);
-        
-        if (!response.ok) {
-          throw new Error(`Server respon HTTP error ${response.status}`);
-        }
+      document.getElementById('userForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        saveUser();
+      });
 
-        const result = await response.json();
-        
-        // Memastikan data fleksibel (baik berupa array langsung [...] maupun { data: [...] })
-        const usersList = Array.isArray(result) ? result : (result.data || []);
+      // Handle Sign Out
+      const btnSignOut = document.getElementById('btnSignOut');
+      if (btnSignOut) {
+        btnSignOut.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = 'login.html';
+          }
+        });
+      }
+    });
 
-        if (usersList.length > 0) {
-          tableBody.innerHTML = '';
+    // 1. MEMUAT DAFTAR INSTANSI UNTUK DROPDOWN
+    function loadInstansi() {
+      fetch(API_INSTANSI)
+        .then(res => res.json())
+        .then(resData => {
+          const select = document.getElementById('instansiId');
+          const data = resData.data || resData;
+          if (Array.isArray(data)) {
+            data.forEach(item => {
+              const opt = document.createElement('option');
+              opt.value = item.id;
+              opt.textContent = item.nama_instansi;
+              select.appendChild(opt);
+            });
+          }
+        })
+        .catch(err => console.warn("Instansi tidak dapat dimuat atau endpoint belum tersedia:", err));
+    }
 
-          usersList.forEach(user => {
-            const namaUser = user.Nama || user.nama || '-';
-            const hakAkses = user.hakAkses || user.hak_akses || 'User';
-            const instansi = user.nama_instansi || `Instansi ID: ${user.instansi_id}`;
+    // 2. MEMUAT DAFTAR USER
+    function loadUsers() {
+      fetch(API_USERS)
+        .then(res => res.json())
+        .then(resData => {
+          const tbody = document.getElementById('userTableBody');
+          tbody.innerHTML = '';
 
-            const row = `
-              <tr>
-                <td><strong>#${user.id}</strong></td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <i class="bi bi-person-circle fs-4 text-secondary me-2"></i>
-                    <span>${namaUser}</span>
-                  </div>
-                </td>
-                <td>${user.email}</td>
-                <td>${user.phone}</td>
-                <td>
-                  <span class="badge ${hakAkses === 'Admin' ? 'bg-danger-subtle text-danger' : 'bg-primary-subtle text-primary'} px-2 py-1">
-                    ${hakAkses}
-                  </span>
-                </td>
-                <td><span class="text-muted fw-bold">${instansi}</span></td>
-                <td><small class="text-wrap d-inline-block text-truncate" style="max-width: 150px;">${user.notes || '-'}</small></td>
-                <td>
-                 
-                  <button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${user.id})" title="Hapus User">
-                    <i class="bi bi-trash"></i>
-                  </button>  
-                </td>
-              </tr>
+          const users = resData.data || resData;
+          userListCache = Array.isArray(users) ? users : [];
+
+          if (userListCache.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center py-3 text-muted">Belum ada data user.</td></tr>';
+            return;
+          }
+
+          userListCache.forEach(u => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td><span class="badge bg-secondary">#${u.id}</span></td>
+              <td>
+                <strong class="d-block">${u.Nama || '-'}</strong>
+                <small class="text-muted">${u.email || '-'}</small>
+              </td>
+              <td>${u.phone || '<span class="text-muted">-</span>'}</td>
+              <td>
+                <span class="badge ${u.hakAkses === 'Admin' ? 'bg-danger' : 'bg-info'}">
+                  ${u.hakAkses || 'User'}
+                </span>
+              </td>
+              <td>${u.nama_instansi || '<span class="text-muted">-</span>'}</td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-outline-warning me-1" onclick="editUser(${u.id})" title="Edit User">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${u.id})" title="Hapus User">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
             `;
-            tableBody.insertAdjacentHTML('beforeend', row);
+            tbody.appendChild(tr);
           });
-        } else {
-          tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-muted py-4">Belum ada data user terdaftar.</td></tr>`;
-        }
+        })
+        .catch(err => {
+          console.error("Error loading users:", err);
+          document.getElementById('userTableBody').innerHTML = 
+            '<tr><td colspan="6" class="text-center py-3 text-danger">Gagal memuat data user dari server.</td></tr>';
+        });
+    }
 
-      } catch (error) {
-        console.error('Error saat mengambil data:', error);
-        tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-danger py-4">Gagal terhubung ke backend server (${error.message}).</td></tr>`;
+    // 3. FUNGSI EDIT USER (TAMPILKAN DATA KE FORM)
+    function editUser(id) {
+      const u = userListCache.find(item => item.id === id);
+      if (!u) return;
+
+      document.getElementById('userId').value = u.id;
+      document.getElementById('nama').value = u.Nama || '';
+      document.getElementById('email').value = u.email || '';
+      document.getElementById('password').value = ''; // Kosongkan password saat edit
+      document.getElementById('password').removeAttribute('required');
+      document.getElementById('phone').value = u.phone || '';
+      document.getElementById('hakAkses').value = u.hakAkses || 'User';
+      document.getElementById('instansiId').value = u.instansi_id || '';
+      document.getElementById('notes').value = u.notes || '';
+
+      document.getElementById('reqPassword').style.display = 'none';
+      document.getElementById('formTitle').innerHTML = `<i class="bi bi-pencil-square me-2"></i>Edit User (#${u.id})`;
+      document.getElementById('btnSubmit').className = 'btn btn-warning flex-grow-1';
+      document.getElementById('btnSubmit').innerHTML = `<i class="bi bi-check-circle me-1"></i> Update User`;
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 4. FUNGSI SIMPAN DATA (POST TAMBAH / PUT EDIT)
+    function saveUser() {
+      const id = document.getElementById('userId').value;
+      const password = document.getElementById('password').value;
+
+      // Validasi password khusus saat Tambah User Baru
+      if (!id && (!password || password.length < 8)) {
+        alert('Password wajib diisi minimal 8 karakter untuk user baru!');
+        return;
+      }
+
+      // Validasi password jika diisi saat Edit User
+      if (id && password && password.length < 8) {
+        alert('Password baru minimal 8 karakter!');
+        return;
+      }
+
+      const payload = {
+        Nama: document.getElementById('nama').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        hakAkses: document.getElementById('hakAkses').value,
+        instansi_id: document.getElementById('instansiId').value || null,
+        notes: document.getElementById('notes').value
+      };
+
+      // Hanya kirim password jika diisi
+      if (password && password.trim() !== '') {
+        payload.password = password;
+      }
+
+      const method = id ? 'PUT' : 'POST';
+      const url = id ? `${API_USERS}/${id}` : '/api/add-users';
+
+      fetch(url, {
+        method: method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(res => res.json())
+        .then(resData => {
+          if (resData.success) {
+            alert(resData.message || 'Data user berhasil disimpan!');
+            resetForm();
+            loadUsers();
+          } else {
+            alert('Gagal menyimpan: ' + (resData.message || 'Terjadi kesalahan backend.'));
+          }
+        })
+        .catch(err => {
+          console.error("Error saving user:", err);
+          alert('Terjadi kesalahan koneksi server');
+        });
+    }
+
+    // 5. FUNGSI HAPUS USER
+    function deleteUser(id) {
+      if (confirm(`Apakah Anda yakin ingin menghapus user #${id}?`)) {
+        fetch(`${API_USERS}/${id}`, { method: 'DELETE' })
+          .then(res => res.json())
+          .then(resData => {
+            if (resData.success) {
+              alert(resData.message || 'User berhasil dihapus!');
+              loadUsers();
+            } else {
+              alert('Gagal menghapus: ' + resData.message);
+            }
+          })
+          .catch(err => console.error("Error deleting user:", err));
       }
     }
-    async function deleteUser(userId) {
-  // Konfirmasi sebelum menghapus
-  if (!confirm(`Apakah Anda yakin ingin menghapus user ID #${userId}?`)) {
-    return;
-  }
 
-  const TARGET_API_URL = `/api/users/${userId}`;
-
-  try {
-    const response = await fetch(TARGET_API_URL, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    const result = await response.json();
-
-    if (response.ok && result.success) {
-      alert(result.message || 'User berhasil dihapus!');
-      fetchUsers(); // Reload/refresh daftar user di tabel
-    } else {
-      alert(result.message || 'Gagal menghapus user.');
+    // 6. FUNGSI RESET FORM
+    function resetForm() {
+      document.getElementById('userId').value = '';
+      document.getElementById('userForm').reset();
+      document.getElementById('password').setAttribute('required', 'required');
+      document.getElementById('reqPassword').style.display = 'inline';
+      document.getElementById('formTitle').innerHTML = `<i class="bi bi-person-plus me-2"></i>Tambah User Baru`;
+      document.getElementById('btnSubmit').className = 'btn btn-primary flex-grow-1';
+      document.getElementById('btnSubmit').innerHTML = `<i class="bi bi-check-circle me-1"></i> Simpan User`;
     }
-  } catch (error) {
-    console.error('Error saat menghapus user:', error);
-    alert('Terjadi kesalahan koneksi ke backend server.');
-  }
-}
-document.addEventListener('DOMContentLoaded', function () {
-  const btnSignOut = document.getElementById('btnSignOut');
-
-  if (btnSignOut) {
-    btnSignOut.addEventListener('click', function (e) {
-      e.preventDefault();
-
-      // 1. Konfirmasi opsional ke pengguna (opsional)
-      if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
-        
-        // 2. Hapus token / data autentikasi dari localStorage & sessionStorage
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        localStorage.clear();
-        sessionStorage.clear();
-
-        // 3. Arahkan kembali pengguna ke halaman login
-        window.location.href = 'login.html';
-      }
-    });
-  }
-});
   </script>
-  
 </body>
+
 </html>

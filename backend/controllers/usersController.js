@@ -4,7 +4,76 @@
 const bcrypt = require('bcryptjs');
 const pool = require('../config/db');
 const { sanitizePlainText, isValidEmail, verifyPassword, isBcryptHash } = require('../utils/sanitize');
+// PUT Update User berdasarkan ID
+async function updateUser(req, res) {
+  const { id } = req.params;
+  const { phone, hakAkses, instansi_id, notes, password } = req.body;
+  const Nama = sanitizePlainText(req.body.Nama);
+  const email = typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : req.body.email;
 
+  if (!Nama) {
+    return res.status(400).json({ success: false, message: 'Nama wajib diisi!' });
+  }
+
+  if (email && !isValidEmail(email)) {
+    return res.status(400).json({ success: false, message: 'Format email tidak valid!' });
+  }
+
+  try {
+    // 1. Cek keberadaan user terlebih dahulu
+    const userExist = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+    if (userExist.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'User tidak ditemukan!' });
+    }
+
+    // 2. Jika password diisi, lakukan validation & hash. Jika kosong, pertahankan password lama.
+    let hashedPassword = userExist.rows[0].password;
+    if (password && password.trim() !== '') {
+      if (password.length < 8) {
+        return res.status(400).json({ success: false, message: 'Password baru minimal 8 karakter!' });
+      }
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
+    const query = `
+      UPDATE users 
+      SET "Nama" = $1, 
+          email = $2, 
+          password = $3, 
+          phone = $4, 
+          "hakAkses" = $5, 
+          instansi_id = $6, 
+          notes = $7
+      WHERE id = $8
+      RETURNING id, "Nama", email, phone, "hakAkses", instansi_id, notes
+    `;
+
+    const values = [
+      Nama,
+      email,
+      hashedPassword,
+      phone || null,
+      hakAkses || userExist.rows[0].hakAkses,
+      instansi_id || null,
+      notes ? sanitizePlainText(notes) : null,
+      id
+    ];
+
+    const { rows } = await pool.query(query, values);
+
+    res.json({
+      success: true,
+      message: 'Data user berhasil diperbarui!',
+      data: rows[0]
+    });
+
+  } catch (err) {
+    if (err.code === '23505') {
+      return res.status(400).json({ success: false, message: 'Email tersebut sudah digunakan user lain!' });
+    }
+    res.status(500).json({ success: false, message: err.message });
+  }
+}
 // GET Semua Users
 async function getUsers(req, res) {
   try {
@@ -126,4 +195,4 @@ async function login(req, res) {
 }
 
 
-module.exports = { getUsers, addUser, login, deleteUser };
+module.exports = { getUsers, addUser, login, deleteUser, updateUser };
