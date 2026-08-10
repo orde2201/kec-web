@@ -409,6 +409,16 @@
             document.getElementById('berita-section').scrollIntoView({ behavior: 'smooth' });
         }
 
+        /**
+         * Helper Function untuk memotong teks berdasarkan jumlah kata
+         */
+        function truncateWords(text, limit) {
+            if (!text) return '';
+            const words = text.trim().split(/\s+/);
+            if (words.length <= limit) return text;
+            return words.slice(0, limit).join(' ') + '...';
+        }
+
         function renderBerita(listBerita) {
             const container = document.getElementById('berita-container');
             if (!container) return;
@@ -437,7 +447,10 @@
                     : '-';
 
                 const linkDetail = `detail-berita.html?id=${berita.id}`;
-                const previewText = berita.konten ? berita.konten.replace(/<[^>]*>?/gm, '') : '';
+                
+                // Bersihkan tag HTML dan potong teks menjadi maksimal 15 kata
+                const cleanText = berita.konten ? berita.konten.replace(/<[^>]*>?/gm, '') : '';
+                const previewText = truncateWords(cleanText, 15);
 
                 const htmlCard = `
                     <div class="col-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
@@ -451,14 +464,15 @@
                                          onerror="this.onerror=null; this.src='img/default.jpg';">
                                 </a>
                             </div>
-                            <div class="text-center p-2 p-md-4 pb-0 flex-grow-1">
+                            <!-- Diubah dari text-center menjadi text-start (rata kiri biasa) -->
+                            <div class="text-start p-3 p-md-4 pb-0 flex-grow-1">
                                 <div class="mb-2">
                                     <span class="badge bg-primary">${berita.nama_kategori || 'Umum'}</span>
                                 </div>
                                 <a href="${linkDetail}" class="text-dark text-decoration-none">
                                     <h5 class="mb-2 mb-md-3 text-hover-primary">${berita.judul}</h5>
                                 </a>
-                                <p class="text-muted small d-none d-sm-block" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                                <p class="text-muted small d-none d-sm-block mb-3">
                                     ${previewText}
                                 </p>
                             </div>
