@@ -46,20 +46,20 @@
             }
 
             /* Hero Banner Mobile Fix */
-            .header-carousel .owl-carousel-item {
+            .hero-header-item {
                 min-height: 280px !important;
                 padding: 30px 0 !important;
             }
-            .header-carousel .owl-carousel-item h5 {
+            .hero-header-item h5 {
                 font-size: 0.8rem !important;
                 margin-bottom: 0.3rem !important;
             }
-            .header-carousel .owl-carousel-item h1 {
+            .hero-header-item h1 {
                 font-size: 1.2rem !important;
                 line-height: 1.25;
                 margin-bottom: 0.8rem !important;
             }
-            .header-carousel .owl-carousel-item .btn {
+            .hero-header-item .btn {
                 padding: 0.35rem 0.8rem !important;
                 font-size: 0.8rem !important;
             }
@@ -216,10 +216,10 @@
         </div>
     </div>
 
-    <!-- ==================== HERO / CAROUSEL ==================== -->
+    <!-- ==================== HERO / BANNER UTAMA (STATIS / TIDAK BISA DISLIDE) ==================== -->
     <div class="container-fluid p-0 mb-4 mb-md-5">
-        <div class="owl-carousel header-carousel position-relative">
-            <div class="owl-carousel-item position-relative d-flex align-items-center"
+        <div class="position-relative">
+            <div class="hero-header-item position-relative d-flex align-items-center"
                 style="min-height: 500px; padding: 60px 0;">
                 <img id="hero-img" class="position-absolute top-0 start-0 w-100 h-100" src="img/image.png"
                     style="object-fit: cover; z-index: 1;" alt="Hero Image" onerror="this.src='img/image.png';">
@@ -539,9 +539,6 @@
                         if (data.hero_image) {
                             const heroUrl = `${API_BASE_URL}/uploads/${data.hero_image}?v=${timestamp}`;
                             setElementSrc('hero-img', heroUrl);
-                            document.querySelectorAll('.header-carousel img').forEach(img => {
-                                img.src = heroUrl;
-                            });
                         }
 
                         if (data.logo) setElementSrc('site-logo', `${API_BASE_URL}/uploads/${data.logo}?v=${timestamp}`);
