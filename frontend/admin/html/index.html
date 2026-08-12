@@ -339,9 +339,12 @@
         safeSetText('cntKontenLawas', `${kontenLawasCount} Item`);
 
         // 5. Update Storage Status Panel
+        // 5. Update Storage Status Panel di dashboard
         if (storageData) {
           const usedMB = storageData.uploadsSizeMB || 0;
           const maxQuotaMB = storageData.maxQuotaMB || 1024;
+
+          // Jika kuota app diisi, gunakan alokasi kuota app. Jika tidak, pakai total disk VPS
           const percent = Math.min(100, Math.round((usedMB / maxQuotaMB) * 100));
 
           safeSetText('statStorageSize', usedMB >= 1024 ? `${(usedMB / 1024).toFixed(2)} GB` : `${usedMB} MB`);
@@ -354,10 +357,14 @@
           }
 
           const quotaStr = maxQuotaMB >= 1024 ? `${(maxQuotaMB / 1024).toFixed(1)} GB` : `${maxQuotaMB} MB`;
-          safeSetHTML('storageDetailNote', `<i class="bi bi-hdd-rack me-1"></i> Terpakai <strong>${usedMB} MB</strong> dari alokasi <strong>${quotaStr}</strong>.`);
+          safeSetHTML('storageDetailNote', `<i class="bi bi-hdd-rack me-1"></i> Terpakai <strong>${usedMB} MB</strong> dari alokasi kuota <strong>${quotaStr}</strong>.`);
 
-          if (storageData.totalDiskGB) {
-            safeSetText('cntDeviceDisk', `${storageData.freeDiskGB} GB bebas / ${storageData.totalDiskGB} GB Total`);
+          // Tampilkan data Fisik VPS Ubuntu yang sebenarnya
+          if (storageData.totalDiskGB && storageData.totalDiskGB > 0) {
+            safeSetText(
+              'cntDeviceDisk',
+              `${storageData.freeDiskGB} GB bebas / ${storageData.totalDiskGB} GB Total VPS`
+            );
           } else {
             safeSetText('cntDeviceDisk', 'N/A');
           }
