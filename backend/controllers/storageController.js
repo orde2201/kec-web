@@ -1,12 +1,11 @@
 // ==========================================
-// CONTROLLER: STORAGE STATS (AKURAT UNTUK UBUNTU VPS)
+// CONTROLLER: STORAGE STATS (UBUNTU VPS REAL)
 // ==========================================
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { uploadDir } = require('../middleware/upload');
 
-// Hitung total ukuran folder uploads secara rekursif
 function getFolderSize(dirPath) {
   let totalSize = 0;
   if (!fs.existsSync(dirPath)) return 0;
@@ -24,14 +23,12 @@ function getFolderSize(dirPath) {
   return totalSize;
 }
 
-// Pembacaan kapasitas Disk VPS Ubuntu secara Akurat
 function getVPSDiskInfo(targetPath) {
   try {
-    // Cara 1: Menggunakan API Bawaan Node.js (fs.statfsSync)
     if (typeof fs.statfsSync === 'function') {
       const stats = fs.statfsSync(targetPath);
       const totalBytes = stats.blocks * stats.bsize;
-      const freeBytes = stats.bavail * stats.bsize; // bavail = space yang tersedia untuk non-root user
+      const freeBytes = stats.bavail * stats.bsize;
 
       return {
         totalDiskGB: parseFloat((totalBytes / (1024 * 1024 * 1024)).toFixed(2)),
@@ -40,13 +37,10 @@ function getVPSDiskInfo(targetPath) {
       };
     }
 
-    // Cara 2: Fallback Perintah Linux `df -k` untuk Ubuntu
     const output = execSync(`df -k "${targetPath}"`).toString();
     const lines = output.trim().split('\n');
     if (lines.length >= 2) {
-      // Ambil baris output df
       const parts = lines[1].replace(/\s+/g, ' ').split(' ');
-      // parts[1] = Total 1K-blocks, parts[3] = Available 1K-blocks
       const totalKB = parseInt(parts[1], 10);
       const freeKB = parseInt(parts[3], 10);
 
@@ -57,7 +51,7 @@ function getVPSDiskInfo(targetPath) {
       return { totalDiskGB, freeDiskGB, usedDiskGB };
     }
   } catch (err) {
-    console.error('⚠️ Gagal membaca statistik disk Ubuntu VPS:', err.message);
+    console.error('Gagal membaca disk VPS:', err.message);
   }
 
   return { totalDiskGB: 0, freeDiskGB: 0, usedDiskGB: 0 };
@@ -65,21 +59,20 @@ function getVPSDiskInfo(targetPath) {
 
 function getStorageStats(req, res) {
   try {
-    // 1. Ukuran folder /uploads
     const totalBytes = getFolderSize(uploadDir);
     const uploadsSizeMB = parseFloat((totalBytes / (1024 * 1024)).toFixed(2));
     
-    // Alokasi kuota khusus aplikasi (jika di-set di .env)
-    const maxQuotaMB = parseInt(process.env.MAX_STORAGE_QUOTA_MB || '1024', 10);
-
-    // 2. Baca Kapasitas Real VPS Ubuntu dari lokasi uploadDir
+    // Ambil Info Disk Fisik VPS Ubuntu
     const diskInfo = getVPSDiskInfo(uploadDir);
+
+    // Hitung Total Kuota berdasarkan Total Disk VPS dalam MB (contoh: 57 GB * 1024 = 58,368 MB)
+    const totalVPSDiskMB = Math.round(diskInfo.totalDiskGB * 1024);
 
     res.json({
       success: true,
       data: {
         uploadsSizeMB: uploadsSizeMB,
-        maxQuotaMB: maxQuotaMB,
+        totalVPSDiskMB: totalVPSDiskMB, // Total ukuran fisik VPS dalam MB
         freeDiskGB: diskInfo.freeDiskGB,
         totalDiskGB: diskInfo.totalDiskGB,
         usedDiskGB: diskInfo.usedDiskGB
